@@ -1,5 +1,18 @@
 .App {
   text-align: center;
+  display: grid;
+  grid-template-areas:
+    'header header'
+    'nav nav'
+    'section aside'
+    'article aside'
+    'footer footer';
+  grid-template-rows: auto;
+  grid-template-columns: 2fr 1fr;
+  gap: 10px;
+  /* Adjust gap as needed */
+  height: 100vh;
+  /* Full height of viewport */
 }
 
 .App-logo {
@@ -28,11 +41,12 @@
   color: #61dafb;
 }
 
-@keyframes App-logo-spin {
-  from {
-    transform: rotate(0deg);
-  }
-  to {
-    transform: rotate(360deg);
-  }
+
+section {
+  padding-left: 20%;
+  grid-area: section;
+}
+
+aside {
+  grid-area: aside;
 }

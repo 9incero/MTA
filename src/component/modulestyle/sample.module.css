@@ -1,0 +1,91 @@
+* {
+    margin: 0;
+    padding: 0;
+    /* 글꼴 패밀리 수정 */
+}
+
+/* 전체 컨테이너 스타일 */
+.loader_body {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+    /* 전체 높이를 뷰포트의 높이로 설정 */
+
+}
+
+/* 애니메이션을 적용할 컨테이너 */
+.loader {
+    position: relative;
+    display: inline-block;
+
+}
+
+/* 각 span의 스타일 설정 */
+.loader span {
+    position: relative;
+    font-size: 1.5rem;
+    /* 단위 추가 */
+    /* color: #fff; */
+    display: inline-block;
+    text-transform: uppercase;
+    animation: animate_increasing 2s ease-in-out;
+    animation-delay: calc(0.1s * var(--i));
+}
+
+/* .loader:hover span {
+    animation-play-state: running;
+} */
+
+/* 애니메이션 정의 */
+@keyframes animate_increasing {
+
+    0%,
+    40%,
+    100% {
+        transform: translateY(0);
+    }
+
+    20% {
+        transform: translateY(-50px);
+    }
+}
+
+@keyframes animate_decreasing {
+
+    0%,
+    40%,
+    100% {
+        transform: translateY(0);
+    }
+
+    20% {
+        transform: translateY(50px);
+    }
+}
+
+@keyframes animate_stable {
+
+    0%,
+    40%,
+    100% {
+        transform: translateY(0);
+    }
+
+    20% {
+        transform: translateY(0);
+    }
+}
+
+/* 애니메이션 클래스 */
+.animate_increasing span {
+    animation-name: animate_increasing;
+}
+
+.animate_decreasing span {
+    animation-name: animate_decreasing;
+}
+
+.animate_stable span {
+    animation-name: animate_stable;
+}
