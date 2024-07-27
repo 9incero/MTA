@@ -169,11 +169,13 @@ class Vislyrics extends Component {
   render() {
     return (
       <div>
-        <div style={{ width: 800 }}>
+        <div style={{ position: 'absolute', zIndex: 2, top: 60, width: 800 }}>
 
-          <div ref={this.scrollLyricsRef} style={{ backgroundColor: 'lightskyblue', padding: '100px', overflow: "auto", whiteSpace: "nowrap", height: 400 }}>
-            <div style={{ marginTop: '90px', marginLeft: '-70px' }}>
-              <div id="target-div" style={{}}>
+          <div ref={this.scrollLyricsRef} style={{
+            textAlign: 'left', overflow: "auto", scrollbarWidth: 'none', whiteSpace: "nowrap", width: '100%', height: 300
+          }}>
+            <div style={{ marginTop: 100, marginLeft: 40 }}>
+              <div id="target-div" style={{ zIndex: 2 }}>
                 {this.state.words.map((wordObj, index) => (
                   <Loader
                     key={index}

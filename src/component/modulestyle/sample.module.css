@@ -40,26 +40,26 @@
 /* 애니메이션 정의 */
 @keyframes animate_increasing {
 
-    0%,
-    40%,
-    100% {
+    0% {
         transform: translateY(0);
     }
 
-    20% {
+    20%,
+    40%,
+    100% {
         transform: translateY(-50px);
     }
 }
 
 @keyframes animate_decreasing {
 
-    0%,
-    40%,
-    100% {
+    0% {
         transform: translateY(0);
     }
 
-    20% {
+    20%,
+    40%,
+    100% {
         transform: translateY(50px);
     }
 }
@@ -67,12 +67,12 @@
 @keyframes animate_stable {
 
     0%,
-    40%,
-    100% {
+    40% {
         transform: translateY(0);
     }
 
-    20% {
+    20%,
+    100% {
         transform: translateY(0);
     }
 }
@@ -80,12 +80,18 @@
 /* 애니메이션 클래스 */
 .animate_increasing span {
     animation-name: animate_increasing;
+    animation-fill-mode: forwards;
+
 }
 
 .animate_decreasing span {
     animation-name: animate_decreasing;
+    animation-fill-mode: forwards;
+
 }
 
 .animate_stable span {
     animation-name: animate_stable;
+    animation-fill-mode: forwards;
+
 }

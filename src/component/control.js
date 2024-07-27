@@ -42,9 +42,9 @@ class Control extends Component {
     render() {
         return (
 
-            <div>
+            <div style={{ width: '100%' }}>
 
-                <Card style={{ width: '22rem', padding: '10px' }}>
+                <Card style={{ width: '100%', padding: '10px' }}>
                     <Tabs
                         defaultActiveKey="음악정보입력"
                         id="uncontrolled-tab-example"

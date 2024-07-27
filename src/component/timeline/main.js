@@ -42,7 +42,7 @@ const TimelineEditor = ({ setLeft, setPlaytime, setAudiourl, audiourl, timedata 
             <div className="player-panel" id="player-ground-1" ref={playerPanel} ></div>
             <TimelinePlayer setAudiourl={setAudiourl} audiourl={audiourl} setLeft={setLeft} setPlaytime={setPlaytime} timelineState={timelineState} autoScrollWhenPlay={autoScrollWhenPlay} />
             <Timeline
-                style={{ height: "300px", width: "800px" }}
+                style={{ height: "190px", width: "100%" }}
                 scale={scale}
                 scaleWidth={scaleWidth}
                 startLeft={startLeft}

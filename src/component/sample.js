@@ -145,7 +145,6 @@ const Loader = ({ text = '', tendency, targetWidth }) => {
   useEffect(() => {
     // CSS 변수 설정
     document.documentElement.style.setProperty('--animation', tendency);
-    console.log(tendency)
   }, [tendency]);
 
   const getAnimationClass = () => {
@@ -174,6 +173,7 @@ const Loader = ({ text = '', tendency, targetWidth }) => {
         <span
           key={index}
           style={{
+            color: 'white',
             '--i': index + 1, letterSpacing: index === text.length - 1 ? '0px' : `${letterSpacing}px`
           }}
         >
