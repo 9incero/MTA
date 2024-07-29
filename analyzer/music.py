@@ -184,6 +184,7 @@ class MusicAnalyzer:
             'base_code': self.root_key,
             'Lyrics': self.aligned_lyrics,
             'Beat_amplitude': self.beat_amp,
+            'Pitch': self.vocal_pitch,
         }
 
     def _get_beat_amplitudes(self):
