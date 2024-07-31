@@ -28,3 +28,7 @@ def normalize(data):
     min_data = np.min(data)
     max_data = np.max(data)
     return (data - min_data) / (max_data - min_data) if max_data > min_data else data
+
+
+def hz_to_midi(hz):
+    return round(69 + 12 * np.log2(hz/440.))
