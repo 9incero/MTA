@@ -3,15 +3,16 @@ import { Switch } from 'antd';
 import { cloneDeep } from 'lodash';
 import React, { useRef, useState, useEffect } from 'react';
 import { CustomRender0, CustomRender1 } from './custom';
-import { CustomTimelineAction, CusTomTimelineRow, mockData, mockEffect, scale, scaleWidth, startLeft } from './mock';
+import { CustomTimelineAction, CusTomTimelineRow, mockEffect, scale, scaleWidth, startLeft } from './mock';
 import TimelinePlayer from './player';
+import Mockcomponent from './mock';
 
 
-const defaultEditorData = cloneDeep(mockData);
+// const defaultEditorData = cloneDeep(mockData);
 
-const TimelineEditor = ({ setLeft, setPlaytime, control, setAudiourl, audiourl, timedata }) => {
+const TimelineEditor = ({ setMockdata, mockdata, totaldata, setLeft, setPlaytime, control, setAudiourl, audiourl, timedata }) => {
     // const [data, setData] = useState(timedata);
-    const [data, setData] = useState(defaultEditorData);
+    const [data, setData] = useState(mockdata);
     const timelineState = useRef(null);
     const playerPanel = useRef(null);
     const autoScrollWhenPlay = useRef(true);
@@ -24,8 +25,8 @@ const TimelineEditor = ({ setLeft, setPlaytime, control, setAudiourl, audiourl, 
 
 
     useEffect(() => {
-        // console.log('autoScrollWhenPlay:', timelineState);
-    }, [timelineState]);
+        setData(mockdata)
+    }, [mockdata]);
 
 
     return (
@@ -40,6 +41,7 @@ const TimelineEditor = ({ setLeft, setPlaytime, control, setAudiourl, audiourl, 
                 /> */}
             </div>
             <div className="player-panel" id="player-ground-1" ref={playerPanel} ></div>
+            <Mockcomponent setMockdata={setMockdata} totaldata={totaldata}></Mockcomponent>
             <TimelinePlayer control={control} setAudiourl={setAudiourl} audiourl={audiourl} setLeft={setLeft} setPlaytime={setPlaytime} timelineState={timelineState} autoScrollWhenPlay={autoScrollWhenPlay} />
             <Timeline
                 style={{ height: "300px", width: "100%" }}

@@ -9,6 +9,7 @@
     "@testing-library/user-event": "^13.5.0",
     "@xzdarcy/react-timeline-editor": "^0.1.9",
     "antd": "^5.19.2",
+    "axios": "^1.7.2",
     "bootstrap": "^5.3.3",
     "d3": "^7.9.0",
     "howler": "^2.2.4",

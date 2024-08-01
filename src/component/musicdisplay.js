@@ -1,16 +1,15 @@
 import React, { Component } from 'react';
 import * as d3 from 'd3';
-import result from '../assets/result.json';
-import additionalData from '../assets/result(2).json'
+
 class MusicVisual extends Component {
     constructor(props) {
         super(props);
         this.svgRef = React.createRef();
-        this.data = result.Lyrics;
-        this.addData = additionalData.Pitch;
+        this.data = this.props.totaldata.Lyrics;
+        this.addData = this.props.totaldata.Pitch;
         this.flag = false;
         this.currentPhase = 0;
-        this.beatData = result.Beat_amplitude
+        this.beatData = this.props.totaldata.Beat_amplitude
         this.state = {
             pitches: [],
             times: [],
@@ -22,42 +21,42 @@ class MusicVisual extends Component {
 
 
     componentDidMount() {
-        const pitches = [];
-        const times = [];
-        const seenTimes = new Set(); // 중복 제거를 위한 Set
-        let pitchTmp = [];
-        let timeTmp = [];
-        let prevPhase = -1;
+        // const pitches = [];
+        // const times = [];
+        // const seenTimes = new Set(); // 중복 제거를 위한 Set
+        // let pitchTmp = [];
+        // let timeTmp = [];
+        // let prevPhase = -1;
 
-        this.data.forEach(lyric => {
-            let currentPhase = lyric.phase;
-            if (currentPhase !== prevPhase) {
-                if (pitchTmp.length > 0) {
-                    pitches.push([...pitchTmp]);
-                    times.push([...timeTmp]);
-                }
-                pitchTmp = [];
-                timeTmp = [];
-                prevPhase = currentPhase;
-            }
+        // this.data.forEach(lyric => {
+        //     let currentPhase = lyric.phase;
+        //     if (currentPhase !== prevPhase) {
+        //         if (pitchTmp.length > 0) {
+        //             pitches.push([...pitchTmp]);
+        //             times.push([...timeTmp]);
+        //         }
+        //         pitchTmp = [];
+        //         timeTmp = [];
+        //         prevPhase = currentPhase;
+        //     }
 
-            lyric.pitch.forEach(pitch => {
-                if (!seenTimes.has(pitch.start)) {
-                    pitchTmp.push(pitch.midi_note);
-                    timeTmp.push(pitch.start);
-                    seenTimes.add(pitch.start); // Set에 추가하여 중복 방지
-                }
-            });
-        });
+        //     lyric.pitch.forEach(pitch => {
+        //         if (!seenTimes.has(pitch.start)) {
+        //             pitchTmp.push(pitch.midi_note);
+        //             timeTmp.push(pitch.start);
+        //             seenTimes.add(pitch.start); // Set에 추가하여 중복 방지
+        //         }
+        //     });
+        // });
 
-        if (timeTmp.length > 0) {
-            pitches.push([...pitchTmp]);
-            times.push([...timeTmp]);
-        }
+        // if (timeTmp.length > 0) {
+        //     pitches.push([...pitchTmp]);
+        //     times.push([...timeTmp]);
+        // }
 
-        this.fillMissingData(times, pitches);
-        // console.log(times); // 수정된 times 확인
-        this.setState({ pitches, times });
+        // this.fillMissingData(times, pitches);
+        // // console.log(times); // 수정된 times 확인
+        // this.setState({ pitches, times });
     }
 
     fillMissingData(times, pitches) {
@@ -104,9 +103,65 @@ class MusicVisual extends Component {
     }
 
 
-    componentDidUpdate(prevProps) {
-        if (prevProps.playtime !== this.props.playtime) {
+    componentDidUpdate(prevProps, prevState) {
+        if (prevProps.totaldata != this.props.totaldata) {
 
+            this.data = this.props.totaldata.Lyrics;
+            this.addData = this.props.totaldata.Pitch;
+            this.beatData = this.props.totaldata.Beat_amplitude
+
+
+            const pitches = [];
+            const times = [];
+            const seenTimes = new Set(); // 중복 제거를 위한 Set
+            let pitchTmp = [];
+            let timeTmp = [];
+            let prevPhase = -1;
+
+            this.data.forEach(lyric => {
+                let currentPhase = lyric.phase;
+                if (currentPhase !== prevPhase) {
+                    if (pitchTmp.length > 0) {
+                        pitches.push([...pitchTmp]);
+                        times.push([...timeTmp]);
+                    }
+                    pitchTmp = [];
+                    timeTmp = [];
+                    prevPhase = currentPhase;
+                }
+
+                lyric.pitch.forEach(pitch => {
+                    if (!seenTimes.has(pitch.start)) {
+                        pitchTmp.push(pitch.midi_note);
+                        timeTmp.push(pitch.start);
+                        seenTimes.add(pitch.start); // Set에 추가하여 중복 방지
+                    }
+                });
+            });
+
+            if (timeTmp.length > 0) {
+                pitches.push([...pitchTmp]);
+                times.push([...timeTmp]);
+            }
+
+            this.fillMissingData(times, pitches);
+            this.setState({
+                pitches: [...pitches],
+                times: [...times]
+            }, () => {
+                // 상태 업데이트 후 콜백
+                console.log('Updated pitches:', this.state.pitches);
+                console.log('Updated times:', this.state.times);
+            });
+        }
+
+        if (prevState.times != this.state.times) {
+            console.log('Updated times in componentDidUpdate:', this.state.times);
+        }
+
+
+        if (prevProps.playtime != this.props.playtime) {
+            console.log('times', this.state.times)
             // 모든 조건을 만족하는 beat 찾기
             let lastMatchingBeat = null;
             for (let i = 0; i < this.beatData.length; i++) {

@@ -1,6 +1,5 @@
 import { Component, React, createRef } from 'react';
 import { Timeline, TimelineEngine } from '@xzdarcy/react-timeline-editor';
-import data from '../assets/result';
 import regression from 'regression';
 import Loader from './sample';
 
@@ -10,16 +9,15 @@ class Vislyrics extends Component {
     super(props);
     this.engine = new TimelineEngine();
     this.divRef = createRef();
-    this.musicData = data;
     this.tendency = '';
     this.prevPhase = 0;
     this.scrollLyricsRef = createRef();
-    this.beatData = data.Beat_amplitude
+    this.beatData = this.props.totaldata.Beat_amplitude
     this.state = {
-      data: data.Lyrics,
+      data: this.props.totaldata.Lyrics,
       currentIndex: 0, // 현재 표시할 텍스트의 인덱스
       words: [],
-      pitchData: data.Pitch,
+      pitchData: this.props.totaldata.Pitch,
       pitches: [],
       times: [],
 
@@ -40,6 +38,8 @@ class Vislyrics extends Component {
   componentDidUpdate(prevProps) {
 
     if (prevProps.playtime !== this.props.playtime) {
+
+
       this.updateLyrics();
     }
 
@@ -61,8 +61,12 @@ class Vislyrics extends Component {
   }
 
   updateLyrics = () => {
+
+
     const { data, pitchData } = this.state;
     const { playtime } = this.props;
+    this.setState({ data: this.props.totaldata.Lyrics });
+
     this.clearContent();
 
     const processedPitches = new Set();

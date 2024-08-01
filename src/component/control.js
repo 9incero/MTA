@@ -35,13 +35,13 @@ class Control extends Component {
         this.setState({ color_value });
     }
     handleChange = (event, name) => {
-        this.setState({ [name]: event.target.value });
-        this.props.setControl(this.state)
+        this.setState({ [name]: event.target.value }, () => {
+            this.props.setControl({ ...this.state });
+        });
 
     };
     exportValue = () => {
         // 이게 전송할거리들
-        console.log(this.state)
         this.props.setControl(this.state)
 
     }
@@ -57,7 +57,7 @@ class Control extends Component {
                         className="mb-3"
                     >
                         <Tab eventKey="음악정보입력" title="음악정보입력">
-                            <Fileloader setTimedata={this.props.setTimedata} setAudiourl={this.props.setAudiourl}></Fileloader>
+                            <Fileloader totaldata={this.props.totaldata} setTotaldata={this.props.setTotaldata} setTimedata={this.props.setTimedata} setAudiourl={this.props.setAudiourl}></Fileloader>
                         </Tab>
 
                         {/* test */}
@@ -76,7 +76,7 @@ class Control extends Component {
                                             <Dropdown.Item style={{ fontFamily: 'happy-font' }} onClick={() => this.handleChange({ target: { value: 'happy-font' } }, 'font_value')} >행복한</Dropdown.Item>
                                             <Dropdown.Item style={{ fontFamily: 'romantic-font' }} onClick={() => this.handleChange({ target: { value: 'romantic-font' } }, 'font_value')}>로맨틱한</Dropdown.Item>
                                             <Dropdown.Item style={{ fontFamily: 'sad-font' }} onClick={() => this.handleChange({ target: { value: 'sad-font' } }, 'font_value')}>슬픈</Dropdown.Item>
-                                            <Dropdown.Item style={{ fontFamily: 'scary' }} onClick={() => this.handleChange({ target: { value: 'scary' } }, 'font_value')}>무서운</Dropdown.Item>
+                                            <Dropdown.Item style={{ fontFamily: 'regularttttt' }} onClick={() => this.handleChange({ target: { value: 'scary-font' } }, 'font_value')}>무서운</Dropdown.Item>
                                             <Dropdown.Item style={{ fontFamily: 'sexy-font' }} onClick={() => this.handleChange({ target: { value: 'sexy-font' } }, 'font_value')}>섹시한</Dropdown.Item>
                                             <Dropdown.Item style={{ fontFamily: 'uplifting-font' }} onClick={() => this.handleChange({ target: { value: 'uplifting-font' } }, 'font_value')}>희망적인</Dropdown.Item>
                                             <Dropdown.Item style={{ fontFamily: 'ethereal-font' }} onClick={() => this.handleChange({ target: { value: 'ethereal-font' } }, 'font_value')}>미묘한</Dropdown.Item>

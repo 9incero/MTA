@@ -110,7 +110,15 @@ import regression from 'regression';
 
 const Loader = ({ text = '', tendency, targetWidth, control, opacity }) => {
   const textRef = useRef(null);
+  const [fontFamily, setFontFamily] = useState(control.font_value);
   const [letterSpacing, setLetterSpacing] = useState(0);
+
+
+  useEffect(() => {
+    // control 객체가 변경될 때마다 실행됨
+    setFontFamily(control.font_value);
+  }, [control.font_value]); // 의존성 배열에 control 객체를 추가
+
 
   useEffect(() => {
     const adjustLetterSpacing = () => {
@@ -190,7 +198,7 @@ const Loader = ({ text = '', tendency, targetWidth, control, opacity }) => {
         width: targetWidth,
         // whiteSpace: 'normal',
         marginLeft: '30px',
-        fontFamily: control.font_value
+        fontFamily: fontFamily
 
       }}
     >

@@ -9,7 +9,7 @@ import TimelineEditor from './component/timeline/main';
 import MusicVisual from './component/musicdisplay';
 import 'bootstrap/dist/css/bootstrap.css';
 import { Container, Row, Col } from 'react-bootstrap';
-import { scale } from './component/timeline/mock';
+// import { scale } from './component/timeline/mock';
 import ToggleButton from 'react-bootstrap/ToggleButton';
 import ToggleButtonGroup from 'react-bootstrap/ToggleButtonGroup';
 
@@ -24,6 +24,16 @@ function App() {
   const [pitch, setPitch] = useState([]);
   const [pitchtime, setPitchtime] = useState([]);
   const [mode, setMode] = useState([1, 2]);
+  const [filename, setFilename] = useState('')
+  const [totaldata, setTotaldata] = useState({
+    BPM: '',
+    Beat_amplitude: [],
+    Emotions: [],
+    Instruments: [],
+    Lyrics: [],
+    Pitch: []
+  });
+  const [mockdata, setMockdata] = useState([])
 
   // const handleClick = () => {
   //   const newWord = { word: "몽구리", tendency: "animate_decreasing", targetWidth: 500 };
@@ -61,10 +71,8 @@ function App() {
                 </ToggleButtonGroup>
                 {/* <p>visual</p> */}
 
-                {mode.includes(1) &&
-                  <MusicVisual control={control} setOpacity={setOpacity} opacity={opacity} playtime={playtime} pitches={pitch} times={pitchtime}></MusicVisual>
-                }
-                {mode.includes(2) && <Vislyrics setPitchtime={setPitchtime} pitchtime={pitchtime} pitch={pitch} setPitch={setPitch} opacity={opacity} setOpacity={setOpacity} control={control} words={words} setWords={setWords} left={left} setLeft={setLeft} playtime={playtime} setPlaytime={setPlaytime} />}
+                <MusicVisual totaldata={totaldata} control={control} setOpacity={setOpacity} opacity={opacity} playtime={playtime} pitches={pitch} times={pitchtime}></MusicVisual>
+                <Vislyrics totaldata={totaldata} setPitchtime={setPitchtime} pitchtime={pitchtime} pitch={pitch} setPitch={setPitch} opacity={opacity} setOpacity={setOpacity} control={control} words={words} setWords={setWords} left={left} setLeft={setLeft} playtime={playtime} setPlaytime={setPlaytime} />
 
 
                 {/* <MusicVisual opacity={opacity} playtime={playtime} pitches={pitch} times={pitchtime}></MusicVisual> */}
@@ -80,17 +88,18 @@ function App() {
             <Row style={{ height: '30%' }}>
               <Col style={{ padding: 0, margin: 0 }}>
                 {/* 중앙 아래쪽 작은 컬럼 */}
-                <TimelineEditor control={control} timedata={timedata} setAudiourl={setAudiourl} audiourl={audiourl} setLeft={setLeft} setPlaytime={setPlaytime}></TimelineEditor>
+                <TimelineEditor mockdata={mockdata} setMockdata={setMockdata} totaldata={totaldata} control={control} timedata={timedata} setAudiourl={setAudiourl} audiourl={audiourl} setLeft={setLeft} setPlaytime={setPlaytime}></TimelineEditor>
 
               </Col>
             </Row>
           </Col>
           <Col md={3} style={{ height: '100vh', margin: 0, padding: 0 }}>
             {/* 오른쪽 큰 컬럼 */}
-            <Control setControl={setControl} setTimedata={setTimedata} setAudiourl={setAudiourl} control={control}></Control>
+            <Control mockdata={mockdata} setMockdata={setMockdata} totaldata={totaldata} setTotaldata={setTotaldata} setControl={setControl} setTimedata={setTimedata} setAudiourl={setAudiourl} control={control}></Control>
 
           </Col>
         </Row>
+
       </Container>
 
       {/* <div style={{ position: 'relative' }}>
@@ -121,7 +130,6 @@ function App() {
         </aside>
 
       </div > */}
-
 
     </div>
   );

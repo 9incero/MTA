@@ -62,13 +62,6 @@
     src: url("../../assets/fonts/sad.ttf") format("truetype");
 }
 
-@font-face {
-    font-family: "scary-font";
-    font-style: normal;
-    font-weight: 100;
-    src: url("../../assets/fonts/이순신Regular.ttf") format("truetype"),
-        url("../../assets/fonts/이순신Regular.otf") format("opentype");
-}
 
 @font-face {
     font-family: "sexy-font";
@@ -89,4 +82,12 @@
     font-style: normal;
     font-weight: 100;
     src: url("../../assets/fonts/ethereal.ttf") format("truetype");
+}
+
+@font-face {
+    font-family: "regularttttt";
+    font-style: normal;
+    font-weight: 100;
+    src:
+        url("../../assets/fonts/Regular.ttf") format("truetype");
 }
