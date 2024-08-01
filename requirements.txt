@@ -239,6 +239,5 @@ webcolors==24.6.0
 webencodings==0.5.1
 websocket-client==1.8.0
 Werkzeug==3.0.3
-whisperx @ git+https://github.com/m-bain/whisperx.git@58f00339af7dcc9705ef49d97a1f40764b7cf555
 widgetsnbextension==4.0.11
 yarl==1.9.4
