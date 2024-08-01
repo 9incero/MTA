@@ -108,7 +108,7 @@ import regression from 'regression';
 // export default AudioPlayer;
 
 
-const Loader = ({ text = '', tendency, targetWidth }) => {
+const Loader = ({ text = '', tendency, targetWidth, control, opacity }) => {
   const textRef = useRef(null);
   const [letterSpacing, setLetterSpacing] = useState(0);
 
@@ -121,17 +121,38 @@ const Loader = ({ text = '', tendency, targetWidth }) => {
       //   setLetterSpacing(spaceAdjustment);
       // }
       const element = textRef.current;
+      // if (element) {
+      //   const charNodes = Array.from(element.childNodes);
+      //   const charWidths = charNodes.map(node => node.offsetWidth);
+      //   const totalCharWidth = charWidths.reduce((acc, width) => acc + width, 0);
+
+      //   console.log('Total Char Width:', totalCharWidth);
+      //   const spaceAdjustment = Math.floor((targetWidth - totalCharWidth) / (text.length - 1));
+      //   console.log('Space Adjustment:', spaceAdjustment);
+
+      //   setLetterSpacing(spaceAdjustment > 0 ? spaceAdjustment : 0);
+      // }
+
       if (element) {
         const charNodes = Array.from(element.childNodes);
         const charWidths = charNodes.map(node => node.offsetWidth);
         const totalCharWidth = charWidths.reduce((acc, width) => acc + width, 0);
 
-        console.log('Total Char Width:', totalCharWidth);
-        const spaceAdjustment = Math.floor((targetWidth - totalCharWidth) / (text.length - 1));
-        console.log('Space Adjustment:', spaceAdjustment);
+        // console.log('Total Char Width:', totalCharWidth);
 
-        setLetterSpacing(spaceAdjustment > 0 ? spaceAdjustment : 0);
+        // 각 문자 사이의 최대 간격 계산
+        let spaceAdjustment = Math.floor((targetWidth - totalCharWidth) / (text.length - 1));
+        // console.log('Space Adjustment (initial):', spaceAdjustment);
+
+        // spaceAdjustment가 음수인 경우, 텍스트 너비를 targetWidth로 조정할 수 없음
+        // 이 경우 spaceAdjustment를 0으로 설정하여 너비 초과 방지
+        if (spaceAdjustment < 0) {
+          spaceAdjustment = 0;
+        }
+
+        setLetterSpacing(spaceAdjustment);
       }
+
     };
 
     adjustLetterSpacing();
@@ -154,6 +175,10 @@ const Loader = ({ text = '', tendency, targetWidth }) => {
   };
 
 
+  function mapRange(value, inMin, inMax, outMin, outMax) {
+
+    return (value - inMin) * (outMax - outMin) / (inMax - inMin) + outMin;
+  }
 
   return (
     // <div className={styles.loader_body}>
@@ -161,11 +186,12 @@ const Loader = ({ text = '', tendency, targetWidth }) => {
       className={`${styles.loader} ${getAnimationClass()}`}
       ref={textRef}
       style={{
-
+        fontWeight: mapRange(control.volume_value, 0, 100, 100, 900),
         width: targetWidth,
         // whiteSpace: 'normal',
         marginLeft: '30px',
-        fontFamily: 'YourPreferredFont, sans-serif'
+        fontFamily: control.font_value
+
       }}
     >
 
@@ -173,7 +199,9 @@ const Loader = ({ text = '', tendency, targetWidth }) => {
         <span
           key={index}
           style={{
-            color: 'white',
+            color: control.color_value,
+            backgroundColor: 'white',
+            opacity: opacity, //이거 정규화해서 쓸지 말지 결정
             '--i': index + 1, letterSpacing: index === text.length - 1 ? '0px' : `${letterSpacing}px`
           }}
         >

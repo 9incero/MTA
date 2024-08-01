@@ -15,7 +15,7 @@ export const mockEffect = {
             start: ({ action, engine, isPlaying, time }) => {
                 if (isPlaying) {
                     const src = action.data.src;
-                    console.log(src)
+
 
                     audioControl.start({ id: src, src, startTime: action.start, engine, time });
                 }
@@ -23,7 +23,6 @@ export const mockEffect = {
             enter: ({ action, engine, isPlaying, time }) => {
                 if (isPlaying) {
                     const src = action.data.src;
-                    console.log(src)
                     audioControl.start({ id: src, src, startTime: action.start, engine, time });
                 }
             },
@@ -85,7 +84,6 @@ export const mockData = Array.from(phaseMap, ([phase, actions], index) => ({
     actions: actions
 }));
 
-console.log(mockData);
 
 // export const mockData = [
 //     {

@@ -22,20 +22,17 @@ class Fileloader extends Component {
     if (this.fileInput.current.files) {
       const file = this.fileInput.current.files[0];
       const url = URL.createObjectURL(file);
-      console.log(url)
       setAudiourl(url)
     }
-    console.log(this.fileInput.current.files[0].name);
-    console.log(this.state.textvalue)
+
 
     //   여기에통신하는부분넣으면됨
     const data = {
       url: './assets/' + this.fileInput.current.files[0].name,
       lyrics: this.state.textvalue
     };
-    console.log(JSON.stringify(data))
+    // console.log(JSON.stringify(data))
 
-    let lyricarr = []
 
     function parseLyrics(lyrics) {
       const sections = lyrics.split(/\n\n/); // 빈 줄로 섹션 구분
@@ -52,7 +49,7 @@ class Fileloader extends Component {
     const parsedLyrics = parseLyrics(data.lyrics);
     const lyricsFile = musicfile.Lyrics
 
-    console.log(parsedLyrics)
+    // console.log(parsedLyrics)
 
 
     //   const mockData = lyricsFile.map((item) => ({
@@ -144,18 +141,18 @@ class Fileloader extends Component {
       existingIds.add(sectionId);
 
       const linesData = Array.from(phaseMap, ([phase, actions], index) => {
-        console.log('---------------------');
-        console.log(phaseMap);
+        // console.log('---------------------');
+        // console.log(phaseMap);
 
-        console.log(phase);
-        console.log(actions);
+        // console.log(phase);
+        // console.log(actions);
 
-        console.log('---------------------');
+        // console.log('---------------------');
 
         const start = actions[0].start;
         const end = actions[actions.length - 1].end;
 
-        console.log(start, end);
+        // console.log(start, end);
 
         return section.lines.map((line, lineIndex) => {
           const lineId = `line-${sectionIndex}-${lineIndex}`;
@@ -216,7 +213,7 @@ class Fileloader extends Component {
     //     }))
     //   };
     // });
-    console.log('어ㅏㅇ너랒', mockData)
+    // console.log('어ㅏㅇ너랒', mockData)
     this.props.setTimedata(mockData);
 
     //   axios.post( 'url', 

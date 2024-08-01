@@ -9,7 +9,7 @@ import TimelinePlayer from './player';
 
 const defaultEditorData = cloneDeep(mockData);
 
-const TimelineEditor = ({ setLeft, setPlaytime, setAudiourl, audiourl, timedata }) => {
+const TimelineEditor = ({ setLeft, setPlaytime, control, setAudiourl, audiourl, timedata }) => {
     // const [data, setData] = useState(timedata);
     const [data, setData] = useState(defaultEditorData);
     const timelineState = useRef(null);
@@ -24,7 +24,7 @@ const TimelineEditor = ({ setLeft, setPlaytime, setAudiourl, audiourl, timedata 
 
 
     useEffect(() => {
-        console.log('autoScrollWhenPlay:', timelineState);
+        // console.log('autoScrollWhenPlay:', timelineState);
     }, [timelineState]);
 
 
@@ -40,9 +40,9 @@ const TimelineEditor = ({ setLeft, setPlaytime, setAudiourl, audiourl, timedata 
                 /> */}
             </div>
             <div className="player-panel" id="player-ground-1" ref={playerPanel} ></div>
-            <TimelinePlayer setAudiourl={setAudiourl} audiourl={audiourl} setLeft={setLeft} setPlaytime={setPlaytime} timelineState={timelineState} autoScrollWhenPlay={autoScrollWhenPlay} />
+            <TimelinePlayer control={control} setAudiourl={setAudiourl} audiourl={audiourl} setLeft={setLeft} setPlaytime={setPlaytime} timelineState={timelineState} autoScrollWhenPlay={autoScrollWhenPlay} />
             <Timeline
-                style={{ height: "190px", width: "100%" }}
+                style={{ height: "300px", width: "100%" }}
                 scale={scale}
                 scaleWidth={scaleWidth}
                 startLeft={startLeft}

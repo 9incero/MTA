@@ -7,14 +7,29 @@ import { scale, scaleWidth, startLeft } from './mock';
 const { Option } = Select;
 export const Rates = [0.2, 0.5, 1.0, 1.5, 2.0];
 
-const TimelinePlayer = ({ audiourl, setAudiourl, timelineState, autoScrollWhenPlay, setLeft, setPlaytime, audioSrc }) => {
+const TimelinePlayer = ({ control, audiourl, setAudiourl, timelineState, autoScrollWhenPlay, setLeft, setPlaytime, audioSrc }) => {
     const [isPlaying, setIsPlaying] = useState(false);
     const [time, setTime] = useState(0);
     const audioRef = useRef(null);
 
+    useEffect(() => {
+        if (audioRef.current) {
+            const volumeValue = parseFloat(control.volume_value);
+
+            if (!isNaN(volumeValue) && isFinite(volumeValue)) {
+                audioRef.current.volume = Math.min(1, Math.max(0, volumeValue / 100));
+            } else {
+                audioRef.current.volume = 0.5
+            }
+        }
+    }, [control.volume_value]);
+
+
 
 
     useEffect(() => {
+
+
         if (!timelineState.current) return;
         const engine = timelineState.current;
 
