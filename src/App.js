@@ -12,6 +12,8 @@ import { Container, Row, Col } from 'react-bootstrap';
 // import { scale } from './component/timeline/mock';
 import ToggleButton from 'react-bootstrap/ToggleButton';
 import ToggleButtonGroup from 'react-bootstrap/ToggleButtonGroup';
+import MidiBeatMaker from './component/beatdisplay';
+import HapticComponent from './component/hapticplay';
 
 function App() {
   const [left, setLeft] = useState(0);
@@ -34,13 +36,8 @@ function App() {
     Pitch: []
   });
   const [mockdata, setMockdata] = useState([])
-
-  // const handleClick = () => {
-  //   const newWord = { word: "몽구리", tendency: "animate_decreasing", targetWidth: 500 };
-  //   setWords([...words, newWord]);
-  //   console.log('정상적추가..')
-  //   console.log(words)
-  // };
+  const [beatamp, setBeatamp] = useState([])
+  const [midibeat, setMidibeat] = useState([])
   const handleChange = (val) => setMode(val);
 
 
@@ -70,10 +67,8 @@ function App() {
 
                 </ToggleButtonGroup>
                 {/* <p>visual</p> */}
-
-                <MusicVisual totaldata={totaldata} control={control} setOpacity={setOpacity} opacity={opacity} playtime={playtime} pitches={pitch} times={pitchtime}></MusicVisual>
                 <Vislyrics totaldata={totaldata} setPitchtime={setPitchtime} pitchtime={pitchtime} pitch={pitch} setPitch={setPitch} opacity={opacity} setOpacity={setOpacity} control={control} words={words} setWords={setWords} left={left} setLeft={setLeft} playtime={playtime} setPlaytime={setPlaytime} />
-
+                <MusicVisual midibeat={midibeat} setBeatamp={setBeatamp} totaldata={totaldata} control={control} setOpacity={setOpacity} opacity={opacity} playtime={playtime} pitches={pitch} times={pitchtime}></MusicVisual>
 
                 {/* <MusicVisual opacity={opacity} playtime={playtime} pitches={pitch} times={pitchtime}></MusicVisual> */}
                 {/* <iframe src="http://172.17.26.136:8080/build" width='100%' height='100%' style={{ position: 'absolute', top: 0, left: 0, zIndex: 1, transform: 'scale(1)' }}></iframe> */}
@@ -89,13 +84,14 @@ function App() {
               <Col style={{ padding: 0, margin: 0 }}>
                 {/* 중앙 아래쪽 작은 컬럼 */}
                 <TimelineEditor mockdata={mockdata} setMockdata={setMockdata} totaldata={totaldata} control={control} timedata={timedata} setAudiourl={setAudiourl} audiourl={audiourl} setLeft={setLeft} setPlaytime={setPlaytime}></TimelineEditor>
-
+                <MidiBeatMaker midibeat={midibeat} playtime={playtime} totaldata={totaldata} setMidibeat={setMidibeat}></MidiBeatMaker>
               </Col>
             </Row>
           </Col>
           <Col md={3} style={{ height: '100vh', margin: 0, padding: 0 }}>
             {/* 오른쪽 큰 컬럼 */}
             <Control mockdata={mockdata} setMockdata={setMockdata} totaldata={totaldata} setTotaldata={setTotaldata} setControl={setControl} setTimedata={setTimedata} setAudiourl={setAudiourl} control={control}></Control>
+            <HapticComponent beatamp={beatamp} />
 
           </Col>
         </Row>

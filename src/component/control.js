@@ -25,7 +25,8 @@ class Control extends Component {
             pitch_value: 10,
             volume_value: 50,
             color_value: "#000",
-            font_value: 'sans-serif'
+            font_value: 'sans-serif',
+            shape_value: 1,
         };
         this.setColor = this.setColor.bind(this);
     }
@@ -78,8 +79,8 @@ class Control extends Component {
                                             <Dropdown.Item style={{ fontFamily: 'sad-font' }} onClick={() => this.handleChange({ target: { value: 'sad-font' } }, 'font_value')}>슬픈</Dropdown.Item>
                                             <Dropdown.Item style={{ fontFamily: 'regularttttt' }} onClick={() => this.handleChange({ target: { value: 'scary-font' } }, 'font_value')}>무서운</Dropdown.Item>
                                             <Dropdown.Item style={{ fontFamily: 'sexy-font' }} onClick={() => this.handleChange({ target: { value: 'sexy-font' } }, 'font_value')}>섹시한</Dropdown.Item>
-                                            <Dropdown.Item style={{ fontFamily: 'uplifting-font' }} onClick={() => this.handleChange({ target: { value: 'uplifting-font' } }, 'font_value')}>희망적인</Dropdown.Item>
                                             <Dropdown.Item style={{ fontFamily: 'ethereal-font' }} onClick={() => this.handleChange({ target: { value: 'ethereal-font' } }, 'font_value')}>미묘한</Dropdown.Item>
+                                            <Dropdown.Item style={{ fontFamily: 'uplifting-font' }} onClick={() => this.handleChange({ target: { value: 'uplifting-font' } }, 'font_value')}>희망적인</Dropdown.Item>
                                         </DropdownButton>
 
                                         <DropdownButton id="dropdown-basic-button" title="pitch">
@@ -98,14 +99,20 @@ class Control extends Component {
                                 <Card.Body>
                                     <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-around', marginBottom: '1rem' }}>
                                         <DropdownButton id="dropdown-basic-button" title="shape">
-                                            <Dropdown.Item href="#/action-1">공격적인</Dropdown.Item>
-                                            <Dropdown.Item href="#/action-2">차분한</Dropdown.Item>
-                                            <Dropdown.Item href="#/action-4">어두운</Dropdown.Item>
-                                            <Dropdown.Item href="#/action-5">활기찬</Dropdown.Item>
-                                            <Dropdown.Item href="#/action-6">서사적</Dropdown.Item>
-                                            <Dropdown.Item href="#/action-7">행복한</Dropdown.Item>
-                                            <Dropdown.Item href="#/action-8">로맨틱</Dropdown.Item>
-                                            <Dropdown.Item href="#/action-9">미묘한</Dropdown.Item>
+                                            <Dropdown.Item onClick={() => this.handleChange({ target: { value: 9 } }, 'shape_value')}>공격적인</Dropdown.Item>
+                                            <Dropdown.Item onClick={() => this.handleChange({ target: { value: 5 } }, 'shape_value')}>차분한</Dropdown.Item>
+                                            <Dropdown.Item onClick={() => this.handleChange({ target: { value: 7 } }, 'shape_value')}>차가운</Dropdown.Item>
+                                            <Dropdown.Item onClick={() => this.handleChange({ target: { value: 3 } }, 'shape_value')}>어두운</Dropdown.Item>
+                                            <Dropdown.Item onClick={() => this.handleChange({ target: { value: 8 } }, 'shape_value')}>활기찬</Dropdown.Item>
+                                            <Dropdown.Item onClick={() => this.handleChange({ target: { value: 6 } }, 'shape_value')}>웅장한</Dropdown.Item>
+                                            <Dropdown.Item onClick={() => this.handleChange({ target: { value: 1 } }, 'shape_value')}>행복한</Dropdown.Item>
+                                            <Dropdown.Item onClick={() => this.handleChange({ target: { value: 8 } }, 'shape_value')}>로맨틱</Dropdown.Item>
+                                            <Dropdown.Item onClick={() => this.handleChange({ target: { value: 3 } }, 'shape_value')}>슬픈</Dropdown.Item>
+                                            <Dropdown.Item onClick={() => this.handleChange({ target: { value: 9 } }, 'shape_value')}>무서운</Dropdown.Item>
+                                            <Dropdown.Item onClick={() => this.handleChange({ target: { value: 6 } }, 'shape_value')}>섹시한</Dropdown.Item>
+                                            <Dropdown.Item onClick={() => this.handleChange({ target: { value: 5 } }, 'shape_value')}>미묘한</Dropdown.Item>
+                                            <Dropdown.Item onClick={() => this.handleChange({ target: { value: 2 } }, 'shape_value')}>희망적인</Dropdown.Item>
+
                                         </DropdownButton>
 
                                         <DropdownButton id="dropdown-basic-button" title="pitch">

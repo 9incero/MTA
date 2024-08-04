@@ -9,18 +9,25 @@ class MusicVisual extends Component {
         this.addData = this.props.totaldata.Pitch;
         this.flag = false;
         this.currentPhase = 0;
-        this.beatData = this.props.totaldata.Beat_amplitude
+        this.beatData = this.props.totaldata.Beat_amplitude;
+        this.isUpdated = false;
         this.state = {
             pitches: [],
             times: [],
             prevPhase: 0, // 현재 표시할 phase
             pitchTmp: [],
-            timeTmp: []
+            timeTmp: [],
+            prevadd: 0,
+            savebeat: [],
+            currentbeattime: 0
         };
     }
 
 
     componentDidMount() {
+
+        this.setState({ savebeat: this.props.totaldata.Beat_amplitude })
+
         // const pitches = [];
         // const times = [];
         // const seenTimes = new Set(); // 중복 제거를 위한 Set
@@ -109,6 +116,8 @@ class MusicVisual extends Component {
             this.data = this.props.totaldata.Lyrics;
             this.addData = this.props.totaldata.Pitch;
             this.beatData = this.props.totaldata.Beat_amplitude
+            this.setState({ savebeat: this.props.totaldata.Beat_amplitude })
+
 
 
             const pitches = [];
@@ -150,24 +159,22 @@ class MusicVisual extends Component {
                 times: [...times]
             }, () => {
                 // 상태 업데이트 후 콜백
-                console.log('Updated pitches:', this.state.pitches);
-                console.log('Updated times:', this.state.times);
+                // console.log('Updated pitches:', this.state.pitches);
+                // console.log('Updated times:', this.state.times);
             });
         }
 
-        if (prevState.times != this.state.times) {
-            console.log('Updated times in componentDidUpdate:', this.state.times);
-        }
 
 
         if (prevProps.playtime != this.props.playtime) {
-            console.log('times', this.state.times)
             // 모든 조건을 만족하는 beat 찾기
             let lastMatchingBeat = null;
             for (let i = 0; i < this.beatData.length; i++) {
                 if (this.props.playtime >= this.beatData[i].time) {
                     lastMatchingBeat = this.beatData[i];
                     this.props.setOpacity(lastMatchingBeat.amplitude);
+                    // console.log(this.props.playtime, lastMatchingBeat)
+
 
                 } else {
                     break;
@@ -177,10 +184,14 @@ class MusicVisual extends Component {
             // 마지막으로 조건을 만족하는 beat 값 사용
             if (lastMatchingBeat) {
                 this.props.setOpacity(lastMatchingBeat.amplitude);
+
                 // console.log(lastMatchingBeat.amplitude);
                 // console.log('------');
             }
 
+            if (prevProps.midibeat != this.props.midibeat) {
+
+            }
             for (let i = 0; i < this.state.times.length - 1; i++) {
                 // 현재 playtime이 이 구간에 속하는지 확인
 
@@ -219,17 +230,48 @@ class MusicVisual extends Component {
     }
 
 
+
+    // drawLines() {
+    //     const svg = d3.select(this.svgRef.current);
+    //     const width = +svg.attr('width');
+    //     const height = +svg.attr('height');
+
+    //     // 기존의 라인을 제거하고 새로 그리기
+    //     svg.selectAll("line").remove();
+
+    //     const currentBeatData = this.beatData.filter(beat => beat.time <= this.props.playtime);
+
+
+    //     // 수직선을 추가하는 함수
+    //     svg.selectAll("line")
+    //         .data(currentBeatData)
+    //         .enter()
+    //         .append("line")
+    //         .attr("x1", d => d.time)
+    //         .attr("y1", 0)
+    //         .attr("x2", d => d.time)
+    //         .attr("y2", 300)
+    //         .attr("stroke", "blue")
+    //         .attr("stroke-width", 0.1);
+    // }
+
+
+
+
     drawChart(pitches, times) {
         const { playtime } = this.props; // 현재 재생 시간
         const svg = d3.select(this.svgRef.current);
         const width = +svg.attr('width');
         const height = +svg.attr('height');
+        let changeflag = 0;
+        let currentbeattime = 0;
 
         // 이전 내용을 지움
         if (this.flag) {
             svg.selectAll('*').remove();
-
+            changeflag = 1;
             this.flag = false;
+
         }
 
         // 스케일 설정
@@ -291,15 +333,182 @@ class MusicVisual extends Component {
         }
         const interpolatedPitch = lastPoint.pitch + t * (nextPoint.pitch - lastPoint.pitch);
         const color = colorScale(interpolatedPitch); // 색상 스케일에서 색상 가져오기
-        console.log(nextPoint, lastPoint, playtime, interpolatedPitch, t);
-        const radius = this.mapRange(this.props.control.volume_value, 0, 100, 1, 50);
+        const radius = this.mapRange(this.props.control.volume_value, 0, 100, 1, 30);
+        const yRadius = this.mapRange(this.props.control.volume_value, 0, 100, 20, 80); // pitch_value를 사용하여 y 반지름 설정
+        const size = this.mapRange(this.props.control.volume_value, 0, 100, 1, 30);
 
+        // if (this.control.shape_value === 1) {
         svg.append('circle')
             .attr('cx', xScale(playtime))
             .attr('cy', yScale(interpolatedPitch))
             .attr('r', radius) // 사이즈 설정
             .attr('fill', color) // 색상 매핑
             .attr('opacity', this.props.opacity);
+
+        const currentBeatData = this.state.savebeat.filter(beat => beat.time <= times[times.length - 1] && beat.time > times[0]);
+        console.log(currentBeatData)
+        // 수직선을 추가하는 함수
+        currentBeatData.forEach(beat => {
+            if (changeflag === 1) {
+                // svg.selectAll('line').remove();
+                svg.selectAll('rect').remove();
+
+                console.log("clear", playtime)
+                changeflag = 0
+            }
+            if (playtime >= beat.time) {
+                if (playtime < this.state.currentbeattime) {
+                    svg.append('rect')
+                        .attr('x', xScale(beat.time))
+                        .attr('y', 0)
+                        .attr('width', size)
+                        .attr('height', size)
+                        .attr('fill', color)
+                        .attr('opacity', 1)
+                        .datum(beat)
+                        .on('click', (e, d) => {
+                            d3.select(e.currentTarget).remove(); // 클릭한 요소 제거
+                            this.setState((prevState) => ({
+                                savebeat: prevState.savebeat.filter(b => b.time !== d.time)
+                            }));
+                        });
+                    this.setState({ currentbeattime: beat.time })
+                    this.props.setBeatamp(beat.amplitude)
+
+                }
+                else {
+                    if (this.state.currentbeattime < beat.time) {
+                        svg.append('rect')
+                            .attr('x', xScale(beat.time))
+                            .attr('y', 0)
+                            .attr('width', size)
+                            .attr('height', size)
+                            .attr('fill', color)
+                            .attr('opacity', 1)
+                            .datum(beat)
+                            .on('click', (e, d) => {
+                                d3.select(e.currentTarget).remove(); // 클릭한 요소 제거
+                                this.setState((prevState) => ({
+                                    savebeat: prevState.savebeat.filter(b => b.time !== d.time)
+                                }));
+                            });
+                        this.setState({ currentbeattime: beat.time })
+                        this.props.setBeatamp(beat.amplitude)
+
+                    }
+                }
+
+
+
+
+                // this.props.setBeatamp(beat.amplitude)
+
+            }
+            //한번만찍혀야하는데 여러번찍히네...
+            if (this.props.midibeat.times > this.state.prevadd && this.props.midibeat.times <= beat.time) {
+                console.log(this.props.midibeat.amplitude);
+                // 중복 방지를 위한 플래그 설정
+
+                // 업데이트가 이미 발생하지 않았다면 실행
+                if (!this.isUpdated) {
+                    svg.append('rect')
+                        .attr('x', xScale(this.props.midibeat.times))
+                        .attr('y', 0)
+                        .attr('width', size)
+                        .attr('height', size)
+                        .attr('fill', color)
+                        .attr('opacity', 1)
+                        .datum(this.props.midibeat)
+                        .on('click', (e, d) => {
+                            console.log(e, d);
+                            d3.select(e.currentTarget).remove(); // 클릭한 요소 제거
+                            this.setState((prevState) => ({
+                                savebeat: prevState.savebeat.filter(b => b.time !== d.time)
+                            }));
+                        });
+
+                    console.log("**", this.props.midibeat);
+                    this.setState({ prevadd: this.props.midibeat.times });
+                    this.setState((prevState) => ({
+                        savebeat: [...prevState.savebeat, { time: this.props.midibeat.times, amplitude: 0 }]
+                    }));
+                    this.props.setBeatamp(this.props.midibeat.times);
+
+                    // 업데이트 플래그 설정
+                    this.isUpdated = true;
+                }
+            }
+
+
+
+
+        });
+
+        // else if (this.control.shape_value === 2) {
+
+        //     svg.append('ellipse')
+        //         .attr('cx', xScale(playtime))
+        //         .attr('cy', yScale(interpolatedPitch))
+        //         .attr('rx', radius) // x축 반지름 설정
+        //         .attr('ry', yRadius) // y축 반지름 설정
+        //         .attr('fill', color) // 색상 매핑
+        //         .attr('opacity', this.props.opacity);
+        // }
+        // else if (this.control.shape_value === 3) {
+        //     svg.append('polygon')
+        //     .attr('points', `
+        //     ${xScale(playtime) - size},${yScale(interpolatedPitch) + size} 
+        //     ${xScale(playtime) + size},${yScale(interpolatedPitch) + size} 
+        //     ${xScale(playtime)},${yScale(interpolatedPitch) - size}
+        // `)
+        //     .attr('fill', color) // 색상 매핑
+        //     .attr('opacity', this.props.opacity);
+        // }
+        // else if (this.control.shape_value === 4) {
+
+        // }
+        // else if (this.control.shape_value === 5) {
+        // svg.append('rect')
+        //     .attr('x', xScale(playtime) - size / 2)
+        //     .attr('y', yScale(interpolatedPitch) - size / 2)
+        //     .attr('width', size)
+        //     .attr('height', size)
+        //     .attr('rx', 5) // 둥근 모서리 반경
+        //     .attr('ry', 5)
+        //     .attr('fill', color)
+        //     .attr('opacity', this.props.opacity);
+
+        // }
+        // else if (this.control.shape_value === 6) {
+
+        // }
+        // else if (this.control.shape_value === 7) {
+
+        // }
+        // else if (this.control.shape_value === 8) {
+
+        // }
+        // else if (this.control.shape_value === 9) {
+
+        // }
+
+
+        // svg.append('circle')
+        //     .attr('cx', xScale(playtime))
+        //     .attr('cy', yScale(interpolatedPitch))
+        //     .attr('r', radius) // 사이즈 설정
+        //     .attr('fill', color) // 색상 매핑
+        //     .attr('opacity', this.props.opacity);
+
+        // svg.append('ellipse')
+        //     .attr('cx', xScale(playtime))
+        //     .attr('cy', yScale(interpolatedPitch))
+        //     .attr('rx', radius) // x축 반지름 설정
+        //     .attr('ry', yRadius) // y축 반지름 설정
+        //     .attr('fill', color) // 색상 매핑
+        //     .attr('opacity', this.props.opacity);
+
+
 
 
     }
