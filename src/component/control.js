@@ -58,7 +58,7 @@ class Control extends Component {
                         className="mb-3"
                     >
                         <Tab eventKey="음악정보입력" title="음악정보입력">
-                            <Fileloader totaldata={this.props.totaldata} setTotaldata={this.props.setTotaldata} setTimedata={this.props.setTimedata} setAudiourl={this.props.setAudiourl}></Fileloader>
+                            <Fileloader setDuration={this.props.setDuration} totaldata={this.props.totaldata} setTotaldata={this.props.setTotaldata} setTimedata={this.props.setTimedata} setAudiourl={this.props.setAudiourl}></Fileloader>
                         </Tab>
 
                         {/* test */}

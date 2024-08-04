@@ -10,7 +10,7 @@ import Mockcomponent from './mock';
 
 // const defaultEditorData = cloneDeep(mockData);
 
-const TimelineEditor = ({ setMockdata, mockdata, totaldata, setLeft, setPlaytime, control, setAudiourl, audiourl, timedata }) => {
+const TimelineEditor = ({ duration, setMockdata, mockdata, totaldata, setLeft, setPlaytime, control, setAudiourl, audiourl, timedata }) => {
     // const [data, setData] = useState(timedata);
     const [data, setData] = useState(mockdata);
     const timelineState = useRef(null);
@@ -41,7 +41,7 @@ const TimelineEditor = ({ setMockdata, mockdata, totaldata, setLeft, setPlaytime
                 /> */}
             </div>
             <div className="player-panel" id="player-ground-1" ref={playerPanel} ></div>
-            <Mockcomponent setMockdata={setMockdata} totaldata={totaldata}></Mockcomponent>
+            <Mockcomponent duration={duration} setMockdata={setMockdata} totaldata={totaldata}></Mockcomponent>
             <TimelinePlayer control={control} setAudiourl={setAudiourl} audiourl={audiourl} setLeft={setLeft} setPlaytime={setPlaytime} timelineState={timelineState} autoScrollWhenPlay={autoScrollWhenPlay} />
             <Timeline
                 style={{ height: "300px", width: "100%" }}

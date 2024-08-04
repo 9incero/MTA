@@ -107,6 +107,39 @@ class MusicVisual extends Component {
             }
         }
 
+
+        // pitches의 마지막 time보다 큰 addData의 time 값을 10초 간격으로 추가
+        let lastTime = times[times.length - 1][times[times.length - 1].length - 1];
+        timeTmp = [];
+        pitchTmp = [];
+        lastAddedTime = lastTime; // 마지막으로 추가된 시간 갱신
+        let segmentStartTime = lastTime;
+
+        this.addData.forEach(data => {
+            if (data.time > lastTime) {
+                if (data.time - segmentStartTime >= 10) {
+                    if (timeTmp.length > 0) {
+                        times.push(timeTmp);
+                        pitches.push(pitchTmp);
+                    }
+                    timeTmp = [];
+                    pitchTmp = [];
+                    segmentStartTime = data.time;
+                }
+                if (data.time - lastAddedTime >= 0.5) {
+                    timeTmp.push(data.time);
+                    pitchTmp.push(data.pitch);
+                    lastAddedTime = data.time; // 마지막으로 추가된 시간 갱신
+                }
+            }
+        });
+
+        // 마지막으로 남은 데이터를 추가
+        if (timeTmp.length > 0) {
+            times.push(timeTmp);
+            pitches.push(pitchTmp);
+        }
+
     }
 
 
@@ -189,9 +222,6 @@ class MusicVisual extends Component {
                 // console.log('------');
             }
 
-            if (prevProps.midibeat != this.props.midibeat) {
-
-            }
             for (let i = 0; i < this.state.times.length - 1; i++) {
                 // 현재 playtime이 이 구간에 속하는지 확인
 

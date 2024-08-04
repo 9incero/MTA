@@ -38,6 +38,7 @@ function App() {
   const [mockdata, setMockdata] = useState([])
   const [beatamp, setBeatamp] = useState([])
   const [midibeat, setMidibeat] = useState([])
+  const [duration, setDuration] = useState(0);
   const handleChange = (val) => setMode(val);
 
 
@@ -83,14 +84,14 @@ function App() {
             <Row style={{ height: '30%' }}>
               <Col style={{ padding: 0, margin: 0 }}>
                 {/* 중앙 아래쪽 작은 컬럼 */}
-                <TimelineEditor mockdata={mockdata} setMockdata={setMockdata} totaldata={totaldata} control={control} timedata={timedata} setAudiourl={setAudiourl} audiourl={audiourl} setLeft={setLeft} setPlaytime={setPlaytime}></TimelineEditor>
+                <TimelineEditor duration={duration} mockdata={mockdata} setMockdata={setMockdata} totaldata={totaldata} control={control} timedata={timedata} setAudiourl={setAudiourl} audiourl={audiourl} setLeft={setLeft} setPlaytime={setPlaytime}></TimelineEditor>
                 <MidiBeatMaker midibeat={midibeat} playtime={playtime} totaldata={totaldata} setMidibeat={setMidibeat}></MidiBeatMaker>
               </Col>
             </Row>
           </Col>
           <Col md={3} style={{ height: '100vh', margin: 0, padding: 0 }}>
             {/* 오른쪽 큰 컬럼 */}
-            <Control mockdata={mockdata} setMockdata={setMockdata} totaldata={totaldata} setTotaldata={setTotaldata} setControl={setControl} setTimedata={setTimedata} setAudiourl={setAudiourl} control={control}></Control>
+            <Control setDuration={setDuration} mockdata={mockdata} setMockdata={setMockdata} totaldata={totaldata} setTotaldata={setTotaldata} setControl={setControl} setTimedata={setTimedata} setAudiourl={setAudiourl} control={control}></Control>
             <HapticComponent beatamp={beatamp} />
 
           </Col>

@@ -86,15 +86,24 @@ export const mockEffect = {
 
 
 class Mockcomponent extends Component {
+    constructor(props) {
+        super(props);
+        this.endphase = 0
+    }
     componentDidUpdate(prevProps) {
         // totaldata가 이전 props와 다를 경우에만 작업을 수행
-        if (prevProps.totaldata !== this.props.totaldata) {
+        if (prevProps.totaldata != this.props.totaldata) {
             this.updateMockData();
         }
+
+        if (prevProps.duration != this.props.duration) {
+            this.updateMockData();
+        }
+
     }
 
     updateMockData() {
-        const { totaldata } = this.props;
+        const { totaldata, duration } = this.props;
         const lyricsData = totaldata.Lyrics;
 
         console.log('mock', lyricsData)
@@ -116,7 +125,18 @@ class Mockcomponent extends Component {
                     name: item.word,
                 }
             });
+
+            this.endphase = phase
         });
+        phaseMap.set(this.endphase + 1, [{
+            id: `total`,
+            start: 0,
+            end: duration,
+            effectId: 'effect1',
+            data: {
+                name: 'all',
+            }
+        }]);
 
         const tmpData = Array.from(phaseMap, ([phase, actions], index) => ({
             id: index.toString(),
