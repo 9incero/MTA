@@ -3,7 +3,7 @@ import Card from 'react-bootstrap/Card';
 import Button from 'react-bootstrap/Button';
 import Form from 'react-bootstrap/Form';
 import axios from "axios"
-import test from '../assets/musicdata/music.wav.json'
+import test from '../assets/result_instrument.json'
 
 class Fileloader extends Component {
   // 생성자 함수에서 변수를 정의
@@ -35,49 +35,48 @@ class Fileloader extends Component {
       this.calculateAudioDuration(url)
 
     }
-    // const fname = this.fileInput.current.files[0].name
-    // console.log('fname ', fname)
-    // //다른 노트북으로 실험시 여기 url 고치기
-    // const data = {
-    //   url: '/Users/youjin/CHI25/dhh-music-tool/src/assets/' + fname,
-    //   lyrics: this.state.textvalue
-    // };
+    const fname = this.fileInput.current.files[0].name
+    console.log('fname ', fname)
+    //다른 노트북으로 실험시 여기 url 고치기
+    const data = {
+      url: '/Users/youjin/CHI25/dhh-music-tool/src/assets/' + fname,
+      lyrics: this.state.textvalue
+    };
 
-    // axios.post('http://127.0.0.1:5001/analysis', data)
-    //   .then((response) => {
-    //     console.log(response.data);
+    axios.post('http://127.0.0.1:5001/analysis', data)
+      .then((response) => {
+        console.log(response.data);
 
-    //     // 서버에서 받은 데이터를 JSON 문자열로 변환
-    //     const jsonData = JSON.stringify(response.data);
+        // // 서버에서 받은 데이터를 JSON 문자열로 변환
+        // const jsonData = JSON.stringify(response.data);
 
-    //     // JSON 데이터를 Blob으로 변환
-    //     const blob = new Blob([jsonData], { type: 'application/json' });
+        // // JSON 데이터를 Blob으로 변환
+        // const blob = new Blob([jsonData], { type: 'application/json' });
 
-    //     // Blob을 가리키는 임시 URL 생성
-    //     const url = window.URL.createObjectURL(blob);
+        // // Blob을 가리키는 임시 URL 생성
+        // const url = window.URL.createObjectURL(blob);
 
-    //     // 다운로드 링크 생성
-    //     const link = document.createElement('a');
-    //     link.href = url;
-    //     link.download = 'musicdata.json'; // 원하는 파일 이름 설정
-    //     link.click();
+        // // 다운로드 링크 생성
+        // const link = document.createElement('a');
+        // link.href = url;
+        // link.download = 'musicdata.json'; // 원하는 파일 이름 설정
+        // link.click();
 
-    //     // URL과 링크 정리
-    //     window.URL.revokeObjectURL(url);
+        // // URL과 링크 정리
+        // window.URL.revokeObjectURL(url);
 
 
-    //     this.props.setTotaldata({ ...response.data })
-    //     console.log(this.props.totaldata)
+        this.props.setTotaldata({ ...response.data })
+        console.log(this.props.totaldata)
 
-    //   })
-    //   .catch((error) => {
-    //     console.log('Error!', error);
-    //   });
+      })
+      .catch((error) => {
+        console.log('Error!', error);
+      });
+
 
 
     // this.props.setTotaldata({ ...test });
-
-    this.props.setTotaldata({ ...test });
 
 
 
@@ -99,6 +98,8 @@ class Fileloader extends Component {
 
   handleButtonClick = () => {
     // console.log(test)
+    console.log('lyrics', test.Lyrics)
+
     this.props.setTotaldata({ ...test });
   };
 

@@ -57,7 +57,7 @@ const TimelinePlayer = ({ control, audiourl, setAudiourl, timelineState, autoScr
         });
         engine.listener.on('setTimeByTick', ({ time }) => {
             setTime(time);
-            setPlaytime(time);
+            // setPlaytime(time);
             if (autoScrollWhenPlay.current) {
                 const autoScrollFrom = 500;
                 const left = time * (scaleWidth / scale) + startLeft - autoScrollFrom;
@@ -77,6 +77,10 @@ const TimelinePlayer = ({ control, audiourl, setAudiourl, timelineState, autoScr
         };
     }, [setLeft]);
 
+    useEffect(() => (
+        setPlaytime(time)
+    ), [time])
+
     const handlePlayOrPause = () => {
         if (!timelineState.current) return;
         if (timelineState.current.isPlaying) {
@@ -92,6 +96,8 @@ const TimelinePlayer = ({ control, audiourl, setAudiourl, timelineState, autoScr
     };
 
     const timeRender = (time) => {
+        // setPlaytime(time);
+
         const float = (parseInt((time % 1) * 100 + '') + '').padStart(2, '0');
         const min = (parseInt(time / 60 + '') + '').padStart(2, '0');
         const second = (parseInt((time % 60) + '') + '').padStart(2, '0');

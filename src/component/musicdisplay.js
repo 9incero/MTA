@@ -144,6 +144,7 @@ class MusicVisual extends Component {
 
 
     componentDidUpdate(prevProps, prevState) {
+        //여기서 가사유무의 대한 예외처리해주면 될듯!
         if (prevProps.totaldata != this.props.totaldata) {
 
             this.data = this.props.totaldata.Lyrics;
@@ -151,56 +152,113 @@ class MusicVisual extends Component {
             this.beatData = this.props.totaldata.Beat_amplitude
             this.setState({ savebeat: this.props.totaldata.Beat_amplitude })
 
+            if (this.data.length != 0) {
 
+                const pitches = [];
+                const times = [];
+                const seenTimes = new Set(); // 중복 제거를 위한 Set
+                let pitchTmp = [];
+                let timeTmp = [];
+                let prevPhase = -1;
 
-            const pitches = [];
-            const times = [];
-            const seenTimes = new Set(); // 중복 제거를 위한 Set
-            let pitchTmp = [];
-            let timeTmp = [];
-            let prevPhase = -1;
-
-            this.data.forEach(lyric => {
-                let currentPhase = lyric.phase;
-                if (currentPhase !== prevPhase) {
-                    if (pitchTmp.length > 0) {
-                        pitches.push([...pitchTmp]);
-                        times.push([...timeTmp]);
+                this.data.forEach(lyric => {
+                    let currentPhase = lyric.phase;
+                    if (currentPhase !== prevPhase) {
+                        if (pitchTmp.length > 0) {
+                            pitches.push([...pitchTmp]);
+                            times.push([...timeTmp]);
+                        }
+                        pitchTmp = [];
+                        timeTmp = [];
+                        prevPhase = currentPhase;
                     }
-                    pitchTmp = [];
-                    timeTmp = [];
-                    prevPhase = currentPhase;
+
+                    lyric.pitch.forEach(pitch => {
+                        if (!seenTimes.has(pitch.start)) {
+                            pitchTmp.push(pitch.midi_note);
+                            timeTmp.push(pitch.start);
+                            seenTimes.add(pitch.start); // Set에 추가하여 중복 방지
+                        }
+                    });
+                });
+
+                if (timeTmp.length > 0) {
+                    pitches.push([...pitchTmp]);
+                    times.push([...timeTmp]);
                 }
 
-                lyric.pitch.forEach(pitch => {
-                    if (!seenTimes.has(pitch.start)) {
-                        pitchTmp.push(pitch.midi_note);
-                        timeTmp.push(pitch.start);
-                        seenTimes.add(pitch.start); // Set에 추가하여 중복 방지
+                this.fillMissingData(times, pitches);
+                this.setState({
+                    pitches: [...pitches],
+                    times: [...times]
+                }, () => {
+                    // 상태 업데이트 후 콜백
+                    // console.log('Updated pitches:', this.state.pitches);
+                    // console.log('Updated times:', this.state.times);
+                });
+            }
+            else {
+                const pitches = [];
+                const times = [];
+                const seenTimes = new Set(); // 중복 제거를 위한 Set
+                let pitchTmp = [];
+                let timeTmp = [];
+                let initialTime = null;
+                let lastAddedTime = null;
+
+                this.addData.forEach(item => {
+                    if (!seenTimes.has(item.time)) {
+                        if (initialTime === null) {
+                            initialTime = item.time;
+                            lastAddedTime = item.time;
+                        }
+
+                        if (item.time - initialTime >= 10) {
+                            // 10초 차이가 나는 시점에서 pitch와 times 배열을 나눔
+                            if (pitchTmp.length > 0) {
+                                pitches.push([...pitchTmp]);
+                                times.push([...timeTmp]);
+                            }
+                            pitchTmp = [];
+                            timeTmp = [];
+                            initialTime = item.time;
+                        } else if (item.time - lastAddedTime >= 0.5) {
+                            // 마지막 추가된 시간에서 0.5초 차이가 나는 시점에서 pitch와 times 배열에 추가
+                            pitchTmp.push(item.pitch);
+                            timeTmp.push(item.time);
+                            seenTimes.add(item.time); // Set에 추가하여 중복 방지
+                            lastAddedTime = item.time;
+                        }
                     }
                 });
-            });
 
-            if (timeTmp.length > 0) {
-                pitches.push([...pitchTmp]);
-                times.push([...timeTmp]);
+                if (timeTmp.length > 0) {
+                    pitches.push([...pitchTmp]);
+                    times.push([...timeTmp]);
+                }
+
+                this.setState({
+                    pitches: [...pitches],
+                    times: [...times]
+                }, () => {
+                    // 상태 업데이트 후 콜백
+                    console.log('Updated pitches:', this.state.pitches);
+                    console.log('Updated times:', this.state.times);
+                });
+            }
+            if (prevProps.playtime != this.props.playtime) {
+                console.log(this.props.playtime)
+
             }
 
-            this.fillMissingData(times, pitches);
-            this.setState({
-                pitches: [...pitches],
-                times: [...times]
-            }, () => {
-                // 상태 업데이트 후 콜백
-                // console.log('Updated pitches:', this.state.pitches);
-                // console.log('Updated times:', this.state.times);
-            });
+
         }
 
 
 
         if (prevProps.playtime != this.props.playtime) {
             // 모든 조건을 만족하는 beat 찾기
+            console.log(this.props.playtime)
             let lastMatchingBeat = null;
             for (let i = 0; i < this.beatData.length; i++) {
                 if (this.props.playtime >= this.beatData[i].time) {
@@ -230,6 +288,7 @@ class MusicVisual extends Component {
                         this.flag = true;
                         this.currentPhase = i
                     }
+                    console.log(this.state.pitches[i], this.state.times[i])
                     this.drawChart(this.state.pitches[i], this.state.times[i]);
 
                     break; // 해당 구간을 찾으면 더 이상 반복할 필요 없음
@@ -246,6 +305,7 @@ class MusicVisual extends Component {
                 this.drawChart(this.state.pitches[lastIndex], this.state.times[lastIndex]);
             }
         }
+
     }
 
 
@@ -258,34 +318,6 @@ class MusicVisual extends Component {
         // 선형 변환 공식 적용
         return (value - inMin) * (outMax - outMin) / (inMax - inMin) + outMin;
     }
-
-
-
-    // drawLines() {
-    //     const svg = d3.select(this.svgRef.current);
-    //     const width = +svg.attr('width');
-    //     const height = +svg.attr('height');
-
-    //     // 기존의 라인을 제거하고 새로 그리기
-    //     svg.selectAll("line").remove();
-
-    //     const currentBeatData = this.beatData.filter(beat => beat.time <= this.props.playtime);
-
-
-    //     // 수직선을 추가하는 함수
-    //     svg.selectAll("line")
-    //         .data(currentBeatData)
-    //         .enter()
-    //         .append("line")
-    //         .attr("x1", d => d.time)
-    //         .attr("y1", 0)
-    //         .attr("x2", d => d.time)
-    //         .attr("y2", 300)
-    //         .attr("stroke", "blue")
-    //         .attr("stroke-width", 0.1);
-    // }
-
-
 
 
     drawChart(pitches, times) {
