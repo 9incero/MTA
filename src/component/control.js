@@ -12,7 +12,7 @@ import DropdownButton from 'react-bootstrap/DropdownButton';
 import Fileloader from './fileloader';
 import './modulestyle/font.css'
 import { toHaveStyle } from '@testing-library/jest-dom/matchers';
-
+import InstrumentPicker from './Instrumentpicker';
 
 
 
@@ -197,6 +197,7 @@ class Control extends Component {
             Origin_beat: this.props.totaldata.Beat_amplitude,
             Beat: this.props.beatlist,
             Volume: Number(this.state.volume_value),
+            Instruments: this.props.instrumenticon
 
         };
 
@@ -231,6 +232,7 @@ class Control extends Component {
             <div style={{ width: '70%' }}>
 
                 <Card style={{ width: '100%', padding: '10px' }}>
+
                     <Tabs
                         defaultActiveKey="total"
                         id="uncontrolled-tab-example"
@@ -242,6 +244,8 @@ class Control extends Component {
 
                         {/* test */}
                         <Tab eventKey="total" title="total">
+                            <InstrumentPicker instrumenticon={this.props.instrumenticon} setInstrumenticon={this.props.setInstrumenticon}></InstrumentPicker>
+
                             <Card>
                                 <Card.Header>가사시각화</Card.Header>
                                 <Card.Body>
@@ -306,7 +310,6 @@ class Control extends Component {
 
                                 </Card.Body>
                             </Card>
-
                             <div>
                                 <Card.Title>볼륨</Card.Title>
                                 <div style={{

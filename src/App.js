@@ -16,6 +16,8 @@ import MidiBeatMaker from './component/beatdisplay';
 import HapticComponent from './component/hapticplay';
 import PromptDisplay from './component/propmtdisplay';
 import Userfile from './component/userfile';
+import { GiGuitar, GiGrandPiano, GiViolin, GiHarp, GiDrum, GiFlute, GiSaxophone } from "react-icons/gi";
+import { PiGuitar, PiBellFill } from "react-icons/pi";
 
 function App() {
   const [left, setLeft] = useState(0);
@@ -45,15 +47,33 @@ function App() {
   const [pitchlist, setPitchlist] = useState([])
   const [beatlist, setBeatlist] = useState([])
   const [changedata, setChangedata] = useState([])
+  const [instrumenticon, setInstrumenticon] = useState([])
 
   const [user, setUser] = useState('')
   const [editnum, setEditnum] = useState(0)
   const [createnum, setCreatenum] = useState(0)
 
+  const icons = [
+    { id: 'acousticGuitar', component: <PiGuitar /> },
+    { id: 'bassGuitar', component: <GiGuitar /> },
+    { id: 'piano', component: <GiGrandPiano /> },
+    { id: 'violin', component: <GiViolin /> },
+    { id: 'harp', component: <GiHarp /> },
+    { id: 'drumKit', component: <GiDrum /> },
+    { id: 'flute', component: <GiFlute /> },
+    { id: 'sax', component: <GiSaxophone /> },
+    { id: 'bells', component: <PiBellFill /> },
+  ];
 
 
   const handleChange = (val) => setMode(val);
 
+  useEffect(() => {
+    const filteredIconIds = icons
+      .filter(icon => totaldata.Instruments.includes(icon.id))
+      .map(icon => icon.id);
+    setInstrumenticon(filteredIconIds)
+  }, [totaldata]);
 
 
 
@@ -72,7 +92,6 @@ function App() {
             <Row style={{ height: '70%' }}>
               <Col>
                 {/* 중앙 위쪽 큰 컬럼 */}
-
                 <ToggleButtonGroup type="checkbox" value={mode} onChange={handleChange}>
                   <ToggleButton id="tbg-btn-1" value={1}>
                     음악
@@ -82,7 +101,18 @@ function App() {
                   </ToggleButton>
 
                 </ToggleButtonGroup>
-                <p>여기에 변경사항: {control.pitch_value}</p>
+                <div>
+                  <div>
+                    선택악기:
+                    {instrumenticon.map((iconId) => (
+                      <span key={iconId} style={{ margin: '0 5px' }}>
+                        {icons.find((icon) => icon.id === iconId).component}
+                      </span>
+                    ))}
+                  </div>
+                  <span>pitch 변경사항: {control.pitch_value}</span>
+
+                </div>
                 <Vislyrics totaldata={totaldata} setPitchtime={setPitchtime} pitchtime={pitchtime} pitch={pitch} setPitch={setPitch} opacity={opacity} setOpacity={setOpacity} control={control} words={words} setWords={setWords} left={left} setLeft={setLeft} playtime={playtime} setPlaytime={setPlaytime} />
                 <MusicVisual beatlist={beatlist} setBeatlist={setBeatlist} phase={phase} setPhase={setPhase} midibeat={midibeat} setBeatamp={setBeatamp} totaldata={totaldata} control={control} setOpacity={setOpacity} opacity={opacity} playtime={playtime} pitches={pitch} times={pitchtime}></MusicVisual>
 
@@ -99,7 +129,8 @@ function App() {
           <Col md={3} style={{ height: '100vh', margin: 0, padding: 0 }}>
             {/* 오른쪽 큰 컬럼 */}
             <Userfile totaldata={totaldata} editnum={editnum} createnum={createnum} user={user} setUser={setUser}></Userfile>
-            <Control editnum={editnum} setEditnum={setEditnum} setCreatenum={setCreatenum} createnum={createnum} setChangedata={setChangedata} beatlist={beatlist} setPitchlist={setPitchlist} pitchlist={pitchlist} phase={phase} emotionlist={emotionlist} setEmotionlist={setEmotionlist} playtime={playtime} setDuration={setDuration} mockdata={mockdata} setMockdata={setMockdata} totaldata={totaldata} setTotaldata={setTotaldata} setControl={setControl} setTimedata={setTimedata} setAudiourl={setAudiourl} control={control}></Control>
+
+            <Control setInstrumenticon={setInstrumenticon} instrumenticon={instrumenticon} user={user} editnum={editnum} setEditnum={setEditnum} setCreatenum={setCreatenum} createnum={createnum} setChangedata={setChangedata} beatlist={beatlist} setPitchlist={setPitchlist} pitchlist={pitchlist} phase={phase} emotionlist={emotionlist} setEmotionlist={setEmotionlist} playtime={playtime} setDuration={setDuration} mockdata={mockdata} setMockdata={setMockdata} totaldata={totaldata} setTotaldata={setTotaldata} setControl={setControl} setTimedata={setTimedata} setAudiourl={setAudiourl} control={control}></Control>
             <PromptDisplay changedata={changedata}></PromptDisplay>
             <HapticComponent beatamp={beatamp} />
 
