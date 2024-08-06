@@ -35,21 +35,22 @@ class Control extends Component {
 
 
     componentDidUpdate(prevProps) {
-        if (prevProps.totaldata != this.props.totaldata) {
+        if (prevProps.totaldata !== this.props.totaldata) {
             console.log(this.props.totaldata.Emotions)
 
         }
 
-        if (prevProps.emotionlist != this.props.emotionlist) {
+        if (prevProps.emotionlist !== this.props.emotionlist) {
             console.log('now list', this.props.emotionlist)
         }
 
-        if (prevProps.pitchlist != this.props.pitchlist) {
+        if (prevProps.pitchlist !== this.props.pitchlist) {
             console.log('now p list', this.props.pitchlist)
         }
 
 
         if (prevProps.playtime != this.props.playtime) {
+
             for (let j = 0; j < this.props.phase.length - 1; j++) {
                 if (this.props.phase[j][0] <= this.props.playtime && this.props.phase[j][1] >= this.props.playtime) {
                     if (this.currentphase != j) {
@@ -63,8 +64,9 @@ class Control extends Component {
             for (let i = 0; i < this.props.emotionlist.length - 1; i++) {
                 if (this.props.emotionlist[i][0] <= this.props.playtime && this.props.emotionlist[i][1] >= this.props.playtime) {
                     console.log(this.props.emotionlist[i][2])
-                    this.handleChange({ target: { value: this.props.emotionlist[i][2] } }, 'font_value');
-                    // this.handleChange({ target: { value: this.props.pitchlist[i][2] } }, 'pitch_value');
+                    this.setState({ ['font_value']: this.props.emotionlist[i][2] }, () => {
+                        this.props.setControl({ ...this.state });
+                    });
                     this.emotionflag = 1
                     break;
                 }
@@ -75,7 +77,9 @@ class Control extends Component {
 
 
             if (this.emotionflag === 0) {
-                this.handleChange({ target: { value: this.props.totaldata.Emotions[0] } }, 'font_value');
+                this.setState({ ['font_value']: this.props.totaldata.Emotions[0] }, () => {
+                    this.props.setControl({ ...this.state });
+                });
 
             }
 

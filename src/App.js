@@ -1,6 +1,6 @@
 import './App.css';
 import './component/modulestyle/font.css'
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import Loader from './component/sample';
 import Fileloader from './component/fileloader';
 import Control from './component/control';
@@ -15,6 +15,7 @@ import ToggleButtonGroup from 'react-bootstrap/ToggleButtonGroup';
 import MidiBeatMaker from './component/beatdisplay';
 import HapticComponent from './component/hapticplay';
 import PromptDisplay from './component/propmtdisplay';
+import Userfile from './component/userfile';
 
 function App() {
   const [left, setLeft] = useState(0);
@@ -45,7 +46,41 @@ function App() {
   const [pitchlist, setPitchlist] = useState([])
   const [beatlist, setBeatlist] = useState([])
   const [changedata, setChangedata] = useState([])
+  const [buttonText, setButtonText] = useState('start');
+  const [time, setTime] = useState(0);
+  const [isActive, setIsActive] = useState(false);
+
+
+
   const handleChange = (val) => setMode(val);
+  const handleButtonClick = () => {
+    setButtonText(prevText => (prevText === 'start' ? 'end' : 'start'));
+    if (buttonText === 'start') {
+      setButtonText('end');
+      setIsActive(true);
+    } else {
+      setButtonText('start');
+      setIsActive(false);
+
+      //여기에서 final json file 만들면됨
+      console.log(time)
+      console.log()
+    }
+  };
+
+  useEffect(() => {
+    let interval = null;
+    if (isActive) {
+      interval = setInterval(() => {
+        setTime(prevTime => prevTime + 1);
+      }, 1000);
+      console.log(time)
+    } else if (!isActive && time !== 0) {
+      clearInterval(interval);
+    }
+    return () => clearInterval(interval);
+  }, [isActive, time]);
+
 
 
   return (
@@ -98,6 +133,9 @@ function App() {
           </Col>
           <Col md={3} style={{ height: '100vh', margin: 0, padding: 0 }}>
             {/* 오른쪽 큰 컬럼 */}
+
+
+            <button onClick={handleButtonClick}>{buttonText}</button>
             <Control setChangedata={setChangedata} beatlist={beatlist} setPitchlist={setPitchlist} pitchlist={pitchlist} phase={phase} emotionlist={emotionlist} setEmotionlist={setEmotionlist} playtime={playtime} setDuration={setDuration} mockdata={mockdata} setMockdata={setMockdata} totaldata={totaldata} setTotaldata={setTotaldata} setControl={setControl} setTimedata={setTimedata} setAudiourl={setAudiourl} control={control}></Control>
             <PromptDisplay changedata={changedata}></PromptDisplay>
             <HapticComponent beatamp={beatamp} />
