@@ -10,7 +10,7 @@ const HapticComponent = ({ beatamp }) => {
     useEffect(() => {
         const playHaptic = async () => {
             if (!isGattOperationInProgress) {
-                await handleHapticPlay(10);
+                await handleHapticPlay(beatamp * 100);
                 // console.log(beatamp);
             }
         };

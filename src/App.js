@@ -14,6 +14,7 @@ import ToggleButton from 'react-bootstrap/ToggleButton';
 import ToggleButtonGroup from 'react-bootstrap/ToggleButtonGroup';
 import MidiBeatMaker from './component/beatdisplay';
 import HapticComponent from './component/hapticplay';
+import PromptDisplay from './component/propmtdisplay';
 
 function App() {
   const [left, setLeft] = useState(0);
@@ -43,7 +44,7 @@ function App() {
   const [emotionlist, setEmotionlist] = useState([])
   const [pitchlist, setPitchlist] = useState([])
   const [beatlist, setBeatlist] = useState([])
-
+  const [changedata, setChangedata] = useState([])
   const handleChange = (val) => setMode(val);
 
 
@@ -97,7 +98,8 @@ function App() {
           </Col>
           <Col md={3} style={{ height: '100vh', margin: 0, padding: 0 }}>
             {/* 오른쪽 큰 컬럼 */}
-            <Control beatlist={beatlist} setPitchlist={setPitchlist} pitchlist={pitchlist} phase={phase} emotionlist={emotionlist} setEmotionlist={setEmotionlist} playtime={playtime} setDuration={setDuration} mockdata={mockdata} setMockdata={setMockdata} totaldata={totaldata} setTotaldata={setTotaldata} setControl={setControl} setTimedata={setTimedata} setAudiourl={setAudiourl} control={control}></Control>
+            <Control setChangedata={setChangedata} beatlist={beatlist} setPitchlist={setPitchlist} pitchlist={pitchlist} phase={phase} emotionlist={emotionlist} setEmotionlist={setEmotionlist} playtime={playtime} setDuration={setDuration} mockdata={mockdata} setMockdata={setMockdata} totaldata={totaldata} setTotaldata={setTotaldata} setControl={setControl} setTimedata={setTimedata} setAudiourl={setAudiourl} control={control}></Control>
+            <PromptDisplay changedata={changedata}></PromptDisplay>
             <HapticComponent beatamp={beatamp} />
 
           </Col>

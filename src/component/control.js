@@ -209,6 +209,7 @@ class Control extends Component {
         // URL과 링크 정리
         window.URL.revokeObjectURL(url);
 
+        this.props.setChangedata(combinedJson)
 
     }
     render() {
