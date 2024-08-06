@@ -144,6 +144,15 @@ class MusicVisual extends Component {
 
 
     componentDidUpdate(prevProps, prevState) {
+
+        if (prevState.savebeat != this.state.savebeat) {
+            this.isUpdated = false;
+            this.props.setBeatlist(this.state.savebeat)
+        }
+
+        if (prevProps.phase != this.props.phase) {
+            console.log('dd', this.props.phase)
+        }
         //여기서 가사유무의 대한 예외처리해주면 될듯!
         if (prevProps.totaldata != this.props.totaldata) {
 
@@ -192,10 +201,33 @@ class MusicVisual extends Component {
                     pitches: [...pitches],
                     times: [...times]
                 }, () => {
-                    // 상태 업데이트 후 콜백
-                    // console.log('Updated pitches:', this.state.pitches);
-                    // console.log('Updated times:', this.state.times);
+                    const phasedata = [];
+                    for (let i = 0; i < this.state.times.length - 1; i++) {
+                        phasedata.push([this.state.times[i][0], this.state.times[i][this.state.times[i].length - 1]])
+
+                    }
+                    //이거업뎃이안되는듯?
+                    this.props.setPhase(phasedata)
+                    console.log(phasedata)
                 });
+
+
+
+                // if (prevState.times != this.state.times) {
+                //     const phasedata = [];
+                //     for (let i = 0; i < this.state.times.length - 1; i++) {
+                //         phasedata.push([this.state.times[i][0], this.state.times[i][this.state.times[i].length - 1]])
+
+                //     }
+                //     //이거업뎃이안되는듯?
+                //     this.props.setPhase(...phasedata)
+                //     console.log(phasedata)
+
+                // }
+
+                // if (prevProps.phase != this.props.phase) {
+                //     console.log('hh', this.props.phase)
+                // }
             }
             else {
                 const pitches = [];
@@ -241,15 +273,18 @@ class MusicVisual extends Component {
                     pitches: [...pitches],
                     times: [...times]
                 }, () => {
-                    // 상태 업데이트 후 콜백
-                    console.log('Updated pitches:', this.state.pitches);
-                    console.log('Updated times:', this.state.times);
+                    const phasedata = [];
+                    for (let i = 0; i < this.state.times.length - 1; i++) {
+                        phasedata.push([this.state.times[i][0], this.state.times[i][this.state.times[i].length - 1]])
+
+                    }
+                    //이거업뎃이안되는듯?
+                    this.props.setPhase(phasedata)
+                    console.log(phasedata)
                 });
             }
-            if (prevProps.playtime != this.props.playtime) {
-                console.log(this.props.playtime)
 
-            }
+
 
 
         }
@@ -258,7 +293,6 @@ class MusicVisual extends Component {
 
         if (prevProps.playtime != this.props.playtime) {
             // 모든 조건을 만족하는 beat 찾기
-            console.log(this.props.playtime)
             let lastMatchingBeat = null;
             for (let i = 0; i < this.beatData.length; i++) {
                 if (this.props.playtime >= this.beatData[i].time) {
@@ -288,7 +322,7 @@ class MusicVisual extends Component {
                         this.flag = true;
                         this.currentPhase = i
                     }
-                    console.log(this.state.pitches[i], this.state.times[i])
+                    // console.log(this.state.pitches[i], this.state.times[i])
                     this.drawChart(this.state.pitches[i], this.state.times[i]);
 
                     break; // 해당 구간을 찾으면 더 이상 반복할 필요 없음
@@ -408,14 +442,14 @@ class MusicVisual extends Component {
             .attr('opacity', this.props.opacity);
 
         const currentBeatData = this.state.savebeat.filter(beat => beat.time <= times[times.length - 1] && beat.time > times[0]);
-        console.log(currentBeatData)
+        // console.log(currentBeatData)
         // 수직선을 추가하는 함수
         currentBeatData.forEach(beat => {
             if (changeflag === 1) {
                 // svg.selectAll('line').remove();
                 svg.selectAll('rect').remove();
 
-                console.log("clear", playtime)
+                // console.log("clear", playtime)
                 changeflag = 0
             }
             if (playtime >= beat.time) {
@@ -468,7 +502,7 @@ class MusicVisual extends Component {
             }
             //한번만찍혀야하는데 여러번찍히네...
             if (this.props.midibeat.times > this.state.prevadd && this.props.midibeat.times <= beat.time) {
-                console.log(this.props.midibeat.amplitude);
+                // console.log(this.props.midibeat.amplitude);
                 // 중복 방지를 위한 플래그 설정
 
                 // 업데이트가 이미 발생하지 않았다면 실행
@@ -489,7 +523,6 @@ class MusicVisual extends Component {
                             }));
                         });
 
-                    console.log("**", this.props.midibeat);
                     this.setState({ prevadd: this.props.midibeat.times });
                     this.setState((prevState) => ({
                         savebeat: [...prevState.savebeat, { time: this.props.midibeat.times, amplitude: 0 }]
@@ -505,71 +538,6 @@ class MusicVisual extends Component {
 
 
         });
-
-        // else if (this.control.shape_value === 2) {
-
-        //     svg.append('ellipse')
-        //         .attr('cx', xScale(playtime))
-        //         .attr('cy', yScale(interpolatedPitch))
-        //         .attr('rx', radius) // x축 반지름 설정
-        //         .attr('ry', yRadius) // y축 반지름 설정
-        //         .attr('fill', color) // 색상 매핑
-        //         .attr('opacity', this.props.opacity);
-        // }
-        // else if (this.control.shape_value === 3) {
-        //     svg.append('polygon')
-        //     .attr('points', `
-        //     ${xScale(playtime) - size},${yScale(interpolatedPitch) + size} 
-        //     ${xScale(playtime) + size},${yScale(interpolatedPitch) + size} 
-        //     ${xScale(playtime)},${yScale(interpolatedPitch) - size}
-        // `)
-        //     .attr('fill', color) // 색상 매핑
-        //     .attr('opacity', this.props.opacity);
-        // }
-        // else if (this.control.shape_value === 4) {
-
-        // }
-        // else if (this.control.shape_value === 5) {
-        // svg.append('rect')
-        //     .attr('x', xScale(playtime) - size / 2)
-        //     .attr('y', yScale(interpolatedPitch) - size / 2)
-        //     .attr('width', size)
-        //     .attr('height', size)
-        //     .attr('rx', 5) // 둥근 모서리 반경
-        //     .attr('ry', 5)
-        //     .attr('fill', color)
-        //     .attr('opacity', this.props.opacity);
-
-        // }
-        // else if (this.control.shape_value === 6) {
-
-        // }
-        // else if (this.control.shape_value === 7) {
-
-        // }
-        // else if (this.control.shape_value === 8) {
-
-        // }
-        // else if (this.control.shape_value === 9) {
-
-        // }
-
-
-        // svg.append('circle')
-        //     .attr('cx', xScale(playtime))
-        //     .attr('cy', yScale(interpolatedPitch))
-        //     .attr('r', radius) // 사이즈 설정
-        //     .attr('fill', color) // 색상 매핑
-        //     .attr('opacity', this.props.opacity);
-
-        // svg.append('ellipse')
-        //     .attr('cx', xScale(playtime))
-        //     .attr('cy', yScale(interpolatedPitch))
-        //     .attr('rx', radius) // x축 반지름 설정
-        //     .attr('ry', yRadius) // y축 반지름 설정
-        //     .attr('fill', color) // 색상 매핑
-        //     .attr('opacity', this.props.opacity);
-
 
 
 
@@ -588,5 +556,6 @@ class MusicVisual extends Component {
 
 
 export default MusicVisual;
+
 
 

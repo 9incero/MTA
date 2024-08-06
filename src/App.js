@@ -39,6 +39,11 @@ function App() {
   const [beatamp, setBeatamp] = useState([])
   const [midibeat, setMidibeat] = useState([])
   const [duration, setDuration] = useState(0);
+  const [phase, setPhase] = useState([])
+  const [emotionlist, setEmotionlist] = useState([])
+  const [pitchlist, setPitchlist] = useState([])
+  const [beatlist, setBeatlist] = useState([])
+
   const handleChange = (val) => setMode(val);
 
 
@@ -68,8 +73,9 @@ function App() {
 
                 </ToggleButtonGroup>
                 {/* <p>visual</p> */}
+                <p>여기에 변경사항: {control.pitch_value}</p>
                 <Vislyrics totaldata={totaldata} setPitchtime={setPitchtime} pitchtime={pitchtime} pitch={pitch} setPitch={setPitch} opacity={opacity} setOpacity={setOpacity} control={control} words={words} setWords={setWords} left={left} setLeft={setLeft} playtime={playtime} setPlaytime={setPlaytime} />
-                <MusicVisual midibeat={midibeat} setBeatamp={setBeatamp} totaldata={totaldata} control={control} setOpacity={setOpacity} opacity={opacity} playtime={playtime} pitches={pitch} times={pitchtime}></MusicVisual>
+                <MusicVisual beatlist={beatlist} setBeatlist={setBeatlist} phase={phase} setPhase={setPhase} midibeat={midibeat} setBeatamp={setBeatamp} totaldata={totaldata} control={control} setOpacity={setOpacity} opacity={opacity} playtime={playtime} pitches={pitch} times={pitchtime}></MusicVisual>
 
                 {/* <MusicVisual opacity={opacity} playtime={playtime} pitches={pitch} times={pitchtime}></MusicVisual> */}
                 {/* <iframe src="http://172.17.26.136:8080/build" width='100%' height='100%' style={{ position: 'absolute', top: 0, left: 0, zIndex: 1, transform: 'scale(1)' }}></iframe> */}
@@ -91,7 +97,7 @@ function App() {
           </Col>
           <Col md={3} style={{ height: '100vh', margin: 0, padding: 0 }}>
             {/* 오른쪽 큰 컬럼 */}
-            <Control setDuration={setDuration} mockdata={mockdata} setMockdata={setMockdata} totaldata={totaldata} setTotaldata={setTotaldata} setControl={setControl} setTimedata={setTimedata} setAudiourl={setAudiourl} control={control}></Control>
+            <Control beatlist={beatlist} setPitchlist={setPitchlist} pitchlist={pitchlist} phase={phase} emotionlist={emotionlist} setEmotionlist={setEmotionlist} playtime={playtime} setDuration={setDuration} mockdata={mockdata} setMockdata={setMockdata} totaldata={totaldata} setTotaldata={setTotaldata} setControl={setControl} setTimedata={setTimedata} setAudiourl={setAudiourl} control={control}></Control>
             <HapticComponent beatamp={beatamp} />
 
           </Col>

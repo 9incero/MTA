@@ -11,7 +11,7 @@ const HapticComponent = ({ beatamp }) => {
         const playHaptic = async () => {
             if (!isGattOperationInProgress) {
                 await handleHapticPlay(10);
-                console.log(beatamp);
+                // console.log(beatamp);
             }
         };
         playHaptic();
@@ -28,7 +28,7 @@ const HapticComponent = ({ beatamp }) => {
         }
 
         if (hapticDevices.length === 0) {
-            console.log('연결된 햅틱 장치가 없습니다.');
+            // console.log('연결된 햅틱 장치가 없습니다.');
             return;
         }
 

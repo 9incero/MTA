@@ -114,7 +114,7 @@ const MidiBeatMaker = ({ setMidibeat, playtime, midibeat }) => {
 
     return (
         <div>
-            <h1>MIDI Beat Maker</h1>
+            {/* <h1>MIDI Beat Maker</h1>
             <p>Connect a MIDI device and press some keys to record beats.</p>
             <button onClick={playBeats} disabled={isPlaying}>Play Beats</button>
             <div>
@@ -123,7 +123,7 @@ const MidiBeatMaker = ({ setMidibeat, playtime, midibeat }) => {
                         Note: {beat.note}, Velocity: {beat.velocity}, Time: {beat.time}
                     </div>
                 ))}
-            </div>
+            </div> */}
         </div>
     );
 };

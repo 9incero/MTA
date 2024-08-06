@@ -1,47 +1,47 @@
 @font-face {
-    font-family: "aggressive-font";
+    font-family: "aggressive";
     font-style: normal;
     font-weight: 100;
     src: url("../../assets/fonts/HeirofLightOTFRegular.otf") format("opentype");
 }
 
 @font-face {
-    font-family: "calm-font";
+    font-family: "calm";
     font-style: normal;
     font-weight: 100;
     src: url("../../assets/fonts/J송명-Regular.otf") format("opentype");
 }
 
 @font-face {
-    font-family: "chilled-font";
+    font-family: "chilled";
     font-style: normal;
     font-weight: 100;
     src: url("../../assets/fonts/ELAND나이스OTFM.otf") format("opentype");
 }
 
 @font-face {
-    font-family: "dark-font";
+    font-family: "dark";
     font-style: normal;
     font-weight: 100;
     src: url("../../assets/fonts/BlackHanSans-Regular.ttf") format("truetype");
 }
 
 @font-face {
-    font-family: "energetic-font";
+    font-family: "energetic";
     font-style: normal;
     font-weight: 100;
     src: url("../../assets/fonts/Giants-Regular.ttf") format("truetype");
 }
 
 @font-face {
-    font-family: "epic-font";
+    font-family: "epic";
     font-style: normal;
     font-weight: 100;
     src: url("../../assets/fonts/JSArirang.otf") format("opentype");
 }
 
 @font-face {
-    font-family: "happy-font";
+    font-family: "happy";
     font-style: normal;
     font-weight: 100;
     src:
@@ -49,14 +49,14 @@
 }
 
 @font-face {
-    font-family: "romantic-font";
+    font-family: "romantic";
     font-style: normal;
     font-weight: 100;
     src: url("../../assets/fonts/Romantic.ttf") format("truetype");
 }
 
 @font-face {
-    font-family: "sad-font";
+    font-family: "sad";
     font-style: normal;
     font-weight: 100;
     src: url("../../assets/fonts/sad.ttf") format("truetype");
@@ -64,30 +64,31 @@
 
 
 @font-face {
-    font-family: "sexy-font";
+    font-family: "sexy";
     font-style: normal;
     font-weight: 100;
     src: url("../../assets/fonts/UhBeeibuson.ttf") format("truetype");
 }
 
 @font-face {
-    font-family: "uplifting-font";
+    font-family: "uplifting";
     font-style: normal;
     font-weight: 100;
     src: url("../../assets/fonts/Cafe24Dangdanghae-v2.0.otf") format("opentype");
 }
 
 @font-face {
-    font-family: "ethereal-font";
+    font-family: "ethereal";
     font-style: normal;
     font-weight: 100;
     src: url("../../assets/fonts/ethereal.ttf") format("truetype");
 }
 
+
 @font-face {
-    font-family: "regularttttt";
+    font-family: "scary";
     font-style: normal;
     font-weight: 100;
     src:
-        url("../../assets/fonts/Regular.ttf") format("truetype");
+        url("../../assets/fonts/나눔손글씨끄트머리체.ttf") format("truetype");
 }

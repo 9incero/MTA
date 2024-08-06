@@ -3,7 +3,7 @@ import Card from 'react-bootstrap/Card';
 import Button from 'react-bootstrap/Button';
 import Form from 'react-bootstrap/Form';
 import axios from "axios"
-import test from '../assets/result_instrument.json'
+import test from '../assets/musicdata/music.wav.json'
 
 class Fileloader extends Component {
   // 생성자 함수에서 변수를 정의
@@ -46,24 +46,6 @@ class Fileloader extends Component {
     axios.post('http://127.0.0.1:5001/analysis', data)
       .then((response) => {
         console.log(response.data);
-
-        // // 서버에서 받은 데이터를 JSON 문자열로 변환
-        // const jsonData = JSON.stringify(response.data);
-
-        // // JSON 데이터를 Blob으로 변환
-        // const blob = new Blob([jsonData], { type: 'application/json' });
-
-        // // Blob을 가리키는 임시 URL 생성
-        // const url = window.URL.createObjectURL(blob);
-
-        // // 다운로드 링크 생성
-        // const link = document.createElement('a');
-        // link.href = url;
-        // link.download = 'musicdata.json'; // 원하는 파일 이름 설정
-        // link.click();
-
-        // // URL과 링크 정리
-        // window.URL.revokeObjectURL(url);
 
 
         this.props.setTotaldata({ ...response.data })
