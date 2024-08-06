@@ -185,6 +185,7 @@ class Control extends Component {
                 end: item.end,
                 emotions: item.emotions
             })),
+            Origin_beat: this.props.totaldata.Beat_amplitude,
             Beat: this.props.beatlist,
             Volume: Number(this.state.volume_value),
 
