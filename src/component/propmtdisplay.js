@@ -32,10 +32,6 @@ const PromptDisplay = ({ changedata }) => {
             beatPrompt = `이 음악의 시간을 ${beatRatio}배로 늘려줘`;
         }
 
-        console.log(pitchPrompt);
-        console.log(emotionPrompt);
-        console.log(beatPrompt);
-
         setPrompt(`${pitchPrompt}\n\n${emotionPrompt}\n\n${beatPrompt}`);
     }, [changedata]);
 
