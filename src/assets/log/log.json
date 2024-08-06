@@ -1,806 +1,1173 @@
 {
-    "Pitch": [
-        {
-            "start": 8.83,
-            "end": 13.09,
-            "meta_tag": "고조되는"
-        },
-        {
-            "start": 15.07,
-            "end": 16.92,
-            "meta_tag": "단순한"
-        },
-        {
-            "start": 31.78,
-            "end": 35.81,
-            "meta_tag": "복잡한"
-        }
+    "bpmPrediction": {
+        "value": 152,
+        "confidence": 0.36486077402152267
+    },
+    "bpmRangeAdjusted": 152,
+    "character": {
+        "bold": 0.0253255944699049,
+        "cool": 0.13286758959293365,
+        "epic": 0.4368165135383606,
+        "ethereal": 0.09505848586559296,
+        "heroic": 0.15724590420722961,
+        "luxurious": 0.03254885971546173,
+        "magical": 0.023988746106624603,
+        "mysterious": 0.017409522086381912,
+        "playful": 0.011083023622632027,
+        "powerful": 0.2553673982620239,
+        "retro": 0.028537416830658913,
+        "sophisticated": 0.035040222108364105,
+        "sparkling": 0.36325058341026306,
+        "sparse": 0.02271428145468235,
+        "unpolished": 0.0770934596657753,
+        "warm": 0.44369828701019287
+    },
+    "characterTags": [
+        "warm",
+        "epic",
+        "sparkling"
     ],
-    "Emotions": [
-        {
-            "start": 8.83,
-            "end": 13.09,
-            "emotions": "energetic"
-        },
-        {
-            "start": 18.39,
-            "end": 23.12,
-            "emotions": "scary"
-        }
+    "emotionalProfile": "positive",
+    "emotionalDynamics": "low",
+    "energyLevel": "medium",
+    "energyDynamics": "low",
+    "freeGenreTags": "gymcore",
+    "genre": {
+        "ambient": 0.001937490189447999,
+        "blues": 0.0030750662554055452,
+        "classical": 0.0010037675965577364,
+        "electronicDance": 0.01459434349089861,
+        "folkCountry": 0.005346686113625765,
+        "funkSoul": 0.001724517554976046,
+        "jazz": 0.003130192868411541,
+        "latin": 0.0021060670260339975,
+        "metal": 0.38714051246643066,
+        "pop": 0.16253386437892914,
+        "rapHipHop": 0.011180691421031952,
+        "reggae": 0.005533658433705568,
+        "rnb": 0.0031360627617686987,
+        "rock": 0.24493342638015747,
+        "singerSongwriter": 0.014477333053946495
+    },
+    "genreTags": [
+        "metal",
+        "rock",
+        "pop"
     ],
-    "Beat": [
-        {
-            "amplitude": 0.5993376970291138,
-            "time": 0.39
-        },
-        {
-            "amplitude": 0.5324889421463013,
-            "time": 0.97
-        },
-        {
-            "amplitude": 0.5263522267341614,
-            "time": 1.54
-        },
-        {
-            "amplitude": 0.5460719466209412,
-            "time": 2.11
-        },
-        {
-            "amplitude": 0.5798237323760986,
-            "time": 2.68
-        },
-        {
-            "amplitude": 0.3771819770336151,
-            "time": 3.24
-        },
-        {
-            "amplitude": 0.46550917625427246,
-            "time": 3.83
-        },
-        {
-            "amplitude": 0.4153304994106293,
-            "time": 4.39
-        },
-        {
-            "amplitude": 0.4259200394153595,
-            "time": 4.96
-        },
-        {
-            "amplitude": 0.48477989435195923,
-            "time": 5.53
-        },
-        {
-            "amplitude": 0.773036003112793,
-            "time": 6.1
-        },
-        {
-            "amplitude": 0.5955396890640259,
-            "time": 6.68
-        },
-        {
-            "amplitude": 0.45772606134414673,
-            "time": 7.24
-        },
-        {
-            "amplitude": 0.5455855131149292,
-            "time": 7.81
-        },
-        {
-            "amplitude": 0.3398379683494568,
-            "time": 8.39
-        },
-        {
-            "amplitude": 0.4868753254413605,
-            "time": 8.95
-        },
-        {
-            "amplitude": 0.49106624722480774,
-            "time": 9.53
-        },
-        {
-            "amplitude": 0.5894965529441833,
-            "time": 10.1
-        },
-        {
-            "amplitude": 0.5677374601364136,
-            "time": 10.68
-        },
-        {
-            "amplitude": 0.37525492906570435,
-            "time": 11.24
-        },
-        {
-            "amplitude": 0.5598608255386353,
-            "time": 11.82
-        },
-        {
-            "amplitude": 0.5582330822944641,
-            "time": 12.38
-        },
-        {
-            "amplitude": 0.3508952558040619,
-            "time": 12.96
-        },
-        {
-            "amplitude": 0.543508768081665,
-            "time": 13.53
-        },
-        {
-            "amplitude": 0.6075137257575989,
-            "time": 14.11
-        },
-        {
-            "amplitude": 0.5937809944152832,
-            "time": 14.67
-        },
-        {
-            "amplitude": 0.3952365815639496,
-            "time": 15.25
-        },
-        {
-            "amplitude": 0.6491047739982605,
-            "time": 15.81
-        },
-        {
-            "amplitude": 0.34417855739593506,
-            "time": 16.4
-        },
-        {
-            "amplitude": 0.46332016587257385,
-            "time": 16.95
-        },
-        {
-            "amplitude": 0.29429924488067627,
-            "time": 17.53
-        },
-        {
-            "amplitude": 0.5506557822227478,
-            "time": 18.09
-        },
-        {
-            "amplitude": 0.4904301166534424,
-            "time": 18.67
-        },
-        {
-            "amplitude": 0.36358022689819336,
-            "time": 19.24
-        },
-        {
-            "amplitude": 0.5787199139595032,
-            "time": 19.8
-        },
-        {
-            "amplitude": 0.5476248264312744,
-            "time": 20.38
-        },
-        {
-            "amplitude": 0.6245205998420715,
-            "time": 20.95
-        },
-        {
-            "amplitude": 0.6971692442893982,
-            "time": 21.52
-        },
-        {
-            "amplitude": 0.6321353316307068,
-            "time": 22.1
-        },
-        {
-            "amplitude": 0.5782521367073059,
-            "time": 22.67
-        },
-        {
-            "amplitude": 0.6072330474853516,
-            "time": 23.24
-        },
-        {
-            "amplitude": 0.7025014758110046,
-            "time": 23.81
-        },
-        {
-            "amplitude": 0.5960635542869568,
-            "time": 24.38
-        },
-        {
-            "amplitude": 0.7203876376152039,
-            "time": 24.95
-        },
-        {
-            "amplitude": 0.5506744980812073,
-            "time": 25.53
-        },
-        {
-            "amplitude": 0.5747722387313843,
-            "time": 26.1
-        },
-        {
-            "amplitude": 0.329154908657074,
-            "time": 26.67
-        },
-        {
-            "amplitude": 0.610563337802887,
-            "time": 28.39
-        },
-        {
-            "amplitude": 0.5832101702690125,
-            "time": 28.96
-        },
-        {
-            "amplitude": 0.6359146237373352,
-            "time": 29.53
-        },
-        {
-            "amplitude": 0.8411943912506104,
-            "time": 30.1
-        },
-        {
-            "amplitude": 0.5358378887176514,
-            "time": 30.67
-        },
-        {
-            "amplitude": 0.7930363416671753,
-            "time": 31.25
-        },
-        {
-            "amplitude": 0.35774290561676025,
-            "time": 31.81
-        },
-        {
-            "amplitude": 0.5938371419906616,
-            "time": 32.38
-        },
-        {
-            "amplitude": 0.49172109365463257,
-            "time": 32.96
-        },
-        {
-            "amplitude": 0.9925910830497742,
-            "time": 33.54
-        },
-        {
-            "amplitude": 0.1846807301044464,
-            "time": 34.1
-        },
-        {
-            "amplitude": 0.36245766282081604,
-            "time": 34.67
-        },
-        {
-            "amplitude": 0.610039472579956,
-            "time": 35.24
-        },
-        {
-            "amplitude": 0.4027951955795288,
-            "time": 35.82
-        },
-        {
-            "amplitude": 0.562480092048645,
-            "time": 36.38
-        },
-        {
-            "amplitude": 1,
-            "time": 36.96
-        },
-        {
-            "amplitude": 0.5930325984954834,
-            "time": 37.53
-        },
-        {
-            "amplitude": 0.5211322903633118,
-            "time": 38.1
-        },
-        {
-            "amplitude": 0.6308069229125977,
-            "time": 38.67
-        },
-        {
-            "amplitude": 0.5605530738830566,
-            "time": 39.24
-        },
-        {
-            "amplitude": 0.5523583292961121,
-            "time": 39.81
-        },
-        {
-            "amplitude": 0.48552826046943665,
-            "time": 40.39
-        },
-        {
-            "amplitude": 0.6728844046592712,
-            "time": 40.96
-        },
-        {
-            "amplitude": 0.2740556299686432,
-            "time": 41.53
-        },
-        {
-            "amplitude": 0.5237703323364258,
-            "time": 42.1
-        },
-        {
-            "amplitude": 0.9428614377975464,
-            "time": 42.67
-        },
-        {
-            "amplitude": 0.36077383160591125,
-            "time": 43.24
-        },
-        {
-            "amplitude": 0.5570356845855713,
-            "time": 43.81
-        },
-        {
-            "amplitude": 0.5386817455291748,
-            "time": 44.38
-        },
-        {
-            "amplitude": 0.6062227487564087,
-            "time": 44.96
-        },
-        {
-            "amplitude": 0.792007327079773,
-            "time": 45.54
-        },
-        {
-            "amplitude": 0.6858500838279724,
-            "time": 46.11
-        },
-        {
-            "amplitude": 0.44648170471191406,
-            "time": 46.67
-        },
-        {
-            "amplitude": 0.5779340863227844,
-            "time": 47.25
-        },
-        {
-            "amplitude": 0.4554060995578766,
-            "time": 47.81
-        },
-        {
-            "amplitude": 0.6479634642601013,
-            "time": 48.39
-        },
-        {
-            "amplitude": 0.5618627071380615,
-            "time": 48.95
-        },
-        {
-            "amplitude": 0.5734625458717346,
-            "time": 49.53
-        },
-        {
-            "amplitude": 0.6184961199760437,
-            "time": 50.1
-        },
-        {
-            "amplitude": 0.5906565189361572,
-            "time": 50.66
-        },
-        {
-            "amplitude": 0.47613611817359924,
-            "time": 51.24
-        },
-        {
-            "amplitude": 0.5768489837646484,
-            "time": 51.82
-        },
-        {
-            "amplitude": 0.9991580843925476,
-            "time": 52.38
-        },
-        {
-            "amplitude": 0.6396564841270447,
-            "time": 52.94
-        },
-        {
-            "amplitude": 0.5336301922798157,
-            "time": 53.52
-        },
-        {
-            "amplitude": 0.6260547637939453,
-            "time": 54.1
-        },
-        {
-            "amplitude": 0.5409268736839294,
-            "time": 54.67
-        },
-        {
-            "amplitude": 0.5910494327545166,
-            "time": 55.24
-        },
-        {
-            "amplitude": 0.5791689157485962,
-            "time": 55.81
-        },
-        {
-            "amplitude": 0.38283222913742065,
-            "time": 56.39
-        },
-        {
-            "amplitude": 0.5833785533905029,
-            "time": 56.95
-        },
-        {
-            "amplitude": 0.5900577902793884,
-            "time": 57.53
-        },
-        {
-            "amplitude": 0.5565866231918335,
-            "time": 58.1
-        },
-        {
-            "amplitude": 0.3154221773147583,
-            "time": 58.67
-        },
-        {
-            "amplitude": 0.37306591868400574,
-            "time": 59.24
-        },
-        {
-            "amplitude": 0.8445995450019836,
-            "time": 59.82
-        },
-        {
-            "amplitude": 0.5052854418754578,
-            "time": 60.38
-        },
-        {
-            "amplitude": 0.49536940455436707,
-            "time": 60.96
-        },
-        {
-            "amplitude": 0.41890400648117065,
-            "time": 61.53
-        },
-        {
-            "amplitude": 0.6209283471107483,
-            "time": 62.11
-        },
-        {
-            "amplitude": 0.6232296228408813,
-            "time": 62.67
-        },
-        {
-            "amplitude": 0.5868772268295288,
-            "time": 63.25
-        },
-        {
-            "amplitude": 0.4465378224849701,
-            "time": 63.81
-        },
-        {
-            "amplitude": 0.9504013061523438,
-            "time": 64.39
-        },
-        {
-            "amplitude": 0.5161556005477905,
-            "time": 64.96
-        },
-        {
-            "amplitude": 0.6526033878326416,
-            "time": 65.54
-        },
-        {
-            "amplitude": 0.2145596742630005,
-            "time": 66.1
-        },
-        {
-            "amplitude": 0.03332148492336273,
-            "time": 66.67
-        },
-        {
-            "amplitude": 0.48869016766548157,
-            "time": 67.24
-        },
-        {
-            "amplitude": 0.7806881070137024,
-            "time": 67.82
-        },
-        {
-            "amplitude": 0.6980860233306885,
-            "time": 68.38
-        },
-        {
-            "amplitude": 0.8605960607528687,
-            "time": 68.96
-        },
-        {
-            "amplitude": 0.5646129846572876,
-            "time": 69.53
-        },
-        {
-            "amplitude": 0.7600703239440918,
-            "time": 70.11
-        },
-        {
-            "amplitude": 0.5096821188926697,
-            "time": 70.67
-        },
-        {
-            "amplitude": 0.5760444402694702,
-            "time": 71.24
-        },
-        {
-            "amplitude": 0.3587157726287842,
-            "time": 71.81
-        },
-        {
-            "amplitude": 0.6642032861709595,
-            "time": 72.39
-        },
-        {
-            "amplitude": 0.6256805658340454,
-            "time": 72.95
-        },
-        {
-            "amplitude": 0,
-            "time": 73.53
-        },
-        {
-            "amplitude": 0.722165048122406,
-            "time": 74.1
-        },
-        {
-            "amplitude": 0.7363280653953552,
-            "time": 74.67
-        },
-        {
-            "amplitude": 0.07704541087150574,
-            "time": 75.24
-        },
-        {
-            "amplitude": 0.3782671391963959,
-            "time": 75.82
-        },
-        {
-            "amplitude": 0.6062040328979492,
-            "time": 76.38
-        },
-        {
-            "amplitude": 0.6444274187088013,
-            "time": 76.96
-        },
-        {
-            "amplitude": 0.5287095904350281,
-            "time": 77.52
-        },
-        {
-            "amplitude": 0.7659450769424438,
-            "time": 78.1
-        },
-        {
-            "amplitude": 0.2840651869773865,
-            "time": 78.67
-        },
-        {
-            "amplitude": 0.2338677942752838,
-            "time": 79.24
-        },
-        {
-            "amplitude": 0.477370947599411,
-            "time": 79.81
-        },
-        {
-            "amplitude": 0.5645381808280945,
-            "time": 80.38
-        },
-        {
-            "amplitude": 0.5711238980293274,
-            "time": 80.95
-        },
-        {
-            "amplitude": 0.6227619051933289,
-            "time": 81.53
-        },
-        {
-            "amplitude": 0.2506875693798065,
-            "time": 82.1
-        },
-        {
-            "amplitude": 0.7838874459266663,
-            "time": 82.67
-        },
-        {
-            "amplitude": 0.5552208423614502,
-            "time": 83.24
-        },
-        {
-            "amplitude": 0.585492730140686,
-            "time": 83.81
-        },
-        {
-            "amplitude": 0.39808040857315063,
-            "time": 84.38
-        },
-        {
-            "amplitude": 0.40997961163520813,
-            "time": 84.96
-        },
-        {
-            "amplitude": 0.5182510614395142,
-            "time": 85.53
-        },
-        {
-            "amplitude": 0.4220471978187561,
-            "time": 86.11
-        },
-        {
-            "amplitude": 0.779696524143219,
-            "time": 86.67
-        },
-        {
-            "amplitude": 0.6791146993637085,
-            "time": 87.24
-        },
-        {
-            "amplitude": 0.6168122887611389,
-            "time": 87.81
-        },
-        {
-            "amplitude": 0.6691799759864807,
-            "time": 88.38
-        },
-        {
-            "amplitude": 0.5073808431625366,
-            "time": 88.95
-        },
-        {
-            "amplitude": 0.19581283628940582,
-            "time": 89.53
-        },
-        {
-            "amplitude": 0.09225616604089737,
-            "time": 90.1
-        },
-        {
-            "amplitude": 0.6728470325469971,
-            "time": 90.67
-        },
-        {
-            "amplitude": 0.4462946057319641,
-            "time": 91.24
-        },
-        {
-            "amplitude": 0.5252483487129211,
-            "time": 91.81
-        },
-        {
-            "amplitude": 0.5622369050979614,
-            "time": 92.38
-        },
-        {
-            "amplitude": 0.5540983080863953,
-            "time": 92.95
-        },
-        {
-            "amplitude": 0.4310089945793152,
-            "time": 93.53
-        },
-        {
-            "amplitude": 0.6315740346908569,
-            "time": 94.11
-        },
-        {
-            "amplitude": 0.2813897430896759,
-            "time": 94.67
-        },
-        {
-            "amplitude": 0.49879324436187744,
-            "time": 95.24
-        },
-        {
-            "amplitude": 0.5507305860519409,
-            "time": 95.81
-        },
-        {
-            "amplitude": 0.5540421605110168,
-            "time": 96.39
-        },
-        {
-            "amplitude": 0.5198413729667664,
-            "time": 96.97
-        },
-        {
-            "amplitude": 0.5334805250167847,
-            "time": 97.51
-        },
-        {
-            "amplitude": 0.5304682850837708,
-            "time": 98.08
-        },
-        {
-            "amplitude": 0.5522647500038147,
-            "time": 98.68
-        },
-        {
-            "amplitude": 0.5678310394287109,
-            "time": 99.26
-        },
-        {
-            "amplitude": 0.5393927097320557,
-            "time": 99.84
-        },
-        {
-            "amplitude": 0.5584014654159546,
-            "time": 100.39
-        },
-        {
-            "amplitude": 0.5492338538169861,
-            "time": 100.99
-        },
-        {
-            "amplitude": 0.5534622073173523,
-            "time": 101.59
-        },
-        {
-            "amplitude": 0.5543602108955383,
-            "time": 102.18
-        },
-        {
-            "amplitude": 0.5543414950370789,
-            "time": 102.77
-        },
-        {
-            "time": 1.883240000000002,
-            "amplitude": 0
-        },
-        {
-            "time": 2.099540000000001,
-            "amplitude": 0
-        },
-        {
-            "time": 2.283340000000001,
-            "amplitude": 0
-        },
-        {
-            "time": 2.599940000000003,
-            "amplitude": 0
-        },
-        {
-            "time": 3.6833400000000003,
-            "amplitude": 0
-        },
-        {
-            "time": 4.0662400000000005,
-            "amplitude": 0
-        },
-        {
-            "time": 4.466540000000001,
-            "amplitude": 0
-        },
-        {
-            "time": 4.8656400000000035,
-            "amplitude": 0
-        },
-        {
-            "time": 24.71624000000005,
-            "amplitude": 0
-        },
-        {
-            "time": 24.983040000000052,
-            "amplitude": 0
-        },
-        {
-            "time": 25.23304000000005,
-            "amplitude": 0
-        },
-        {
-            "time": 25.532340000000044,
-            "amplitude": 0
-        },
-        {
-            "time": 29.882437999999958,
-            "amplitude": 0
-        },
-        {
-            "time": 30.165637999999966,
-            "amplitude": 0
-        },
-        {
-            "time": 30.415537999999955,
-            "amplitude": 0
-        }
+    "advancedGenre": {
+        "afro": 0.05122239142656326,
+        "ambient": 0.001937490189447999,
+        "arab": 0.0035644059535115957,
+        "asian": 0.005652596242725849,
+        "blues": 0.0030750662554055452,
+        "childrenJingle": 0.0018974988488480449,
+        "classical": 0.0010037675965577364,
+        "electronicDance": 0.01459434349089861,
+        "folkCountry": 0.005346686113625765,
+        "funkSoul": 0.001724517554976046,
+        "indian": 0.001292174682021141,
+        "jazz": 0.003130192868411541,
+        "latin": 0.0021060670260339975,
+        "metal": 0.38714051246643066,
+        "pop": 0.16253386437892914,
+        "rapHipHop": 0.011180691421031952,
+        "reggae": 0.005533658433705568,
+        "rnb": 0.0031360627617686987,
+        "rock": 0.24493342638015747,
+        "singerSongwriters": 0.014477333053946495,
+        "sound": 0.0006171783315949142,
+        "soundtrack": 0.010704719461500645,
+        "spokenWord": 0.0019614940974861383
+    },
+    "advancedGenreTags": [
+        "metal"
     ],
-    "Volume": 25
+    "instrumentPresence": {
+        "percussion": "throughout",
+        "synth": "throughout",
+        "piano": "throughout",
+        "acousticGuitar": "throughout",
+        "electricGuitar": "throughout",
+        "strings": "absent",
+        "bass": "absent",
+        "bassGuitar": "throughout",
+        "brassWoodwinds": "absent"
+    },
+    "advancedInstrumentPresence": {
+        "percussion": "throughout",
+        "synth": "throughout",
+        "piano": "throughout",
+        "acousticGuitar": "throughout",
+        "electricGuitar": "throughout",
+        "strings": "absent",
+        "bass": "absent",
+        "bassGuitar": "throughout",
+        "brass": "absent",
+        "woodwinds": "absent"
+    },
+    "advancedInstrumentPresenceExtended": {
+        "acousticGuitar": "throughout",
+        "bass": "absent",
+        "bassGuitar": "throughout",
+        "electricGuitar": "throughout",
+        "percussion": "throughout",
+        "piano": "throughout",
+        "synth": "throughout",
+        "strings": "absent",
+        "brass": "absent",
+        "woodwinds": "absent",
+        "tuba": "absent",
+        "frenchHorn": "absent",
+        "oboe": "absent",
+        "mandolin": "absent",
+        "cello": "absent",
+        "marimba": "absent",
+        "vibraphone": "absent",
+        "electricPiano": "absent",
+        "electricOrgan": "absent",
+        "harp": "absent",
+        "ukulele": "absent",
+        "harpsichord": "absent",
+        "churchOrgan": "absent",
+        "doubleBass": "absent",
+        "glockenspiel": "absent",
+        "electronicDrums": "absent",
+        "drumKit": "throughout",
+        "accordion": "absent",
+        "violin": "absent",
+        "flute": "absent",
+        "sax": "absent",
+        "trumpet": "absent",
+        "celeste": "absent",
+        "pizzicato": "absent",
+        "banjo": "absent",
+        "clarinet": "absent",
+        "bells": "absent",
+        "steelDrums": "absent",
+        "bongoConga": "absent",
+        "africanPercussion": "absent",
+        "tabla": "absent",
+        "sitar": "absent",
+        "taiko": "absent",
+        "asianFlute": "absent",
+        "asianStrings": "absent",
+        "luteOud": "absent"
+    },
+    "instrumentTags": [
+        "acousticGuitar",
+        "bassGuitar",
+        "piano",
+        "synth",
+        "percussion",
+        "electricGuitar"
+    ],
+    "advancedInstrumentTags": [
+        "acousticGuitar",
+        "bassGuitar",
+        "piano",
+        "synth",
+        "percussion",
+        "electricGuitar"
+    ],
+    "advancedInstrumentTagsExtended": [
+        "acousticGuitar",
+        "bassGuitar",
+        "drumKit",
+        "piano",
+        "synth",
+        "percussion",
+        "electricGuitar"
+    ],
+    "keyPrediction": {
+        "value": "ebMajor",
+        "confidence": 0.9895802166150964
+    },
+    "mood": {
+        "aggressive": 0.07511086016893387,
+        "calm": 0.15386278927326202,
+        "chilled": 0.48274609446525574,
+        "dark": 0.02692057192325592,
+        "energetic": 0.4122043251991272,
+        "epic": 0.3311547338962555,
+        "happy": 0.5100470781326294,
+        "romantic": 0.3912929594516754,
+        "sad": 0.12230943888425827,
+        "scary": 0.009418264962732792,
+        "sexy": 0.022978434339165688,
+        "ethereal": 0.09727077186107635,
+        "uplifting": 0.38162481784820557
+    },
+    "moodTags": [
+        "happy",
+        "chilled",
+        "energetic"
+    ],
+    "moodMaxTimes": [],
+    "moodAdvanced": {
+        "anxious": 0.007070684805512428,
+        "barren": 0.014972674660384655,
+        "cold": 0.020162230357527733,
+        "creepy": 0.00668919226154685,
+        "dark": 0.0294930562376976,
+        "disturbing": 0.008628531359136105,
+        "eerie": 0.008509167470037937,
+        "evil": 0.011310138739645481,
+        "fearful": 0.003628401318565011,
+        "mysterious": 0.023812932893633842,
+        "nervous": 0.01660163328051567,
+        "restless": 0.020218253135681152,
+        "spooky": 0.007305472623556852,
+        "strange": 0.0039193215779960155,
+        "supernatural": 0.011416572146117687,
+        "suspenseful": 0.005447854287922382,
+        "tense": 0.012230958789587021,
+        "weird": 0.00648599723353982,
+        "aggressive": 0.012828746810555458,
+        "agitated": 0.016869327053427696,
+        "angry": 0.004020295571535826,
+        "dangerous": 0.009588981978595257,
+        "fiery": 0.025516018271446228,
+        "intense": 0.032035913318395615,
+        "passionate": 0.28859972953796387,
+        "ponderous": 0.08964623510837555,
+        "violent": 0.006246360018849373,
+        "comedic": 0.0042739142663776875,
+        "eccentric": 0.00293851550668478,
+        "funny": 0.0021016427781432867,
+        "mischievous": 0.0023114578798413277,
+        "quirky": 0.004135693423449993,
+        "whimsical": 0.010308907367289066,
+        "boisterous": 0.0330030657351017,
+        "boingy": 0.023735692724585533,
+        "bright": 0.3546142280101776,
+        "celebratory": 0.06748931109905243,
+        "cheerful": 0.05287633463740349,
+        "excited": 0.09798553586006165,
+        "feelGood": 0.11907223612070084,
+        "fun": 0.023188291117548943,
+        "happy": 0.05538113787770271,
+        "joyous": 0.04994853585958481,
+        "lighthearted": 0.027059992775321007,
+        "perky": 0.048216313123703,
+        "playful": 0.01565292291343212,
+        "rollicking": 0.020930172875523567,
+        "upbeat": 0.2319309264421463,
+        "calm": 0.06979478150606155,
+        "contented": 0.10596077144145966,
+        "dreamy": 0.16513195633888245,
+        "introspective": 0.07689627259969711,
+        "laidBack": 0.038186199963092804,
+        "leisurely": 0.24472053349018097,
+        "lyrical": 0.07752154022455215,
+        "peaceful": 0.05937528982758522,
+        "quiet": 0.03143081068992615,
+        "relaxed": 0.09184306859970093,
+        "serene": 0.08628398925065994,
+        "soothing": 0.04613414779305458,
+        "spiritual": 0.02311408892273903,
+        "tranquil": 0.034803565591573715,
+        "bittersweet": 0.26614099740982056,
+        "blue": 0.053773391991853714,
+        "depressing": 0.06840689480304718,
+        "gloomy": 0.03558500111103058,
+        "heavy": 0.035816725343465805,
+        "lonely": 0.09381572157144547,
+        "melancholic": 0.16237427294254303,
+        "mournful": 0.054574985057115555,
+        "poignant": 0.20167452096939087,
+        "sad": 0.17854028940200806,
+        "frightening": 0.0037450238596647978,
+        "horror": 0.0024266797117888927,
+        "menacing": 0.008236948400735855,
+        "nightmarish": 0.0011298524914309382,
+        "ominous": 0.01211797446012497,
+        "panicStricken": 0.0012474748073145747,
+        "scary": 0.002460006158798933,
+        "concerned": 0.0591161847114563,
+        "determined": 0.16289329528808594,
+        "dignified": 0.07346098124980927,
+        "emotional": 0.5108155608177185,
+        "noble": 0.050365399569272995,
+        "serious": 0.19227124750614166,
+        "solemn": 0.09444171190261841,
+        "thoughtful": 0.10436872392892838,
+        "cool": 0.03079834394156933,
+        "seductive": 0.031200390309095383,
+        "sexy": 0.03322786092758179,
+        "adventurous": 0.03907886520028114,
+        "confident": 0.3485760986804962,
+        "courageous": 0.06469427794218063,
+        "resolute": 0.17977887392044067,
+        "energetic": 0.11809493601322174,
+        "epic": 0.19366203248500824,
+        "exciting": 0.06577804684638977,
+        "exhilarating": 0.1182626262307167,
+        "heroic": 0.04512080177664757,
+        "majestic": 0.04684985429048538,
+        "powerful": 0.1988135725259781,
+        "prestigious": 0.03465984761714935,
+        "relentless": 0.03001110814511776,
+        "strong": 0.2802574932575226,
+        "triumphant": 0.08792278915643692,
+        "victorious": 0.06874163448810577,
+        "delicate": 0.052750419825315475,
+        "graceful": 0.07073120027780533,
+        "hopeful": 0.3857564330101013,
+        "innocent": 0.04812781512737274,
+        "intimate": 0.13962623476982117,
+        "kind": 0.04790506884455681,
+        "light": 0.08904608339071274,
+        "loving": 0.32342007756233215,
+        "nostalgic": 0.35973092913627625,
+        "reflective": 0.39592087268829346,
+        "romantic": 0.2826279103755951,
+        "sentimental": 0.2808694839477539,
+        "soft": 0.10083483159542084,
+        "sweet": 0.08666608482599258,
+        "tender": 0.19009430706501007,
+        "warm": 0.399987131357193,
+        "anthemic": 0.2742609977722168,
+        "aweInspiring": 0.19432978332042694,
+        "euphoric": 0.2201501727104187,
+        "inspirational": 0.36084187030792236,
+        "motivational": 0.19319723546504974,
+        "optimistic": 0.3063640296459198,
+        "positive": 0.18188364803791046,
+        "proud": 0.1240941509604454,
+        "soaring": 0.3429298400878906,
+        "uplifting": 0.5084232687950134
+    },
+    "moodAdvancedTags": [
+        "emotional",
+        "uplifting",
+        "warm",
+        "reflective",
+        "hopeful"
+    ],
+    "movement": {
+        "bouncy": 0.07897225767374039,
+        "driving": 0.2118384689092636,
+        "flowing": 0.1782703846693039,
+        "groovy": 0.15053634345531464,
+        "nonrhythmic": 0.009098459966480732,
+        "pulsing": 0.12829197943210602,
+        "robotic": 0.004375462420284748,
+        "running": 0.05770992487668991,
+        "steady": 0.30885088443756104,
+        "stomping": 0.34259033203125
+    },
+    "movementTags": [
+        "stomping",
+        "steady"
+    ],
+    "musicalEraTag": "mid / late 2000s",
+    "classicalEpochTags": null,
+    "classicalEpoch": null,
+    "segments": {
+        "representativeSegmentIndex": 0,
+        "timestamps": [
+            15
+        ],
+        "mood": {
+            "aggressive": [
+                0.07511086016893387
+            ],
+            "calm": [
+                0.15386278927326202
+            ],
+            "chilled": [
+                0.48274609446525574
+            ],
+            "dark": [
+                0.02692057192325592
+            ],
+            "energetic": [
+                0.4122043251991272
+            ],
+            "epic": [
+                0.3311547338962555
+            ],
+            "happy": [
+                0.5100470781326294
+            ],
+            "romantic": [
+                0.3912929594516754
+            ],
+            "sad": [
+                0.12230943888425827
+            ],
+            "scary": [
+                0.009418264962732792
+            ],
+            "sexy": [
+                0.022978434339165688
+            ],
+            "ethereal": [
+                0.09727077186107635
+            ],
+            "uplifting": [
+                0.38162481784820557
+            ]
+        },
+        "voice": {
+            "female": [
+                0.002219868591055274
+            ],
+            "instrumental": [
+                0.0006608738913200796
+            ],
+            "male": [
+                0.9992609024047852
+            ]
+        },
+        "instruments": {
+            "percussion": [
+                0.9709485769271851
+            ],
+            "synth": [
+                0.916485071182251
+            ],
+            "piano": [
+                0.5609010457992554
+            ],
+            "acousticGuitar": [
+                0.7770217061042786
+            ],
+            "electricGuitar": [
+                0.9530607461929321
+            ],
+            "strings": [
+                0.1223042830824852
+            ],
+            "bass": [
+                0.05570788308978081
+            ],
+            "bassGuitar": [
+                0.9682718515396118
+            ],
+            "brassWoodwinds": [
+                0.021193616092205048
+            ]
+        },
+        "genre": {
+            "ambient": [
+                0.001937490189447999
+            ],
+            "blues": [
+                0.0030750662554055452
+            ],
+            "classical": [
+                0.0010037675965577364
+            ],
+            "electronicDance": [
+                0.01459434349089861
+            ],
+            "folkCountry": [
+                0.005346686113625765
+            ],
+            "funkSoul": [
+                0.001724517554976046
+            ],
+            "jazz": [
+                0.003130192868411541
+            ],
+            "latin": [
+                0.0021060670260339975
+            ],
+            "metal": [
+                0.38714051246643066
+            ],
+            "pop": [
+                0.16253386437892914
+            ],
+            "rapHipHop": [
+                0.011180691421031952
+            ],
+            "reggae": [
+                0.005533658433705568
+            ],
+            "rnb": [
+                0.0031360627617686987
+            ],
+            "rock": [
+                0.24493342638015747
+            ],
+            "singerSongwriter": [
+                0.014477333053946495
+            ]
+        },
+        "subgenre": {
+            "bluesRock": [
+                0.01504185795784
+            ],
+            "folkRock": [
+                0.0152197517454624
+            ],
+            "hardRock": [
+                0.377746939659119
+            ],
+            "indieAlternative": [
+                0.602589190006256
+            ],
+            "psychedelicProgressiveRock": [
+                0.464700758457184
+            ],
+            "punk": [
+                0.0177178550511599
+            ],
+            "rockAndRoll": [
+                0.00349018326960504
+            ],
+            "popSoftRock": [
+                0.123998448252678
+            ],
+            "abstractIDMLeftfield": null,
+            "breakbeatDnB": null,
+            "deepHouse": null,
+            "electro": null,
+            "house": null,
+            "minimal": null,
+            "synthPop": null,
+            "techHouse": null,
+            "techno": null,
+            "trance": null,
+            "contemporaryRnB": null,
+            "gangsta": null,
+            "jazzyHipHop": null,
+            "popRap": null,
+            "trap": null,
+            "blackMetal": [
+                0.0017001727828756
+            ],
+            "deathMetal": [
+                0.0183585956692696
+            ],
+            "doomMetal": [
+                0.0304873362183571
+            ],
+            "heavyMetal": [
+                0.221968561410904
+            ],
+            "metalcore": [
+                0.230915680527687
+            ],
+            "nuMetal": [
+                0.462945878505707
+            ],
+            "disco": null,
+            "funk": null,
+            "gospel": null,
+            "neoSoul": null,
+            "soul": null,
+            "bigBandSwing": null,
+            "bebop": null,
+            "contemporaryJazz": null,
+            "easyListening": null,
+            "fusion": null,
+            "latinJazz": null,
+            "smoothJazz": null,
+            "country": null,
+            "folk": null
+        },
+        "valence": [
+            0.544371099573989
+        ],
+        "arousal": [
+            0.258341535925865
+        ],
+        "classicalEpoch": null,
+        "character": {
+            "bold": [
+                0.0253255944699049
+            ],
+            "cool": [
+                0.132867589592934
+            ],
+            "epic": [
+                0.436816513538361
+            ],
+            "ethereal": [
+                0.095058485865593
+            ],
+            "heroic": [
+                0.15724590420723
+            ],
+            "luxurious": [
+                0.0325488597154617
+            ],
+            "magical": [
+                0.0239887461066246
+            ],
+            "mysterious": [
+                0.0174095220863819
+            ],
+            "playful": [
+                0.011083023622632
+            ],
+            "powerful": [
+                0.255367398262024
+            ],
+            "retro": [
+                0.0285374168306589
+            ],
+            "sophisticated": [
+                0.0350402221083641
+            ],
+            "sparkling": [
+                0.363250583410263
+            ],
+            "sparse": [
+                0.0227142814546824
+            ],
+            "unpolished": [
+                0.0770934596657753
+            ],
+            "warm": [
+                0.443698287010193
+            ]
+        },
+        "movement": {
+            "bouncy": [
+                0.0789722576737404
+            ],
+            "driving": [
+                0.211838468909264
+            ],
+            "flowing": [
+                0.178270384669304
+            ],
+            "groovy": [
+                0.150536343455315
+            ],
+            "nonrhythmic": [
+                0.00909845996648073
+            ],
+            "pulsing": [
+                0.128291979432106
+            ],
+            "robotic": [
+                0.00437546242028475
+            ],
+            "running": [
+                0.0577099248766899
+            ],
+            "steady": [
+                0.308850884437561
+            ],
+            "stomping": [
+                0.34259033203125
+            ]
+        },
+        "moodAdvanced": {
+            "anxious": [
+                0.00707068480551243
+            ],
+            "barren": [
+                0.0149726746603847
+            ],
+            "cold": [
+                0.0201622303575277
+            ],
+            "creepy": [
+                0.00668919226154685
+            ],
+            "dark": [
+                0.0294930562376976
+            ],
+            "disturbing": [
+                0.0086285313591361
+            ],
+            "eerie": [
+                0.00850916747003794
+            ],
+            "evil": [
+                0.0113101387396455
+            ],
+            "fearful": [
+                0.00362840131856501
+            ],
+            "mysterious": [
+                0.0238129328936338
+            ],
+            "nervous": [
+                0.0166016332805157
+            ],
+            "restless": [
+                0.0202182531356812
+            ],
+            "spooky": [
+                0.00730547262355685
+            ],
+            "strange": [
+                0.00391932157799602
+            ],
+            "supernatural": [
+                0.0114165721461177
+            ],
+            "suspenseful": [
+                0.00544785428792238
+            ],
+            "tense": [
+                0.012230958789587
+            ],
+            "weird": [
+                0.00648599723353982
+            ],
+            "aggressive": [
+                0.0128287468105555
+            ],
+            "agitated": [
+                0.0168693270534277
+            ],
+            "angry": [
+                0.00402029557153583
+            ],
+            "dangerous": [
+                0.00958898197859526
+            ],
+            "fiery": [
+                0.0255160182714462
+            ],
+            "intense": [
+                0.0320359133183956
+            ],
+            "passionate": [
+                0.288599729537964
+            ],
+            "ponderous": [
+                0.0896462351083755
+            ],
+            "violent": [
+                0.00624636001884937
+            ],
+            "comedic": [
+                0.00427391426637769
+            ],
+            "eccentric": [
+                0.00293851550668478
+            ],
+            "funny": [
+                0.00210164277814329
+            ],
+            "mischievous": [
+                0.00231145787984133
+            ],
+            "quirky": [
+                0.00413569342344999
+            ],
+            "whimsical": [
+                0.0103089073672891
+            ],
+            "boisterous": [
+                0.0330030657351017
+            ],
+            "boingy": [
+                0.0237356927245855
+            ],
+            "bright": [
+                0.354614228010178
+            ],
+            "celebratory": [
+                0.0674893110990524
+            ],
+            "cheerful": [
+                0.0528763346374035
+            ],
+            "excited": [
+                0.0979855358600616
+            ],
+            "feelGood": [
+                0.119072236120701
+            ],
+            "fun": [
+                0.0231882911175489
+            ],
+            "happy": [
+                0.0553811378777027
+            ],
+            "joyous": [
+                0.0499485358595848
+            ],
+            "lighthearted": [
+                0.027059992775321
+            ],
+            "perky": [
+                0.048216313123703
+            ],
+            "playful": [
+                0.0156529229134321
+            ],
+            "rollicking": [
+                0.0209301728755236
+            ],
+            "upbeat": [
+                0.231930926442146
+            ],
+            "calm": [
+                0.0697947815060616
+            ],
+            "contented": [
+                0.10596077144146
+            ],
+            "dreamy": [
+                0.165131956338882
+            ],
+            "introspective": [
+                0.0768962725996971
+            ],
+            "laidBack": [
+                0.0381861999630928
+            ],
+            "leisurely": [
+                0.244720533490181
+            ],
+            "lyrical": [
+                0.0775215402245522
+            ],
+            "peaceful": [
+                0.0593752898275852
+            ],
+            "quiet": [
+                0.0314308106899261
+            ],
+            "relaxed": [
+                0.0918430685997009
+            ],
+            "serene": [
+                0.0862839892506599
+            ],
+            "soothing": [
+                0.0461341477930546
+            ],
+            "spiritual": [
+                0.023114088922739
+            ],
+            "tranquil": [
+                0.0348035655915737
+            ],
+            "bittersweet": [
+                0.266140997409821
+            ],
+            "blue": [
+                0.0537733919918537
+            ],
+            "depressing": [
+                0.0684068948030472
+            ],
+            "gloomy": [
+                0.0355850011110306
+            ],
+            "heavy": [
+                0.0358167253434658
+            ],
+            "lonely": [
+                0.0938157215714455
+            ],
+            "melancholic": [
+                0.162374272942543
+            ],
+            "mournful": [
+                0.0545749850571156
+            ],
+            "poignant": [
+                0.201674520969391
+            ],
+            "sad": [
+                0.178540289402008
+            ],
+            "frightening": [
+                0.0037450238596648
+            ],
+            "horror": [
+                0.00242667971178889
+            ],
+            "menacing": [
+                0.00823694840073586
+            ],
+            "nightmarish": [
+                0.00112985249143094
+            ],
+            "ominous": [
+                0.012117974460125
+            ],
+            "panicStricken": [
+                0.00124747480731457
+            ],
+            "scary": [
+                0.00246000615879893
+            ],
+            "concerned": [
+                0.0591161847114563
+            ],
+            "determined": [
+                0.162893295288086
+            ],
+            "dignified": [
+                0.0734609812498093
+            ],
+            "emotional": [
+                0.510815560817719
+            ],
+            "noble": [
+                0.050365399569273
+            ],
+            "serious": [
+                0.192271247506142
+            ],
+            "solemn": [
+                0.0944417119026184
+            ],
+            "thoughtful": [
+                0.104368723928928
+            ],
+            "cool": [
+                0.0307983439415693
+            ],
+            "seductive": [
+                0.0312003903090954
+            ],
+            "sexy": [
+                0.0332278609275818
+            ],
+            "adventurous": [
+                0.0390788652002811
+            ],
+            "confident": [
+                0.348576098680496
+            ],
+            "courageous": [
+                0.0646942779421806
+            ],
+            "resolute": [
+                0.179778873920441
+            ],
+            "energetic": [
+                0.118094936013222
+            ],
+            "epic": [
+                0.193662032485008
+            ],
+            "exciting": [
+                0.0657780468463898
+            ],
+            "exhilarating": [
+                0.118262626230717
+            ],
+            "heroic": [
+                0.0451208017766476
+            ],
+            "majestic": [
+                0.0468498542904854
+            ],
+            "powerful": [
+                0.198813572525978
+            ],
+            "prestigious": [
+                0.0346598476171494
+            ],
+            "relentless": [
+                0.0300111081451178
+            ],
+            "strong": [
+                0.280257493257523
+            ],
+            "triumphant": [
+                0.0879227891564369
+            ],
+            "victorious": [
+                0.0687416344881058
+            ],
+            "delicate": [
+                0.0527504198253155
+            ],
+            "graceful": [
+                0.0707312002778053
+            ],
+            "hopeful": [
+                0.385756433010101
+            ],
+            "innocent": [
+                0.0481278151273727
+            ],
+            "intimate": [
+                0.139626234769821
+            ],
+            "kind": [
+                0.0479050688445568
+            ],
+            "light": [
+                0.0890460833907127
+            ],
+            "loving": [
+                0.323420077562332
+            ],
+            "nostalgic": [
+                0.359730929136276
+            ],
+            "reflective": [
+                0.395920872688293
+            ],
+            "romantic": [
+                0.282627910375595
+            ],
+            "sentimental": [
+                0.280869483947754
+            ],
+            "soft": [
+                0.100834831595421
+            ],
+            "sweet": [
+                0.0866660848259926
+            ],
+            "tender": [
+                0.19009430706501
+            ],
+            "warm": [
+                0.399987131357193
+            ],
+            "anthemic": [
+                0.274260997772217
+            ],
+            "aweInspiring": [
+                0.194329783320427
+            ],
+            "euphoric": [
+                0.220150172710419
+            ],
+            "inspirational": [
+                0.360841870307922
+            ],
+            "motivational": [
+                0.19319723546505
+            ],
+            "optimistic": [
+                0.30636402964592
+            ],
+            "positive": [
+                0.18188364803791
+            ],
+            "proud": [
+                0.124094150960445
+            ],
+            "soaring": [
+                0.342929840087891
+            ],
+            "uplifting": [
+                0.508423268795013
+            ]
+        }
+    },
+    "subgenre": {
+        "bluesRock": 0.015041857957839966,
+        "folkRock": 0.015219751745462418,
+        "hardRock": 0.37774693965911865,
+        "indieAlternative": 0.6025891900062561,
+        "psychedelicProgressiveRock": 0.46470075845718384,
+        "punk": 0.01771785505115986,
+        "rockAndRoll": 0.0034901832696050406,
+        "popSoftRock": 0.12399844825267792,
+        "abstractIDMLeftfield": null,
+        "breakbeatDnB": null,
+        "deepHouse": null,
+        "electro": null,
+        "house": null,
+        "minimal": null,
+        "synthPop": null,
+        "techHouse": null,
+        "techno": null,
+        "trance": null,
+        "contemporaryRnB": null,
+        "gangsta": null,
+        "jazzyHipHop": null,
+        "popRap": null,
+        "trap": null,
+        "blackMetal": 0.0017001727828755975,
+        "deathMetal": 0.018358595669269562,
+        "doomMetal": 0.030487336218357086,
+        "heavyMetal": 0.22196856141090393,
+        "metalcore": 0.23091568052768707,
+        "nuMetal": 0.4629458785057068,
+        "disco": null,
+        "funk": null,
+        "gospel": null,
+        "neoSoul": null,
+        "soul": null,
+        "bigBandSwing": null,
+        "bebop": null,
+        "contemporaryJazz": null,
+        "easyListening": null,
+        "fusion": null,
+        "latinJazz": null,
+        "smoothJazz": null,
+        "country": null,
+        "folk": null
+    },
+    "subgenreTags": [
+        "indieAlternative",
+        "nuMetal"
+    ],
+    "advancedSubgenre": {
+        "bluesRock": null,
+        "folkRock": null,
+        "hardRock": null,
+        "indieAlternative": null,
+        "psychedelicProgressiveRock": null,
+        "punk": null,
+        "rockAndRoll": null,
+        "popSoftRock": null,
+        "abstractIDMLeftfield": null,
+        "breakbeatDnB": null,
+        "deepHouse": null,
+        "electro": null,
+        "house": null,
+        "minimal": null,
+        "synthPop": null,
+        "techHouse": null,
+        "techno": null,
+        "trance": null,
+        "contemporaryRnB": null,
+        "gangsta": null,
+        "jazzyHipHop": null,
+        "popRap": null,
+        "trap": null,
+        "blackMetal": 0.0017001727828755975,
+        "deathMetal": 0.018358595669269562,
+        "doomMetal": 0.030487336218357086,
+        "heavyMetal": 0.22196856141090393,
+        "metalcore": 0.23091568052768707,
+        "nuMetal": 0.4629458785057068,
+        "disco": null,
+        "funk": null,
+        "gospel": null,
+        "neoSoul": null,
+        "soul": null,
+        "bigBandSwing": null,
+        "bebop": null,
+        "contemporaryJazz": null,
+        "easyListening": null,
+        "fusion": null,
+        "latinJazz": null,
+        "smoothJazz": null,
+        "country": null,
+        "folk": null
+    },
+    "advancedSubgenreTags": [
+        "nuMetal"
+    ],
+    "timeSignature": "4/4",
+    "transformerCaption": null,
+    "arousal": 0.2583415359258652,
+    "valence": 0.5443710995739894,
+    "voicePresenceProfile": "high",
+    "predominantVoiceGender": "male",
+    "voice": {
+        "female": 0.002219868591055274,
+        "male": 0.9992609024047852,
+        "instrumental": 0.0006608738913200796
+    },
+    "voiceTags": [
+        "male"
+    ],
+    "voiceoverDegree": 0,
+    "voiceoverExists": false
 }
