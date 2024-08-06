@@ -213,13 +213,16 @@ class Control extends Component {
         // 다운로드 링크 생성
         const link = document.createElement('a');
         link.href = url;
-        link.download = 'log.json'; // 원하는 파일 이름 설정
+        link.download = this.props.user + 'log.json'; // 원하는 파일 이름 설정
         link.click();
 
         // URL과 링크 정리
         window.URL.revokeObjectURL(url);
 
+        this.props.setEditnum(this.props.editnum + 1)
         this.props.setChangedata(combinedJson)
+
+
 
     }
     render() {

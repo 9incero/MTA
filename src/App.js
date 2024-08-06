@@ -28,7 +28,6 @@ function App() {
   const [pitch, setPitch] = useState([]);
   const [pitchtime, setPitchtime] = useState([]);
   const [mode, setMode] = useState([1, 2]);
-  const [filename, setFilename] = useState('')
   const [totaldata, setTotaldata] = useState({
     BPM: '',
     Beat_amplitude: [],
@@ -46,40 +45,15 @@ function App() {
   const [pitchlist, setPitchlist] = useState([])
   const [beatlist, setBeatlist] = useState([])
   const [changedata, setChangedata] = useState([])
-  const [buttonText, setButtonText] = useState('start');
-  const [time, setTime] = useState(0);
-  const [isActive, setIsActive] = useState(false);
+
+  const [user, setUser] = useState('')
+  const [editnum, setEditnum] = useState(0)
+  const [createnum, setCreatenum] = useState(0)
 
 
 
   const handleChange = (val) => setMode(val);
-  const handleButtonClick = () => {
-    setButtonText(prevText => (prevText === 'start' ? 'end' : 'start'));
-    if (buttonText === 'start') {
-      setButtonText('end');
-      setIsActive(true);
-    } else {
-      setButtonText('start');
-      setIsActive(false);
 
-      //여기에서 final json file 만들면됨
-      console.log(time)
-      console.log()
-    }
-  };
-
-  useEffect(() => {
-    let interval = null;
-    if (isActive) {
-      interval = setInterval(() => {
-        setTime(prevTime => prevTime + 1);
-      }, 1000);
-      console.log(time)
-    } else if (!isActive && time !== 0) {
-      clearInterval(interval);
-    }
-    return () => clearInterval(interval);
-  }, [isActive, time]);
 
 
 
@@ -108,18 +82,9 @@ function App() {
                   </ToggleButton>
 
                 </ToggleButtonGroup>
-                {/* <p>visual</p> */}
                 <p>여기에 변경사항: {control.pitch_value}</p>
                 <Vislyrics totaldata={totaldata} setPitchtime={setPitchtime} pitchtime={pitchtime} pitch={pitch} setPitch={setPitch} opacity={opacity} setOpacity={setOpacity} control={control} words={words} setWords={setWords} left={left} setLeft={setLeft} playtime={playtime} setPlaytime={setPlaytime} />
                 <MusicVisual beatlist={beatlist} setBeatlist={setBeatlist} phase={phase} setPhase={setPhase} midibeat={midibeat} setBeatamp={setBeatamp} totaldata={totaldata} control={control} setOpacity={setOpacity} opacity={opacity} playtime={playtime} pitches={pitch} times={pitchtime}></MusicVisual>
-
-                {/* <MusicVisual opacity={opacity} playtime={playtime} pitches={pitch} times={pitchtime}></MusicVisual> */}
-                {/* <iframe src="http://172.17.26.136:8080/build" width='100%' height='100%' style={{ position: 'absolute', top: 0, left: 0, zIndex: 1, transform: 'scale(1)' }}></iframe> */}
-                {/* <Vislyrics style={{ position: 'absolute', top: 300, zIndex: 2 }} setPitchtime={setPitchtime} pitchtime={pitchtime} pitch={pitch} setPitch={setPitch} opacity={opacity} setOpacity={setOpacity} control={control} words={words} setWords={setWords} left={left} setLeft={setLeft} playtime={playtime} setPlaytime={setPlaytime} /> */}
-                {/* <Vislyrics setPitchtime={setPitchtime} pitchtime={pitchtime} pitch={pitch} setPitch={setPitch} opacity={opacity} setOpacity={setOpacity} control={control} words={words} setWords={setWords} left={left} setLeft={setLeft} playtime={playtime} setPlaytime={setPlaytime} /> */}
-
-                {/* <iframe src="http://172.17.26.136:8080/" width={1000} height={1000} style={{ position: 'absolute', zIndex: 1 }}></iframe>
-                <Vislyrics style={{ paddingTop: '100px' }} words={words} setWords={setWords} left={left} setLeft={setLeft} playtime={playtime} setPlaytime={setPlaytime} ></Vislyrics> */}
 
               </Col>
             </Row>
@@ -133,10 +98,8 @@ function App() {
           </Col>
           <Col md={3} style={{ height: '100vh', margin: 0, padding: 0 }}>
             {/* 오른쪽 큰 컬럼 */}
-
-
-            <button onClick={handleButtonClick}>{buttonText}</button>
-            <Control setChangedata={setChangedata} beatlist={beatlist} setPitchlist={setPitchlist} pitchlist={pitchlist} phase={phase} emotionlist={emotionlist} setEmotionlist={setEmotionlist} playtime={playtime} setDuration={setDuration} mockdata={mockdata} setMockdata={setMockdata} totaldata={totaldata} setTotaldata={setTotaldata} setControl={setControl} setTimedata={setTimedata} setAudiourl={setAudiourl} control={control}></Control>
+            <Userfile totaldata={totaldata} editnum={editnum} createnum={createnum} user={user} setUser={setUser}></Userfile>
+            <Control editnum={editnum} setEditnum={setEditnum} setCreatenum={setCreatenum} createnum={createnum} setChangedata={setChangedata} beatlist={beatlist} setPitchlist={setPitchlist} pitchlist={pitchlist} phase={phase} emotionlist={emotionlist} setEmotionlist={setEmotionlist} playtime={playtime} setDuration={setDuration} mockdata={mockdata} setMockdata={setMockdata} totaldata={totaldata} setTotaldata={setTotaldata} setControl={setControl} setTimedata={setTimedata} setAudiourl={setAudiourl} control={control}></Control>
             <PromptDisplay changedata={changedata}></PromptDisplay>
             <HapticComponent beatamp={beatamp} />
 

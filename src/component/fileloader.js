@@ -47,7 +47,7 @@ class Fileloader extends Component {
       .then((response) => {
         console.log(response.data);
 
-
+        this.props.setCreatenum(this.props.createnum + 1)
         this.props.setTotaldata({ ...response.data })
         console.log(this.props.totaldata)
 
