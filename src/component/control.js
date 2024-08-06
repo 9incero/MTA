@@ -51,7 +51,7 @@ class Control extends Component {
 
         if (prevProps.playtime != this.props.playtime) {
 
-            for (let j = 0; j < this.props.phase.length - 1; j++) {
+            for (let j = 0; j < this.props.phase.length; j++) {
                 if (this.props.phase[j][0] <= this.props.playtime && this.props.phase[j][1] >= this.props.playtime) {
                     if (this.currentphase != j) {
                         this.emotionflag = 0
@@ -61,7 +61,12 @@ class Control extends Component {
 
                 }
             }
-            for (let i = 0; i < this.props.emotionlist.length - 1; i++) {
+        }
+
+
+        if (prevProps.playtime != this.props.playtime) {
+
+            for (let i = 0; i < this.props.emotionlist.length; i++) {
                 if (this.props.emotionlist[i][0] <= this.props.playtime && this.props.emotionlist[i][1] >= this.props.playtime) {
                     console.log(this.props.emotionlist[i][2])
                     this.setState({ ['font_value']: this.props.emotionlist[i][2] }, () => {
@@ -84,7 +89,7 @@ class Control extends Component {
             }
 
 
-            for (let i = 0; i < this.props.pitchlist.length - 1; i++) {
+            for (let i = 0; i < this.props.pitchlist.length; i++) {
 
                 if (this.props.pitchlist[i][0] <= this.props.playtime && this.props.pitchlist[i][1] >= this.props.playtime) {
                     console.log(this.props.pitchlist[i][2])
@@ -115,7 +120,7 @@ class Control extends Component {
 
             let tmp = [...this.props.emotionlist]; // emotionlist를 복사
 
-            for (let i = 0; i < this.props.phase.length - 1; i++) {
+            for (let i = 0; i < this.props.phase.length; i++) {
                 if (this.props.phase[i][0] <= this.props.playtime && this.props.phase[i][1] >= this.props.playtime) {
                     let phaseStart = this.props.phase[i][0];
                     let existingIndex = tmp.findIndex(item => item[0] === phaseStart); // start 값이 같은지 확인
@@ -140,7 +145,7 @@ class Control extends Component {
 
             let tmp = [...this.props.pitchlist]; // emotionlist를 복사
 
-            for (let i = 0; i < this.props.phase.length - 1; i++) {
+            for (let i = 0; i < this.props.phase.length; i++) {
                 if (this.props.phase[i][0] <= this.props.playtime && this.props.phase[i][1] >= this.props.playtime) {
                     let phaseStart = this.props.phase[i][0];
                     let existingIndex = tmp.findIndex(item => item[0] === phaseStart); // start 값이 같은지 확인
