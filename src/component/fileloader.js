@@ -6,6 +6,7 @@ import axios from "axios"
 //여기에 사용자 마지막 생성한 파일
 import test from '../assets/musicdata/music.wav.json'
 import log from '../assets/log/logtest.json'
+import env from '../assets/env.json'
 import Modal from 'react-bootstrap/Modal';
 
 
@@ -44,7 +45,7 @@ class Fileloader extends Component {
     console.log('fname ', fname)
     //다른 노트북으로 실험시 여기 url 고치기
     const data = {
-      url: '/Users/youjin/CHI25/dhh-music-tool/src/assets/' + fname,
+      url: env.data_path + fname,
       lyrics: this.state.textvalue
     };
 
