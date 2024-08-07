@@ -10,8 +10,8 @@ const PromptDisplay = ({ changedata }) => {
         const originalBeats = changedata.Origin_beat;
         const emotions = changedata.Emotions;
 
-        let pitchPrompt = '';
-        let emotionPrompt = '';
+        let pitchPrompt = '주어진 음악의 ';
+        let emotionPrompt = '주어진 음악의 ';
         let beatPrompt = '';
         if (pitchChanges !== undefined) {
             for (let i = 0; i < pitchChanges.length; i++) {
@@ -29,7 +29,7 @@ const PromptDisplay = ({ changedata }) => {
 
         if (newBeats !== undefined && originalBeats !== undefined) {
             const beatRatio = newBeats.length / originalBeats.length;
-            beatPrompt = `이 음악의 시간을 ${beatRatio}배로 늘려줘`;
+            beatPrompt = `주어진 음악의 시간을 ${beatRatio}배로 늘려줘`;
         }
 
         setPrompt(`${pitchPrompt}\n\n${emotionPrompt}\n\n${beatPrompt}`);
