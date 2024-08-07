@@ -227,7 +227,7 @@ class Control extends Component {
     render() {
         return (
 
-            <div style={{ width: '70%' }}>
+            <div style={{ width: '100%' }}>
 
                 <Card style={{ width: '100%', padding: '10px' }}>
 
@@ -242,73 +242,44 @@ class Control extends Component {
 
                         {/* test */}
                         <Tab eventKey="total" title="total">
-                            <InstrumentPicker instrumenticon={this.props.instrumenticon} setInstrumenticon={this.props.setInstrumenticon}></InstrumentPicker>
+                            <div style={{ alignItems: 'center', marginBottom: '1rem' }}>
+                                <InstrumentPicker instrumenticon={this.props.instrumenticon} setInstrumenticon={this.props.setInstrumenticon}></InstrumentPicker>
 
-                            <Card>
-                                <Card.Header>가사시각화</Card.Header>
-                                <Card.Body>
-                                    <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-around', marginBottom: '1rem' }}>
-                                        <DropdownButton id="dropdown-basic-button" title="font">
-                                            <Dropdown.Item style={{ fontFamily: 'aggressive' }} onClick={() => this.handleChange({ target: { value: 'aggressive' } }, 'font_value')}>공격적인</Dropdown.Item>
-                                            <Dropdown.Item style={{ fontFamily: 'calm' }} onClick={() => this.handleChange({ target: { value: 'calm' } }, 'font_value')}>차분한</Dropdown.Item>
-                                            <Dropdown.Item style={{ fontFamily: 'chilled' }} onClick={() => this.handleChange({ target: { value: 'chilled' } }, 'font_value')}>차가운</Dropdown.Item>
-                                            <Dropdown.Item style={{ fontFamily: 'dark' }} onClick={() => this.handleChange({ target: { value: 'dark' } }, 'font_value')}>어두운</Dropdown.Item>
-                                            <Dropdown.Item style={{ fontFamily: 'energetic' }} onClick={() => this.handleChange({ target: { value: 'energetic' } }, 'font_value')}>활기찬</Dropdown.Item>
-                                            <Dropdown.Item style={{ fontFamily: 'epic' }} onClick={() => this.handleChange({ target: { value: 'epic' } }, 'font_value')}>웅장한</Dropdown.Item>
-                                            <Dropdown.Item style={{ fontFamily: 'happy' }} onClick={() => this.handleChange({ target: { value: 'happy' } }, 'font_value')} >행복한</Dropdown.Item>
-                                            <Dropdown.Item style={{ fontFamily: 'romantic' }} onClick={() => this.handleChange({ target: { value: 'romantic' } }, 'font_value')}>로맨틱한</Dropdown.Item>
-                                            <Dropdown.Item style={{ fontFamily: 'sad' }} onClick={() => this.handleChange({ target: { value: 'sad' } }, 'font_value')}>슬픈</Dropdown.Item>
-                                            <Dropdown.Item style={{ fontFamily: 'scary' }} onClick={() => this.handleChange({ target: { value: 'scary' } }, 'font_value')}>무서운</Dropdown.Item>
-                                            <Dropdown.Item style={{ fontFamily: 'sexy' }} onClick={() => this.handleChange({ target: { value: 'sexy' } }, 'font_value')}>섹시한</Dropdown.Item>
-                                            <Dropdown.Item style={{ fontFamily: 'ethereal' }} onClick={() => this.handleChange({ target: { value: 'ethereal' } }, 'font_value')}>미묘한</Dropdown.Item>
-                                            <Dropdown.Item style={{ fontFamily: 'uplifting' }} onClick={() => this.handleChange({ target: { value: 'uplifting' } }, 'font_value')}>희망적인</Dropdown.Item>
-                                        </DropdownButton>
+                            </div>
+                            <div style={{ alignItems: 'center', justifyContent: 'space-around', marginBottom: '1rem' }}>
 
-                                        <DropdownButton id="dropdown-basic-button" title="pitch">
-                                            <Dropdown.Item href="#/action-1">올라가는</Dropdown.Item>
-                                            <Dropdown.Item href="#/action-2">내려가는</Dropdown.Item>
-                                            <Dropdown.Item href="#/action-4">유지하는</Dropdown.Item>
-                                        </DropdownButton>
-                                    </div>
-
-                                </Card.Body>
-                            </Card>
+                                <DropdownButton id="dropdown-basic-button" title="font">
+                                    <Dropdown.Item style={{ fontFamily: 'aggressive' }} onClick={() => this.handleChange({ target: { value: 'aggressive' } }, 'font_value')}>공격적인</Dropdown.Item>
+                                    <Dropdown.Item style={{ fontFamily: 'calm' }} onClick={() => this.handleChange({ target: { value: 'calm' } }, 'font_value')}>차분한</Dropdown.Item>
+                                    <Dropdown.Item style={{ fontFamily: 'chilled' }} onClick={() => this.handleChange({ target: { value: 'chilled' } }, 'font_value')}>차가운</Dropdown.Item>
+                                    <Dropdown.Item style={{ fontFamily: 'dark' }} onClick={() => this.handleChange({ target: { value: 'dark' } }, 'font_value')}>어두운</Dropdown.Item>
+                                    <Dropdown.Item style={{ fontFamily: 'energetic' }} onClick={() => this.handleChange({ target: { value: 'energetic' } }, 'font_value')}>활기찬</Dropdown.Item>
+                                    <Dropdown.Item style={{ fontFamily: 'epic' }} onClick={() => this.handleChange({ target: { value: 'epic' } }, 'font_value')}>웅장한</Dropdown.Item>
+                                    <Dropdown.Item style={{ fontFamily: 'happy' }} onClick={() => this.handleChange({ target: { value: 'happy' } }, 'font_value')} >행복한</Dropdown.Item>
+                                    <Dropdown.Item style={{ fontFamily: 'romantic' }} onClick={() => this.handleChange({ target: { value: 'romantic' } }, 'font_value')}>로맨틱한</Dropdown.Item>
+                                    <Dropdown.Item style={{ fontFamily: 'sad' }} onClick={() => this.handleChange({ target: { value: 'sad' } }, 'font_value')}>슬픈</Dropdown.Item>
+                                    <Dropdown.Item style={{ fontFamily: 'scary' }} onClick={() => this.handleChange({ target: { value: 'scary' } }, 'font_value')}>무서운</Dropdown.Item>
+                                    <Dropdown.Item style={{ fontFamily: 'sexy' }} onClick={() => this.handleChange({ target: { value: 'sexy' } }, 'font_value')}>섹시한</Dropdown.Item>
+                                    <Dropdown.Item style={{ fontFamily: 'ethereal' }} onClick={() => this.handleChange({ target: { value: 'ethereal' } }, 'font_value')}>미묘한</Dropdown.Item>
+                                    <Dropdown.Item style={{ fontFamily: 'uplifting' }} onClick={() => this.handleChange({ target: { value: 'uplifting' } }, 'font_value')}>희망적인</Dropdown.Item>
+                                </DropdownButton>
+                            </div>
 
 
-                            <Card>
-                                <Card.Header>음악시각화</Card.Header>
-                                <Card.Body>
-                                    <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-around', marginBottom: '1rem' }}>
-                                        <DropdownButton id="dropdown-basic-button" title="shape">
-                                            <Dropdown.Item onClick={() => this.handleChange({ target: { value: 9 } }, 'shape_value')}>공격적인</Dropdown.Item>
-                                            <Dropdown.Item onClick={() => this.handleChange({ target: { value: 5 } }, 'shape_value')}>차분한</Dropdown.Item>
-                                            <Dropdown.Item onClick={() => this.handleChange({ target: { value: 7 } }, 'shape_value')}>차가운</Dropdown.Item>
-                                            <Dropdown.Item onClick={() => this.handleChange({ target: { value: 3 } }, 'shape_value')}>어두운</Dropdown.Item>
-                                            <Dropdown.Item onClick={() => this.handleChange({ target: { value: 8 } }, 'shape_value')}>활기찬</Dropdown.Item>
-                                            <Dropdown.Item onClick={() => this.handleChange({ target: { value: 6 } }, 'shape_value')}>웅장한</Dropdown.Item>
-                                            <Dropdown.Item onClick={() => this.handleChange({ target: { value: 1 } }, 'shape_value')}>행복한</Dropdown.Item>
-                                            <Dropdown.Item onClick={() => this.handleChange({ target: { value: 8 } }, 'shape_value')}>로맨틱</Dropdown.Item>
-                                            <Dropdown.Item onClick={() => this.handleChange({ target: { value: 3 } }, 'shape_value')}>슬픈</Dropdown.Item>
-                                            <Dropdown.Item onClick={() => this.handleChange({ target: { value: 9 } }, 'shape_value')}>무서운</Dropdown.Item>
-                                            <Dropdown.Item onClick={() => this.handleChange({ target: { value: 6 } }, 'shape_value')}>섹시한</Dropdown.Item>
-                                            <Dropdown.Item onClick={() => this.handleChange({ target: { value: 5 } }, 'shape_value')}>미묘한</Dropdown.Item>
-                                            <Dropdown.Item onClick={() => this.handleChange({ target: { value: 2 } }, 'shape_value')}>희망적인</Dropdown.Item>
+                            <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-around', marginBottom: '1rem' }}>
 
-                                        </DropdownButton>
+                                <DropdownButton id="dropdown-basic-button" title="pitch">
+                                    <Dropdown.Item onClick={() => this.handleChange({ target: { value: '단순한' } }, 'pitch_value')}>단순한</Dropdown.Item>
+                                    <Dropdown.Item onClick={() => this.handleChange({ target: { value: '복잡한' } }, 'pitch_value')}>복잡한</Dropdown.Item>
+                                    <Dropdown.Item onClick={() => this.handleChange({ target: { value: '고조되는' } }, 'pitch_value')}>고조되는</Dropdown.Item>
+                                    <Dropdown.Item onClick={() => this.handleChange({ target: { value: '저하되는' } }, 'pitch_value')}>저하되는</Dropdown.Item>
+                                    <Dropdown.Item onClick={() => this.handleChange({ target: { value: '반복적인' } }, 'pitch_value')}>반복적인</Dropdown.Item>
+                                    <Dropdown.Item onClick={() => this.handleChange({ target: { value: '변화무쌍한' } }, 'pitch_value')}>변화무쌍한</Dropdown.Item>
+                                </DropdownButton>
+                            </div>
 
-                                        <DropdownButton id="dropdown-basic-button" title="pitch">
-                                            <Dropdown.Item onClick={() => this.handleChange({ target: { value: '단순한' } }, 'pitch_value')}>단순한</Dropdown.Item>
-                                            <Dropdown.Item onClick={() => this.handleChange({ target: { value: '복잡한' } }, 'pitch_value')}>복잡한</Dropdown.Item>
-                                            <Dropdown.Item onClick={() => this.handleChange({ target: { value: '고조되는' } }, 'pitch_value')}>고조되는</Dropdown.Item>
-                                            <Dropdown.Item onClick={() => this.handleChange({ target: { value: '저하되는' } }, 'pitch_value')}>저하되는</Dropdown.Item>
-                                            <Dropdown.Item onClick={() => this.handleChange({ target: { value: '반복적인' } }, 'pitch_value')}>반복적인</Dropdown.Item>
-                                            <Dropdown.Item onClick={() => this.handleChange({ target: { value: '변화무쌍한' } }, 'pitch_value')}>변화무쌍한</Dropdown.Item>
-                                        </DropdownButton>
-                                    </div>
 
-                                </Card.Body>
-                            </Card>
-                            <div>
+                            {/* <div>
                                 <Card.Title>볼륨</Card.Title>
                                 <div style={{
                                     display: 'flex',
@@ -327,254 +298,10 @@ class Control extends Component {
                                     />
                                     <span>크게</span>
                                 </div>
-                            </div>
+                            </div> */}
 
 
-                            <div>
-                                <Card.Title>음정</Card.Title>
-                                <div style={{
-                                    display: 'flex',
-                                    alignItems: 'center',
-                                    flexDirection: 'row', // Flexbox에서 수평 정렬
-                                    writingMode: 'horizontal-tb', // 이 속성은 제거해도 됩니다
-                                }}>
-                                    <span>낮게</span>
-                                    <RangeSlider
-                                        style={{ padding: '23px' }}
-                                        min={40}
-                                        max={84}
-                                        value={this.state.pitch_value}
 
-                                        onChange={(e) => this.handleChange(e, 'pitch_value')}
-                                    />
-                                    <span>높게</span>
-                                </div>
-                            </div>
-                            <div >
-                                <Card.Title>비트</Card.Title>
-                                <div style={{
-                                    display: 'flex',
-                                    alignItems: 'center',
-                                    flexDirection: 'row', // Flexbox에서 수평 정렬
-                                    writingMode: 'horizontal-tb', // 이 속성은 제거해도 됩니다
-                                }}>
-                                    <span>느리게</span>
-                                    <RangeSlider
-                                        style={{ padding: '10px' }}
-                                        value={this.state.beat_value}
-                                        onChange={(e) => this.handleChange(e, 'beat_value')}
-                                    />
-                                    <span>빠르게</span>
-
-                                </div>
-
-                            </div>
-                            <Button onClick={this.exportValue} style={{ width: '100%', marginTop: '10px', borderColor: 'black', color: 'black', backgroundColor: 'lightskyblue' }}>재생성</Button>{' '}
-
-                        </Tab>
-
-                        <Tab eventKey="가사시각화" title="가사시각화">
-
-                            <div style={{ display: "flex", justifyContent: 'center' }}>
-                                <div style={{ margin: "auto auto" }}>
-                                    <div>
-                                        <div id="genre" style={{ padding: '10px' }}>
-                                            <Card.Title>emotion</Card.Title>
-                                            <DropdownButton id="dropdown-basic-button" title="감정 선택">
-                                                <Dropdown.Item href="#/action-1">공격적인</Dropdown.Item>
-                                                <Dropdown.Item href="#/action-2">차분한</Dropdown.Item>
-                                                <Dropdown.Item href="#/action-4">어두운</Dropdown.Item>
-                                                <Dropdown.Item href="#/action-5">활기찬</Dropdown.Item>
-                                                <Dropdown.Item href="#/action-6">서사적</Dropdown.Item>
-                                                <Dropdown.Item href="#/action-7">행복한</Dropdown.Item>
-                                                <Dropdown.Item href="#/action-8">로맨틱</Dropdown.Item>
-                                                <Dropdown.Item href="#/action-9">미묘한</Dropdown.Item>
-                                            </DropdownButton>
-
-                                        </div>
-                                        <div id="verse_emotion" style={{ padding: '20px' }}>
-                                            <Card.Title>분위기</Card.Title>
-                                            {/* <Form.Control
-                                                type="color"
-                                                id="exampleColorInput"
-                                                defaultValue="#fff"
-                                                title="Choose your color"
-                                            /> */}
-                                            <HexColorPicker color={this.state.color_value} onChange={this.setColor} />
-
-                                        </div>
-
-                                        <div>
-                                            <Card.Title>볼륨</Card.Title>
-                                            <div style={{
-                                                display: 'flex',
-                                                alignItems: 'center',
-                                                flexDirection: 'row', // Flexbox에서 수평 정렬
-                                                writingMode: 'horizontal-tb', // 이 속성은 제거해도 됩니다
-                                            }}>
-                                                <span>작게</span>
-
-                                                <RangeSlider
-                                                    style={{ padding: '23px' }}
-                                                    min={0}
-                                                    max={100}
-                                                    value={this.state.volume_value}
-                                                    onChange={(e) => this.handleChange(e, 'volume_value')}
-                                                />
-                                                <span>크게</span>
-                                            </div>
-                                        </div>
-
-
-                                        <div>
-                                            <Card.Title>음정</Card.Title>
-                                            <div style={{
-                                                display: 'flex',
-                                                alignItems: 'center',
-                                                flexDirection: 'row', // Flexbox에서 수평 정렬
-                                                writingMode: 'horizontal-tb', // 이 속성은 제거해도 됩니다
-                                            }}>
-                                                <span>낮게</span>
-                                                <RangeSlider
-                                                    style={{ padding: '23px' }}
-                                                    min={40}
-                                                    max={84}
-                                                    value={this.state.pitch_value}
-
-                                                    onChange={(e) => this.handleChange(e, 'pitch_value')}
-                                                />
-                                                <span>높게</span>
-                                            </div>
-                                        </div>
-                                        <div >
-                                            <Card.Title>비트</Card.Title>
-                                            <div style={{
-                                                display: 'flex',
-                                                alignItems: 'center',
-                                                flexDirection: 'row', // Flexbox에서 수평 정렬
-                                                writingMode: 'horizontal-tb', // 이 속성은 제거해도 됩니다
-                                            }}>
-                                                <span>느리게</span>
-                                                <RangeSlider
-                                                    style={{ padding: '10px' }}
-                                                    value={this.state.beat_value}
-                                                    onChange={(e) => this.handleChange(e, 'beat_value')}
-                                                />
-                                                <span>빠르게</span>
-
-                                            </div>
-
-                                        </div>
-
-
-                                    </div>
-
-                                </div>
-
-                            </div>
-                            <Button onClick={this.exportValue} style={{ width: '100%', marginTop: '10px', borderColor: 'black', color: 'black', backgroundColor: 'lightskyblue' }}>재생성</Button>{' '}
-
-                        </Tab>
-                        <Tab eventKey="음악시각화" title="음악시각화">
-                            <div style={{ display: "flex", justifyContent: 'center' }}>
-                                <div style={{ margin: "auto auto" }}>
-                                    <div id="genre" style={{ padding: '10px' }}>
-                                        <Card.Title>시각유형</Card.Title>
-                                        <DropdownButton id="dropdown-basic-button" title="모드 선택">
-                                            <Card.Text style={{ paddingLeft: '10px' }}>Melodic</Card.Text>
-                                            <Dropdown.Item href="#/action-1">Hilbert + melody</Dropdown.Item>
-                                            <Dropdown.Item href="#/action-2">Hilbert scope</Dropdown.Item>
-                                            <Dropdown.Item href="#/action-4">Hilbert painter</Dropdown.Item>
-                                            <Dropdown.Divider />
-                                            <Card.Text style={{ paddingLeft: '10px' }}>Harmonic</Card.Text>
-
-                                            <Dropdown.Item href="#/action-5">spectrograph</Dropdown.Item>
-                                            <Dropdown.Item href="#/action-6">spectrogram</Dropdown.Item>
-                                            <Dropdown.Item href="#/action-7">spectrogram+melody</Dropdown.Item>
-                                            <Dropdown.Item href="#/action-8">spectrogram painter</Dropdown.Item>
-                                            <Dropdown.Divider />
-                                            <Card.Text style={{ paddingLeft: '10px' }}>Dynamic</Card.Text>
-
-                                            <Dropdown.Item href="#/action-9">waveform</Dropdown.Item>
-                                            <Dropdown.Item href="#/action-10">oscilloscope</Dropdown.Item>
-
-                                        </DropdownButton>
-
-                                    </div>
-                                    <div id="verse_emotion" style={{ padding: '20px' }}>
-                                        <Card.Title>분위기</Card.Title>
-                                        {/* <Form.Control
-                                                type="color"
-                                                id="exampleColorInput"
-                                                defaultValue="#fff"
-                                                title="Choose your color"
-                                            /> */}
-                                        <HexColorPicker color={this.state.color_value} onChange={this.setColor} />
-
-                                    </div>
-                                    <div>
-                                        <Card.Title>볼륨</Card.Title>
-                                        <div style={{
-                                            display: 'flex',
-                                            alignItems: 'center',
-                                            flexDirection: 'row', // Flexbox에서 수평 정렬
-                                            writingMode: 'horizontal-tb', // 이 속성은 제거해도 됩니다
-                                        }}>
-                                            <span>작게</span>
-
-                                            <RangeSlider
-                                                style={{ padding: '23px' }}
-                                                min={60}
-                                                max={180}
-                                                value={this.state.bpm_value}
-                                                onChange={(e) => this.handleChange(e, 'bpm_value')}
-                                            />
-                                            <span>크게</span>
-                                        </div>
-                                    </div>
-
-
-                                    <div>
-                                        <Card.Title>음정</Card.Title>
-                                        <div style={{
-                                            display: 'flex',
-                                            alignItems: 'center',
-                                            flexDirection: 'row', // Flexbox에서 수평 정렬
-                                            writingMode: 'horizontal-tb', // 이 속성은 제거해도 됩니다
-                                        }}>
-                                            <span>낮게</span>
-                                            <RangeSlider
-                                                style={{ padding: '23px' }}
-                                                min={40}
-                                                max={84}
-                                                value={this.state.pitch_value}
-
-                                                onChange={(e) => this.handleChange(e, 'pitch_value')}
-                                            />
-                                            <span>높게</span>
-                                        </div>
-                                    </div>
-                                    <div >
-                                        <Card.Title>비트</Card.Title>
-                                        <div style={{
-                                            display: 'flex',
-                                            alignItems: 'center',
-                                            flexDirection: 'row', // Flexbox에서 수평 정렬
-                                            writingMode: 'horizontal-tb', // 이 속성은 제거해도 됩니다
-                                        }}>
-                                            <span>느리게</span>
-                                            <RangeSlider
-                                                style={{ padding: '10px' }}
-                                                value={this.state.volume_value}
-                                                onChange={(e) => this.handleChange(e, 'volume_value')}
-                                            />
-                                            <span>빠르게</span>
-
-                                        </div>
-
-                                    </div>
-                                </div>
-                            </div>
                             <Button onClick={this.exportValue} style={{ width: '100%', marginTop: '10px', borderColor: 'black', color: 'black', backgroundColor: 'lightskyblue' }}>재생성</Button>{' '}
 
                         </Tab>
@@ -585,7 +312,7 @@ class Control extends Component {
                 </Card>
 
 
-            </div >
+            </div>
         )
     }
 }

@@ -19,42 +19,52 @@ const TimelinePlayer = ({ control, audiourl, setAudiourl, timelineState, autoScr
             if (!isNaN(volumeValue) && isFinite(volumeValue)) {
                 audioRef.current.volume = Math.min(1, Math.max(0, volumeValue / 100));
             } else {
-                audioRef.current.volume = 0.5
+                audioRef.current.volume = 0.5;
             }
         }
     }, [control.volume_value]);
 
+    useEffect(() => {
+        const handleKeyDown = (event) => {
+            if (event.code === 'Space') {
+                event.preventDefault();  // Prevents the default action of the spacebar
+                handlePlayOrPause();
+            }
+        };
 
+        window.addEventListener('keydown', handleKeyDown);
 
+        // Cleanup event listener on component unmount
+        return () => {
+            window.removeEventListener('keydown', handleKeyDown);
+        };
+    }, []);
 
     useEffect(() => {
-
-
         if (!timelineState.current) return;
         const engine = timelineState.current;
 
-
         engine.listener.on('play', () => {
             setIsPlaying(true);
-            if (audioRef.current) {
+            if (audioRef.current && audioRef.current.paused) {
                 audioRef.current.play();
             }
-
         });
+
         engine.listener.on('paused', () => {
             setIsPlaying(false);
-            if (audioRef.current) {
+            if (audioRef.current && !audioRef.current.paused) {
                 audioRef.current.pause();
             }
-
         });
+
         engine.listener.on('afterSetTime', ({ time }) => {
             setTime(time);
             if (audioRef.current) {
                 audioRef.current.currentTime = time;
             }
-
         });
+
         engine.listener.on('setTimeByTick', ({ time }) => {
             setTime(time);
             // setPlaytime(time);
@@ -72,21 +82,25 @@ const TimelinePlayer = ({ control, audiourl, setAudiourl, timelineState, autoScr
             engine.pause();
             engine.listener.offAll();
             lottieControl.destroy();
-
-
         };
     }, [setLeft]);
 
-    useEffect(() => (
-        setPlaytime(time)
-    ), [time])
+    useEffect(() => {
+        setPlaytime(time);
+    }, [time]);
 
     const handlePlayOrPause = () => {
         if (!timelineState.current) return;
         if (timelineState.current.isPlaying) {
             timelineState.current.pause();
+            if (audioRef.current && !audioRef.current.paused) {
+                audioRef.current.pause();
+            }
         } else {
             timelineState.current.play({ autoEnd: true });
+            if (audioRef.current && audioRef.current.paused) {
+                audioRef.current.play();
+            }
         }
     };
 
@@ -96,8 +110,6 @@ const TimelinePlayer = ({ control, audiourl, setAudiourl, timelineState, autoScr
     };
 
     const timeRender = (time) => {
-        // setPlaytime(time);
-
         const float = (parseInt((time % 1) * 100 + '') + '').padStart(2, '0');
         const min = (parseInt(time / 60 + '') + '').padStart(2, '0');
         const second = (parseInt((time % 60) + '') + '').padStart(2, '0');
@@ -105,9 +117,7 @@ const TimelinePlayer = ({ control, audiourl, setAudiourl, timelineState, autoScr
     };
 
     return (
-        <div className="timeline-player" style={{
-
-        }}>
+        <div className="timeline-player" style={{}}>
             <div>
                 <audio ref={audioRef} controls src={audiourl} hidden="hidden" />
             </div>

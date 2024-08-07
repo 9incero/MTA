@@ -6,7 +6,8 @@ import axios from "axios"
 //여기에 사용자 마지막 생성한 파일
 import test from '../assets/musicdata/music.wav.json'
 import log from '../assets/log/logtest.json'
-import { GiConsoleController } from 'react-icons/gi';
+import Modal from 'react-bootstrap/Modal';
+
 
 class Fileloader extends Component {
   // 생성자 함수에서 변수를 정의
@@ -15,7 +16,8 @@ class Fileloader extends Component {
     this.state = {
       someValue: '',
       textvalue: '',
-      audioSrc: ''
+      audioSrc: '',
+      show: false,
     };
     this.fileInput = createRef();
   }
@@ -53,6 +55,8 @@ class Fileloader extends Component {
         this.props.setCreatenum(this.props.createnum + 1)
         this.props.setTotaldata({ ...response.data })
         console.log(this.props.totaldata)
+        this.setState({ show: true })
+
 
       })
       .catch((error) => {
@@ -94,6 +98,7 @@ class Fileloader extends Component {
     console.log('lyrics', test.Lyrics)
 
     this.props.setTotaldata({ ...test });
+
   };
 
 
@@ -135,7 +140,19 @@ class Fileloader extends Component {
         {/* </Card> */}
         <button onClick={this.handleButtonClick}>test</button>
         <button onClick={this.redoButtonClick}>불러오기</button>
-      </div >
+
+        <Modal show={this.state.show}>
+          <Modal.Header closeButton>
+            <Modal.Title>음악분석 완료!</Modal.Title>
+          </Modal.Header>
+          <Modal.Body>음악 저작을 시작하세요.</Modal.Body>
+          <Modal.Footer>
+            <Button variant="secondary" onClick={() => { this.setState({ show: false }) }}>
+              닫기
+            </Button>
+          </Modal.Footer>
+        </Modal>
+      </div>
     );
   }
 }

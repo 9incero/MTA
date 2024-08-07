@@ -85,7 +85,7 @@ function App() {
             backgroundColor: 'lightblue', height: '100vh', margin: 0, padding: 0
           }}>
             {/* 왼쪽 큰 컬럼 */}
-            <iframe src="https://c2eec77c60f6bc61c6.gradio.live" width='100%' height='100%' ></iframe>
+            <iframe src="https://3d2a031e3bb12caff7.gradio.live/" width='100%' height='100%' style={{ overflowX: 'scroll', overflowY: 'scroll' }}></iframe>
 
           </Col>
           <Col md={6} style={{ padding: '20px' }}>
@@ -126,7 +126,7 @@ function App() {
               </Col>
             </Row>
           </Col>
-          <Col md={3} style={{ height: '100vh', margin: 0, padding: 0 }}>
+          <Col md={2} style={{ height: '100vh', margin: 0, padding: 0 }}>
             {/* 오른쪽 큰 컬럼 */}
             <Userfile totaldata={totaldata} editnum={editnum} createnum={createnum} user={user} setUser={setUser}></Userfile>
 
