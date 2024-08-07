@@ -92,16 +92,21 @@ class Userfile extends Component {
     };
     render() {
         const { buttonText, time } = this.state;
+        const names = ['황진', '정유진', '서문영', '허성지', '박신식', '임상희', '이태헌', '윤철희', '김호성'];
 
         return (
             <div>
                 <DropdownButton id="dropdown-basic-button" title="실험자">
-                    {Array.from({ length: 9 }, (_, index) => (
-                        <Dropdown.Item key={index} onClick={() => this.handleChange({ target: { value: `p${index + 1}` } }, 'participant')}>
-                            p{index + 1}
+                    {names.map((name, index) => (
+                        <Dropdown.Item
+                            key={index}
+                            onClick={() => this.handleChange({ target: { value: name } }, 'participant')}
+                        >
+                            {name}
                         </Dropdown.Item>
                     ))}
                 </DropdownButton>
+
                 <button onClick={this.handleButtonClick}>{buttonText}</button>
             </div>
         );
