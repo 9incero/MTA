@@ -61,10 +61,8 @@ class Control extends Component {
 
                 }
             }
-        }
 
 
-        if (prevProps.playtime != this.props.playtime) {
 
             for (let i = 0; i < this.props.emotionlist.length; i++) {
                 if (this.props.emotionlist[i][0] <= this.props.playtime && this.props.emotionlist[i][1] >= this.props.playtime) {
@@ -90,7 +88,7 @@ class Control extends Component {
 
 
             for (let i = 0; i < this.props.pitchlist.length; i++) {
-
+                console.log('zz', this.props.pitchlist)
                 if (this.props.pitchlist[i][0] <= this.props.playtime && this.props.pitchlist[i][1] >= this.props.playtime) {
                     console.log(this.props.pitchlist[i][2])
                     this.handleChange({ target: { value: this.props.pitchlist[i][2] } }, 'pitch_value');
@@ -239,7 +237,7 @@ class Control extends Component {
                         className="mb-3"
                     >
                         <Tab eventKey="음악정보입력" title="음악정보입력">
-                            <Fileloader setDuration={this.props.setDuration} totaldata={this.props.totaldata} setTotaldata={this.props.setTotaldata} setTimedata={this.props.setTimedata} setAudiourl={this.props.setAudiourl}></Fileloader>
+                            <Fileloader emotionlist={this.props.emotionlist} pitchlist={this.props.pitchlist} setEmotionlist={this.props.setEmotionlist} setPitchlist={this.props.setPitchlist} setDuration={this.props.setDuration} totaldata={this.props.totaldata} setTotaldata={this.props.setTotaldata} setTimedata={this.props.setTimedata} setAudiourl={this.props.setAudiourl}></Fileloader>
                         </Tab>
 
                         {/* test */}

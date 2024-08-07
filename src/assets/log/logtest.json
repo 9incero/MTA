@@ -3,15 +3,41 @@
         {
             "start": 0,
             "end": 8.684263038548753,
-            "meta_tag": "저하되는"
+            "meta_tag": "고조되는"
         },
         {
             "start": 8.83,
             "end": 13.09,
             "meta_tag": "복잡한"
+        },
+        {
+            "start": 18.39,
+            "end": 23.12,
+            "meta_tag": "변화무쌍한"
         }
     ],
-    "Emotions": [],
+    "Emotions": [
+        {
+            "start": 8.83,
+            "end": 13.09,
+            "emotions": "calm"
+        },
+        {
+            "start": 15.07,
+            "end": 16.92,
+            "emotions": "aggressive"
+        },
+        {
+            "start": 23.18,
+            "end": 26.37,
+            "emotions": "scary"
+        },
+        {
+            "start": 27.18,
+            "end": 31.37,
+            "emotions": "ethereal"
+        }
+    ],
     "Origin_beat": [
         {
             "amplitude": 0.5993376970291138,
@@ -840,14 +866,6 @@
             "time": 14.67
         },
         {
-            "amplitude": 0.3952365815639496,
-            "time": 15.25
-        },
-        {
-            "amplitude": 0.6491047739982605,
-            "time": 15.81
-        },
-        {
             "amplitude": 0.34417855739593506,
             "time": 16.4
         },
@@ -958,22 +976,6 @@
         {
             "amplitude": 0.35774290561676025,
             "time": 31.81
-        },
-        {
-            "amplitude": 0.5938371419906616,
-            "time": 32.38
-        },
-        {
-            "amplitude": 0.49172109365463257,
-            "time": 32.96
-        },
-        {
-            "amplitude": 0.9925910830497742,
-            "time": 33.54
-        },
-        {
-            "amplitude": 0.1846807301044464,
-            "time": 34.1
         },
         {
             "amplitude": 0.36245766282081604,
@@ -1454,43 +1456,14 @@
         {
             "amplitude": 0.5543414950370789,
             "time": 102.77
-        },
-        {
-            "time": 7.316574000000005,
-            "amplitude": 0
-        },
-        {
-            "time": 7.549474000000003,
-            "amplitude": 0
-        },
-        {
-            "time": 7.749574000000005,
-            "amplitude": 0
-        },
-        {
-            "time": 8.016174000000005,
-            "amplitude": 0
-        },
-        {
-            "time": 8.799974000000008,
-            "amplitude": 0
-        },
-        {
-            "time": 9.23277400000001,
-            "amplitude": 0
-        },
-        {
-            "time": 9.41557400000001,
-            "amplitude": 0
-        },
-        {
-            "time": 9.56637400000001,
-            "amplitude": 0
-        },
-        {
-            "time": 9.683274000000011,
-            "amplitude": 0
         }
     ],
-    "Volume": 50
+    "Volume": 71,
+    "Instruments": [
+        "acousticGuitar",
+        "bassGuitar",
+        "piano",
+        "drumKit",
+        "bells"
+    ]
 }

@@ -3,7 +3,10 @@ import Card from 'react-bootstrap/Card';
 import Button from 'react-bootstrap/Button';
 import Form from 'react-bootstrap/Form';
 import axios from "axios"
+//여기에 사용자 마지막 생성한 파일
 import test from '../assets/musicdata/music.wav.json'
+import log from '../assets/log/logtest.json'
+import { GiConsoleController } from 'react-icons/gi';
 
 class Fileloader extends Component {
   // 생성자 함수에서 변수를 정의
@@ -76,6 +79,14 @@ class Fileloader extends Component {
     if (prevProps.totaldata !== this.props.totaldata) {
       console.log('>>', this.props.totaldata); // 상태가 업데이트된 후에 로그 출력
     }
+
+    if (prevProps.emotionlist != this.props.emotionlist) {
+      console.log('emotion', this.props.emotionlist)
+    }
+
+    if (prevProps.pitchlist != this.props.pitchlist) {
+      console.log('pitch', this.props.pitchlist)
+    }
   }
 
   handleButtonClick = () => {
@@ -84,6 +95,26 @@ class Fileloader extends Component {
 
     this.props.setTotaldata({ ...test });
   };
+
+
+  redoButtonClick = () => {
+
+    // this.props.setTotaldata({ ...test });
+    this.props.setTotaldata(prevState => ({
+      BPM: test.BPM,
+      Beat_amplitude: log.Beat,
+      Emotions: test.Emotions,
+      Instruments: log.Instruments,
+      Lyrics: test.Lyrics,
+      Pitch: test.Pitch
+    }));
+    const emotionsArray = log.Emotions.map(emotion => [emotion.start, emotion.end, emotion.emotions]);
+    const pitchArray = log.Pitch.map(pitch => [pitch.start, pitch.end, pitch.meta_tag]);
+
+    this.props.setEmotionlist([...emotionsArray])
+    this.props.setPitchlist([...pitchArray])
+
+  }
 
 
   render() {
@@ -103,6 +134,7 @@ class Fileloader extends Component {
         <Button style={{ width: '100%', marginTop: '10px', borderColor: 'black', color: 'black', backgroundColor: 'lightskyblue' }} onClick={this.fileinputclick}>음악 업로드</Button>{' '}
         {/* </Card> */}
         <button onClick={this.handleButtonClick}>test</button>
+        <button onClick={this.redoButtonClick}>불러오기</button>
       </div >
     );
   }
