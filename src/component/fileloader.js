@@ -53,7 +53,7 @@ class Fileloader extends Component {
       .then((response) => {
         console.log(response.data);
 
-        this.props.setCreatenum(this.props.createnum + 1)
+        this.props.setCnum(this.props.cnum + 1)
         this.props.setTotaldata({ ...response.data })
         console.log(this.props.totaldata)
         this.setState({ show: true })
@@ -97,8 +97,11 @@ class Fileloader extends Component {
   handleButtonClick = () => {
     // console.log(test)
     console.log('lyrics', test.Lyrics)
-
+    this.props.setCnum(this.props.cnum + 1)
+    this.props.setEditnum(this.props.editnum + 2
+    )
     this.props.setTotaldata({ ...test });
+    console.log(this.props.editnum)
 
   };
 
