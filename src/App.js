@@ -16,7 +16,7 @@ import MidiBeatMaker from './component/beatdisplay';
 import HapticComponent from './component/hapticplay';
 import PromptDisplay from './component/propmtdisplay';
 import Userfile from './component/userfile';
-import env from './assets/env.json';
+import path from './assets/env.json'
 import { GiGuitar, GiGrandPiano, GiViolin, GiHarp, GiDrum, GiFlute, GiSaxophone } from "react-icons/gi";
 import { PiGuitar, PiBellFill } from "react-icons/pi";
 
@@ -86,22 +86,12 @@ function App() {
             backgroundColor: 'lightblue', height: '100vh', margin: 0, padding: 0
           }}>
             {/* 왼쪽 큰 컬럼 */}
-            <iframe src={env.gradio_path} width='100%' height='100%' style={{ overflowX: 'scroll', overflowY: 'scroll' }}></iframe>
+            <iframe src={path.gradio_path} width='100%' height='100%' style={{ overflowX: 'scroll', overflowY: 'scroll' }}></iframe>
 
           </Col>
           <Col md={6} style={{ padding: '20px' }}>
             <Row style={{ height: '70%' }}>
               <Col>
-                {/* 중앙 위쪽 큰 컬럼 */}
-                <ToggleButtonGroup type="checkbox" value={mode} onChange={handleChange}>
-                  <ToggleButton id="tbg-btn-1" value={1}>
-                    음악
-                  </ToggleButton>
-                  <ToggleButton id="tbg-btn-2" value={2}>
-                    가사
-                  </ToggleButton>
-
-                </ToggleButtonGroup>
                 <div>
                   <div>
                     선택악기:
