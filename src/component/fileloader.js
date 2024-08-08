@@ -52,14 +52,21 @@ class Fileloader extends Component {
     axios.post('http://127.0.0.1:5001/analysis', data)
       .then((response) => {
         console.log(response.data);
+        this.props.setTotaldata({
+          BPM: '',
+          Beat_amplitude: [],
+          Emotions: [],
+          Instruments: [],
+          Lyrics: [],
+          Pitch: []
+        }
+
+        )
 
         this.props.setCnum(this.props.cnum + 1)
         this.props.setTotaldata({ ...response.data })
         console.log(this.props.totaldata)
         this.setState({ show: true })
-        this.props.setEmotionlist([])
-        this.props.setPitchlist([])
-        this.props.setPrompt('')
 
 
 
