@@ -208,7 +208,6 @@ const Loader = ({ text = '', tendency, targetWidth, control, opacity }) => {
           key={index}
           style={{
             color: control.color_value,
-            backgroundColor: 'white',
             opacity: opacity, //이거 정규화해서 쓸지 말지 결정
             '--i': index + 1, letterSpacing: index === text.length - 1 ? '0px' : `${letterSpacing}px`
           }}

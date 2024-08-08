@@ -92,7 +92,7 @@ function App() {
 
           </Col>
           <Col md={6} style={{ padding: '20px' }}>
-            <Row style={{ height: '70%' }}>
+            <Row style={{ height: '70%', backgroundColor: '#e8e8e8' }}>
               <Col>
                 <div>
                   <div>

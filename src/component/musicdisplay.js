@@ -120,7 +120,7 @@ class MusicVisual extends Component {
             'sad': '#4682B4',
             'scary': '#800000',
             'sexy': '#FF1493',
-            'ethereal': '#E6E6FA',
+            'ethereal': '#d3ade5',
             'uplifting': '#00FF00',
         }
         if (prevProps.currentemotion != this.props.currentemotion) {
@@ -427,18 +427,18 @@ class MusicVisual extends Component {
 
         const noteToColorWithLuminance = (note) => {
             const luminanceMapping = {
-                "C": -0.5,
-                "C#": -0.4,
-                "D": -0.3,
-                "D#": -0.2,
-                "E": -0.1,
-                "F": 0,
-                "F#": 0.1,
-                "G": 0.2,
-                "G#": 0.3,
-                "A": 0.4,
-                "A#": 0.5,
-                "B": 0.6
+                "C": -0.3,
+                "C#": -0.2,
+                "D": -0.1,
+                "D#": -0,
+                "E": 0.1,
+                "F": 0.2,
+                "F#": 0.3,
+                "G": 0.4,
+                "G#": 0.5,
+                "A": 0.6,
+                "A#": 0.7,
+                "B": 0.8
             };
             const luminance = luminanceMapping[note];
             console.log(note)
