@@ -25,45 +25,7 @@ class MusicVisual extends Component {
 
 
     componentDidMount() {
-
         this.setState({ savebeat: this.props.totaldata.Beat_amplitude })
-
-        // const pitches = [];
-        // const times = [];
-        // const seenTimes = new Set(); // 중복 제거를 위한 Set
-        // let pitchTmp = [];
-        // let timeTmp = [];
-        // let prevPhase = -1;
-
-        // this.data.forEach(lyric => {
-        //     let currentPhase = lyric.phase;
-        //     if (currentPhase !== prevPhase) {
-        //         if (pitchTmp.length > 0) {
-        //             pitches.push([...pitchTmp]);
-        //             times.push([...timeTmp]);
-        //         }
-        //         pitchTmp = [];
-        //         timeTmp = [];
-        //         prevPhase = currentPhase;
-        //     }
-
-        //     lyric.pitch.forEach(pitch => {
-        //         if (!seenTimes.has(pitch.start)) {
-        //             pitchTmp.push(pitch.midi_note);
-        //             timeTmp.push(pitch.start);
-        //             seenTimes.add(pitch.start); // Set에 추가하여 중복 방지
-        //         }
-        //     });
-        // });
-
-        // if (timeTmp.length > 0) {
-        //     pitches.push([...pitchTmp]);
-        //     times.push([...timeTmp]);
-        // }
-
-        // this.fillMissingData(times, pitches);
-        // // console.log(times); // 수정된 times 확인
-        // this.setState({ pitches, times });
     }
 
     fillMissingData(times, pitches) {
