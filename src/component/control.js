@@ -69,6 +69,7 @@ class Control extends Component {
                     console.log(this.props.emotionlist[i][2])
                     this.setState({ ['font_value']: this.props.emotionlist[i][2] }, () => {
                         this.props.setControl({ ...this.state });
+                        this.props.setCurrentemotion(this.props.emotionlist[i][2])
                     });
                     this.emotionflag = 1
                     break;
@@ -82,6 +83,8 @@ class Control extends Component {
             if (this.emotionflag === 0) {
                 this.setState({ ['font_value']: this.props.totaldata.Emotions[0] }, () => {
                     this.props.setControl({ ...this.state });
+                    this.props.setCurrentemotion(this.props.totaldata.Emotions[0])
+
                 });
 
             }
@@ -115,6 +118,9 @@ class Control extends Component {
         });
         if (name === 'font_value' && event.target.value != this.props.totaldata.Emotions[0]) {
             this.emotionflag = 1
+
+
+            this.props.setCurrentemotion(event.target.value)
 
             let tmp = [...this.props.emotionlist]; // emotionlist를 복사
 

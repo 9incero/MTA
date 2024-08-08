@@ -19,13 +19,15 @@ class MusicVisual extends Component {
             timeTmp: [],
             prevadd: 0,
             savebeat: [],
-            currentbeattime: 0
+            currentbeattime: 0,
+            currentcolor: '#000'
         };
     }
 
 
     componentDidMount() {
         this.setState({ savebeat: this.props.totaldata.Beat_amplitude })
+
     }
 
     fillMissingData(times, pitches) {
@@ -106,7 +108,26 @@ class MusicVisual extends Component {
 
 
     componentDidUpdate(prevProps, prevState) {
+        const emotionToColor = {
+            'aggressive': '#FF0000',
+            'calm': '#87CEEB',
+            'chilled': '#E0FFFF',
+            'dark': '#2F4F4F',
+            'energetic': '#FFA500',
+            'epic': '#8A2BE2',
+            'happy': '#FFFF00',
+            'romantic': '#FF69B4',
+            'sad': '#4682B4',
+            'scary': '#800000',
+            'sexy': '#FF1493',
+            'ethereal': '#E6E6FA',
+            'uplifting': '#00FF00',
+        }
+        if (prevProps.currentemotion != this.props.currentemotion) {
+            this.setState({ currentcolor: emotionToColor[this.props.currentemotion] })
 
+
+        }
         if (prevState.savebeat != this.state.savebeat) {
             this.isUpdated = false;
             this.props.setBeatlist(this.state.savebeat)
@@ -117,6 +138,8 @@ class MusicVisual extends Component {
         }
         //여기서 가사유무의 대한 예외처리해주면 될듯!
         if (prevProps.totaldata != this.props.totaldata) {
+            this.setState({ currentcolor: emotionToColor[this.props.totaldata.Emotions[0]] })
+            console.log(this.props.totaldata.Emotions[0])
 
             this.data = this.props.totaldata.Lyrics;
             this.addData = this.props.totaldata.Pitch;
@@ -316,6 +339,7 @@ class MusicVisual extends Component {
     }
 
 
+
     drawChart(pitches, times) {
         const { playtime } = this.props; // 현재 재생 시간
         const svg = d3.select(this.svgRef.current);
@@ -341,6 +365,13 @@ class MusicVisual extends Component {
             .domain([d3.min(pitches), d3.max(pitches)])
             .range([height - 100, 100]);
 
+        const pitchToNote = (pitch) => {
+            const notes = ["C", "C#", "D", "D#", "E", "F", "F#", "G", "G#", "A", "A#", "B"];
+            const noteIndex = pitch % 12;
+            return notes[noteIndex];
+        };
+
+
         // 음 이름에 따른 색상 매핑
         const noteToColor = {
             'C': 'red',
@@ -360,6 +391,60 @@ class MusicVisual extends Component {
         // 색상 스케일 설정 (피치 범위에 따라 색상 매핑)
         const colorScale = d3.scaleSequential(d3.interpolateRainbow)
             .domain([d3.min(pitches), d3.max(pitches)]);
+
+
+
+        const adjustLuminance = (hex, luminance) => {
+            // hex가 문자열인지 확인
+            if (typeof hex !== 'string') {
+                throw new TypeError('Expected a string for hex');
+            }
+
+            // hex 문자열을 정리
+            hex = hex.replace(/[^0-9a-f]/gi, '');
+            if (hex.length < 6) {
+                hex = hex[0] + hex[0] + hex[1] + hex[1] + hex[2] + hex[2];
+            }
+            luminance = luminance || 0;
+
+            let rgb = "#", c, i;
+            for (i = 0; i < 3; i++) {
+                c = parseInt(hex.substring(i * 2, i * 2 + 2), 16);
+                c = Math.round(Math.min(Math.max(0, c + (c * luminance * 2)), 255)).toString(16);
+                rgb += ("00" + c).substring(c.length);
+            }
+
+            return rgb;
+        };
+
+        // 예제 사용
+        try {
+            console.log(adjustLuminance('#ff0000', 0.5)); // 밝은 빨간색
+            console.log(adjustLuminance('#ff0000', -0.5)); // 어두운 빨간색
+        } catch (e) {
+            console.error(e.message);
+        }
+
+        const noteToColorWithLuminance = (note) => {
+            const luminanceMapping = {
+                "C": -0.5,
+                "C#": -0.4,
+                "D": -0.3,
+                "D#": -0.2,
+                "E": -0.1,
+                "F": 0,
+                "F#": 0.1,
+                "G": 0.2,
+                "G#": 0.3,
+                "A": 0.4,
+                "A#": 0.5,
+                "B": 0.6
+            };
+            const luminance = luminanceMapping[note];
+            console.log(note)
+            return adjustLuminance(this.state.currentcolor, luminance);
+        };
+
 
         // 현재 재생 시간 이하의 데이터 필터링
         const prevDataPoints = pitches.map((d, i) => ({ time: times[i], pitch: d }))
@@ -390,7 +475,8 @@ class MusicVisual extends Component {
             t = (playtime - lastPoint.time) / (nextPoint.time - lastPoint.time);
         }
         const interpolatedPitch = lastPoint.pitch + t * (nextPoint.pitch - lastPoint.pitch);
-        const color = colorScale(interpolatedPitch); // 색상 스케일에서 색상 가져오기
+        // const color = colorScale(interpolatedPitch); // 색상 스케일에서 색상 가져오기
+        const color = noteToColorWithLuminance(pitchToNote(Math.floor(interpolatedPitch)))
         const radius = this.mapRange(this.props.control.volume_value, 0, 100, 1, 30);
         const yRadius = this.mapRange(this.props.control.volume_value, 0, 100, 20, 80); // pitch_value를 사용하여 y 반지름 설정
         const size = this.mapRange(this.props.control.volume_value, 0, 100, 1, 30);
