@@ -57,6 +57,10 @@ class Fileloader extends Component {
         this.props.setTotaldata({ ...response.data })
         console.log(this.props.totaldata)
         this.setState({ show: true })
+        this.props.setEmotionlist([])
+        this.props.setPitchlist([])
+        this.props.setPrompt('')
+
 
 
       })
@@ -98,11 +102,12 @@ class Fileloader extends Component {
     // console.log(test)
     console.log('lyrics', test.Lyrics)
     this.props.setCnum(this.props.cnum + 1)
-    this.props.setEditnum(this.props.editnum + 2
-    )
+    this.props.setEditnum(this.props.editnum + 2)
     this.props.setTotaldata({ ...test });
     console.log(this.props.editnum)
-
+    this.props.setEmotionlist([])
+    this.props.setPitchlist([])
+    this.props.setPrompt('')
   };
 
 
