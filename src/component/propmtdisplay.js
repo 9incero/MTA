@@ -21,7 +21,7 @@ const PromptDisplay = ({ prompt, setPrompt, changedata, totaldata }) => {
         const newinstruments = changedata.Instruments;
         const origininstruments = totaldata.Instruments;
 
-        if (pitchChanges.length !== 0) {
+        if (pitchChanges!=undefined && pitchChanges.length !== 0) {
             pitchPrompt = '주어진 음악의 ';
 
             for (let i = 0; i < pitchChanges.length; i++) {
@@ -31,7 +31,7 @@ const PromptDisplay = ({ prompt, setPrompt, changedata, totaldata }) => {
 
         }
 
-        if (emotions.length !== 0) {
+        if (emotions!=undefined && emotions.length !== 0) {
             emotionPrompt = '주어진 음악의 ';
 
             for (let i = 0; i < emotions.length; i++) {
@@ -42,13 +42,13 @@ const PromptDisplay = ({ prompt, setPrompt, changedata, totaldata }) => {
         }
 
 
-        if (newBeats.length !== 0 && originalBeats !== undefined) {
+        if (newBeats!=undefined && newBeats.length !== 0 && originalBeats !== undefined) {
             const beatRatio = newBeats.length / originalBeats.length;
             beatPrompt = `주어진 음악의 시간을 ${beatRatio}배로 늘려줘`;
 
         }
 
-        if (newinstruments.length !== 0 && origininstruments !== undefined) {
+        if (newinstruments!=undefined && newinstruments.length !== 0 && origininstruments !== undefined) {
             const uniqueinstruments = newinstruments.filter(instrument => !origininstruments.includes(instrument));
             instrumentsPrompt = `주어진 음악에 ${uniqueinstruments} 악기를 추가해줘`;
 
