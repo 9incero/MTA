@@ -134,12 +134,11 @@ class MusicVisual extends Component {
         }
 
         if (prevProps.phase != this.props.phase) {
-            console.log('dd', this.props.phase)
+            // console.log('dd', this.props.phase)
         }
         //여기서 가사유무의 대한 예외처리해주면 될듯!
         if (prevProps.totaldata != this.props.totaldata) {
             this.setState({ currentcolor: emotionToColor[this.props.totaldata.Emotions[0]] })
-            console.log(this.props.totaldata.Emotions[0])
 
             this.data = this.props.totaldata.Lyrics;
             this.addData = this.props.totaldata.Pitch;
@@ -193,7 +192,7 @@ class MusicVisual extends Component {
                     }
                     //이거업뎃이안되는듯?
                     this.props.setPhase(phasedata)
-                    console.log(phasedata)
+                    // console.log(phasedata)
                 });
 
 
@@ -265,7 +264,7 @@ class MusicVisual extends Component {
                     }
                     //이거업뎃이안되는듯?
                     this.props.setPhase(phasedata)
-                    console.log(phasedata)
+                    // console.log(phasedata)
                 });
             }
 
@@ -417,13 +416,6 @@ class MusicVisual extends Component {
             return rgb;
         };
 
-        // 예제 사용
-        try {
-            console.log(adjustLuminance('#ff0000', 0.5)); // 밝은 빨간색
-            console.log(adjustLuminance('#ff0000', -0.5)); // 어두운 빨간색
-        } catch (e) {
-            console.error(e.message);
-        }
 
         const noteToColorWithLuminance = (note) => {
             const luminanceMapping = {
@@ -441,7 +433,6 @@ class MusicVisual extends Component {
                 "B": 0.8
             };
             const luminance = luminanceMapping[note];
-            console.log(note)
             return adjustLuminance(this.state.currentcolor, luminance);
         };
 
@@ -564,7 +555,6 @@ class MusicVisual extends Component {
                         .attr('opacity', 1)
                         .datum(this.props.midibeat)
                         .on('click', (e, d) => {
-                            console.log(e, d);
                             d3.select(e.currentTarget).remove(); // 클릭한 요소 제거
                             this.setState((prevState) => ({
                                 savebeat: prevState.savebeat.filter(b => b.time !== d.time)
