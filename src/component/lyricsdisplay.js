@@ -74,62 +74,21 @@ class Vislyrics extends Component {
       if (playtime >= item.start) {
         this.drawLyrics(item);
 
-
-
-        // item.pitch.forEach(p => {
-        //   // prevPitches와 prevTimes에서 이미 존재하는지 확인
-        //   this.setState(prevState => {
-        //     const timeExists = prevState.times.some(existingTime => existingTime === p.start);
-
-        //     if (!timeExists) {
-        //       const updatedPitches = [...prevState.pitches, p.midi_note];
-        //       const updatedTimes = [...prevState.times, p.start];
-
-        //       this.props.setPitch(updatedPitches);
-        //       this.props.setPitchtime(updatedTimes);
-        //       return { pitches: updatedPitches, times: updatedTimes };
-        //     }
-
-        //     return null; // 상태를 변경하지 않음
-        //   }, () => {
-        //     // 상태 업데이트 후에 실행되는 콜백
-        //     console.log('Current state pitches:', this.state.pitches);
-        //     console.log('Current state times:', this.state.times);
-        //     // this.scrollToEnd(); // 필요시 호출
-        //   });
-        // });
-
-
-
-
-
-
       }
 
     });
 
-    // const processedPitches = new Set();
 
-    // pitchData.forEach(pitch => {
-    //   if (playtime >= pitch.start && !processedPitches.has(pitch.start)) {
-    //     // 이미 처리된 피치인지 확인
-    //     processedPitches.add(pitch.start);
-
-    //     console.log('0000000000000000');
-    //     this.props.setPitch(prevPitches => {
-    //       console.log("Previous Pitches:", prevPitches);
-    //       return [...prevPitches, pitch.midi_notes];
-    //     });
-
-    //     this.props.setPitchtime(prevTimes => {
-    //       console.log("Previous Times:", prevTimes);
-    //       return [...prevTimes, pitch.start];
-    //     });
-
-    //     console.log('0000000000000000');
-    //   }
-    // });
   };
+
+
+  measureTextWidth = (text) => {
+    const canvas = document.createElement('canvas');
+    const context = canvas.getContext('2d');
+    context.font = '16px chilled'; // 사용 중인 글꼴과 동일한 글꼴 설정
+    const metrics = context.measureText(text);
+    return metrics.width;
+  }
 
 
 
@@ -162,7 +121,7 @@ class Vislyrics extends Component {
 
     //x축 time으로 지정
     const scaleWidth = 150;
-    const availableWidth = (end - start) * (scaleWidth);
+    const availableWidth = 300; //여기....... 노트참고
 
     const newWord = { phase: phase, start: start, text: word, tendency: this.tendency, targetWidth: availableWidth };
     // console.log(newWord)
@@ -189,25 +148,6 @@ class Vislyrics extends Component {
 
     });
 
-
-    // const { words, setWords } = this.props;
-
-    // // 기존에 같은 start 값을 가진 단어가 있는지 확인
-    // const wordExists = words.some(w => w.start === start);
-
-    // if (wordExists) {
-    //   console.log('Word with the same start time already exists:', newWord);
-    //   return; // 상태를 변경하지 않음
-    // } else {
-    //   console.log('Adding new word:', newWord);
-    //   const updatedWords = [...words, newWord];
-    //   console.log('Updated words:', updatedWords);
-
-    //   // 부모 컴포넌트의 setWords 메서드를 호출하여 상태 업데이트 요청
-    //   setWords(updatedWords);
-    // }
-
-
   }
 
   clearContent = () => {
@@ -226,11 +166,11 @@ class Vislyrics extends Component {
         {/* <div style={{ position: 'absolute', zIndex: 2, top: 60, width: 800 }}> */}
         <div>
           <div ref={this.scrollLyricsRef} style={{
-            justifyContent: 'space-between',
+
             textAlign: 'left', overflow: "auto", scrollbarWidth: 'none', whiteSpace: "nowrap", width: 800, height: 200
           }}>
             <div style={{ marginTop: 100 }}>
-              <div id="target-div" style={{ zIndex: 2 }}>
+              <div id="target-div" >
                 {this.state.words.map((wordObj, index) => (
                   <Loader
                     // opacity={this.props.opacity}

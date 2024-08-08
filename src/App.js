@@ -122,7 +122,7 @@ function App() {
             <Userfile totaldata={totaldata} editnum={editnum} setCnum={setCnum} cnum={cnum} user={user} setUser={setUser}></Userfile>
 
             <Control setInstrumenticon={setInstrumenticon} instrumenticon={instrumenticon} user={user} editnum={editnum} setEditnum={setEditnum} setCnum={setCnum} cnum={cnum} setChangedata={setChangedata} beatlist={beatlist} setPitchlist={setPitchlist} pitchlist={pitchlist} phase={phase} emotionlist={emotionlist} setEmotionlist={setEmotionlist} playtime={playtime} setDuration={setDuration} mockdata={mockdata} setMockdata={setMockdata} totaldata={totaldata} setTotaldata={setTotaldata} setControl={setControl} setTimedata={setTimedata} setAudiourl={setAudiourl} control={control}></Control>
-            <PromptDisplay changedata={changedata}></PromptDisplay>
+            <PromptDisplay totaldata={totaldata} changedata={changedata}></PromptDisplay>
             <HapticComponent beatamp={beatamp} />
 
           </Col>
