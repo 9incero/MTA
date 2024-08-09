@@ -55,6 +55,7 @@ const PromptDisplay = ({ prompt, setPrompt, changedata, totaldata }) => {
         if (newinstruments!=undefined && newinstruments.length !== 0 && origininstruments !== undefined) {
             const uniqueinstruments = newinstruments.filter(instrument => !origininstruments.includes(instrument));
             instrumentsPrompt = `주어진 음악에 ${uniqueinstruments} 악기를 추가해줘`;
+            metaCodes = metaCodes.concat(uniqueinstruments);
         }
 
         // make metaCodes list to string
