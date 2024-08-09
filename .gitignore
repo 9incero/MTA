@@ -12,6 +12,7 @@
 /build
 
 # misc
+.ideat lo
 .DS_Store
 .env.local
 .env.development.local
