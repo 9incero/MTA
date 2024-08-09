@@ -25,7 +25,7 @@ class Control extends Component {
         this.currentphase = 0
         this.state = {
             // 여긴 현재만 저장!
-            pitch_value: 'dd',
+            pitch_value: '음정',
             volume_value: 50,
             font_value: this.props.totaldata.Emotions[0],
         };
@@ -233,9 +233,9 @@ class Control extends Component {
     render() {
         return (
 
-            <div style={{ width: '100%' }}>
+            <div >
 
-                <Card style={{ width: '100%', padding: '10px' }}>
+                <Card style={{ width: '90%', padding: '10px', marginLeft: 10, }}>
 
                     <Tabs
                         defaultActiveKey="음악정보입력"
@@ -247,14 +247,14 @@ class Control extends Component {
                         </Tab>
 
                         {/* test */}
-                        <Tab eventKey="total" title="음악편집">
+                        <Tab eventKey="음악편집" title="음악편집">
                             <div style={{ alignItems: 'center', marginBottom: '1rem' }}>
                                 <InstrumentPicker instrumenticon={this.props.instrumenticon} setInstrumenticon={this.props.setInstrumenticon}></InstrumentPicker>
 
                             </div>
-                            <div style={{ alignItems: 'center', justifyContent: 'space-around', marginBottom: '1rem' }}>
-
-                                <DropdownButton id="dropdown-basic-button" title="감정">
+                            <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', marginBottom: '1rem' }}>
+                                <span>감정 선택: </span>
+                                <DropdownButton id="dropdown-basic-button" title={this.state.font_value}>
                                     <Dropdown.Item style={{ fontFamily: 'aggressive', fontSize: '16px' }} onClick={() => this.handleChange({ target: { value: 'aggressive' } }, 'font_value')}>
                                         <span>공격적인</span>
                                         <span style={{ color: '#FF0000', marginLeft: '5px' }}>●</span>
@@ -312,9 +312,10 @@ class Control extends Component {
                             </div>
 
 
-                            <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-around', marginBottom: '1rem' }}>
+                            <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', marginBottom: '1rem' }}>
+                                <span>음정 선택: </span>
 
-                                <DropdownButton id="dropdown-basic-button" title="음정">
+                                <DropdownButton id="dropdown-basic-button" title={this.state.pitch_value}>
                                     <Dropdown.Item onClick={() => this.handleChange({ target: { value: '단순한' } }, 'pitch_value')}>단순한</Dropdown.Item>
                                     <Dropdown.Item onClick={() => this.handleChange({ target: { value: '복잡한' } }, 'pitch_value')}>복잡한</Dropdown.Item>
                                     <Dropdown.Item onClick={() => this.handleChange({ target: { value: '고조되는' } }, 'pitch_value')}>고조되는</Dropdown.Item>

@@ -1,6 +1,8 @@
 import React, { useEffect, useState } from 'react';
 import { GiGuitar, GiGrandPiano, GiViolin, GiHarp, GiDrum, GiFlute, GiSaxophone } from "react-icons/gi";
 import { PiGuitar, PiBellFill } from "react-icons/pi";
+import Button from 'react-bootstrap/Button';
+
 
 const icons = [
     { id: 'acousticGuitar', component: <PiGuitar /> },
@@ -77,9 +79,9 @@ const InstrumentPicker = ({ setInstrumenticon, instrumenticon }) => {
 
     return (
         <div style={containerStyle}>
-            <button onClick={handleButtonClick}>
-                {isPickerVisible ? '닫기' : '악기 선택'}
-            </button>
+
+            <Button onClick={handleButtonClick} >{isPickerVisible ? '닫기' : '악기 선택'}</Button>{' '}
+
             {isPickerVisible && (
                 <div style={iconListStyle}>
                     {icons.map((icon) => (

@@ -152,10 +152,12 @@ class Fileloader extends Component {
         <Form.Control as="textarea" name="content" onChange={this.handleTextChange}
           value={this.state.textvalue} placeholder='가사를 넣어주세요.' rows={10} />
         <input type="file" ref={this.fileInput} onChange={this.handleClick} style={{ display: "none" }} />
-        <Button style={{ width: '100%', marginTop: '10px', borderColor: 'black', color: 'black', backgroundColor: 'lightskyblue' }} onClick={this.fileinputclick}>음악 업로드</Button>{' '}
         {/* </Card> */}
-        <button onClick={this.handleButtonClick}>test</button>
-        <button onClick={this.redoButtonClick}>불러오기</button>
+        <Button style={{ width: '100%', marginTop: '10px', borderColor: 'black', color: 'black', backgroundColor: 'lightskyblue' }} onClick={this.fileinputclick}>음악 업로드</Button>{' '}
+        <Button style={{ width: '100%', marginTop: '10px', borderColor: 'black', color: 'black', backgroundColor: 'lightskyblue' }} onClick={this.redoButtonClick}>불러오기</Button>{' '}
+
+        {/* <button onClick={this.handleButtonClick}>test</button> */}
+        {/* <button onClick={this.redoButtonClick}>불러오기</button> */}
 
         <Modal show={this.state.show}>
           <Modal.Header closeButton>

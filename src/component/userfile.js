@@ -1,25 +1,28 @@
 import React, { Component } from 'react';
 import Dropdown from 'react-bootstrap/Dropdown';
 import DropdownButton from 'react-bootstrap/DropdownButton';
+import Button from 'react-bootstrap/Button';
+
 
 class Userfile extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            buttonText: 'start',
+            buttonText: '시작',
             time: 0,
             isActive: false,
-            participant: '',
+            participant: '실험자',
+
         };
         this.interval = null;
     }
 
     handleButtonClick = () => {
         this.setState(prevState => {
-            if (prevState.buttonText === 'start') {
-                return { buttonText: 'end', isActive: true };
+            if (prevState.buttonText === '시작') {
+                return { buttonText: '끝', isActive: true };
             } else {
-                return { buttonText: 'start', isActive: false };
+                return { buttonText: '시작', isActive: false };
             }
         });
     };
@@ -95,8 +98,8 @@ class Userfile extends Component {
         const names = ['황진', '정유진', '서문영', '허성지', '박신식', '임상희', '이태헌', '윤철희', '김호성'];
 
         return (
-            <div>
-                <DropdownButton id="dropdown-basic-button" title="실험자">
+            <div style={{ display: 'flex' }}>
+                <DropdownButton id="dropdown-basic-button" title={this.state.participant}>
                     {names.map((name, index) => (
                         <Dropdown.Item
                             key={index}
@@ -106,8 +109,8 @@ class Userfile extends Component {
                         </Dropdown.Item>
                     ))}
                 </DropdownButton>
+                <Button onClick={this.handleButtonClick} style={{ marginLeft: 5, borderColor: 'black', color: 'black', backgroundColor: 'lightskyblue' }}>{buttonText}</Button>{' '}
 
-                <button onClick={this.handleButtonClick}>{buttonText}</button>
             </div>
         );
     }

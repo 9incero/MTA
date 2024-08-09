@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from 'react';
+import Button from 'react-bootstrap/Button';
 
 const HapticComponent = ({ beatamp }) => {
     const [amp, setAmp] = useState(50);
@@ -28,7 +29,7 @@ const HapticComponent = ({ beatamp }) => {
         }
 
         if (hapticDevices.length === 0) {
-            // console.log('연결된 햅틱 장치가 없습니다.');
+            console.log('연결된 햅틱 장치가 없습니다.');
             return;
         }
 
@@ -135,8 +136,12 @@ const HapticComponent = ({ beatamp }) => {
             <button onClick={() => handleHapticPlay(195)}>Play2</button>
             <button onClick={() => handleHapticPlay(254)}>Play3</button>
             <button onClick={() => handleHapticPlay(330)}>Play4</button> */}
-            <button onClick={requestHapticDevice}>햅틱기기 연결</button>
-            <button onClick={() => disconnectHapticDevice(hapticDevices[0]?.device.id)}>햅틱 해제</button>
+            <Button onClick={requestHapticDevice} style={{ borderColor: 'black', color: 'black', backgroundColor: 'lightskyblue' }}>햅틱 연결</Button>{' '}
+
+            <Button onClick={() => disconnectHapticDevice(hapticDevices[0]?.device.id)} style={{ borderColor: 'black', color: 'black', backgroundColor: 'lightskyblue' }}>햅틱 해제</Button>{' '}
+
+            {/* <button onClick={requestHapticDevice}>햅틱기기 연결</button>
+            <button onClick={() => disconnectHapticDevice(hapticDevices[0]?.device.id)}>햅틱 해제</button> */}
         </div>
     );
 };

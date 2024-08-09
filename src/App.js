@@ -8,10 +8,11 @@ import Vislyrics from './component/lyricsdisplay';
 import TimelineEditor from './component/timeline/main';
 import MusicVisual from './component/musicdisplay';
 import 'bootstrap/dist/css/bootstrap.css';
-import { Container, Row, Col } from 'react-bootstrap';
+import { Container, Row, Col, CardBody } from 'react-bootstrap';
 // import { scale } from './component/timeline/mock';
 import ToggleButton from 'react-bootstrap/ToggleButton';
 import ToggleButtonGroup from 'react-bootstrap/ToggleButtonGroup';
+import Card from 'react-bootstrap/Card';
 import MidiBeatMaker from './component/beatdisplay';
 import HapticComponent from './component/hapticplay';
 import PromptDisplay from './component/propmtdisplay';
@@ -82,7 +83,7 @@ function App() {
 
   return (
     <div className="App">
-      <Container fluid>
+      <Container fluid className="p-0">
         <Row>
           <Col md={3} style={{
             backgroundColor: 'lightblue', height: '100vh', margin: 0, padding: 0
@@ -91,27 +92,33 @@ function App() {
             <iframe src={path.gradio_path} width='100%' height='100%' style={{ overflowX: 'scroll', overflowY: 'scroll' }}></iframe>
 
           </Col>
-          <Col md={6} style={{ padding: '20px' }}>
-            <Row style={{ height: '70%', backgroundColor: '#e8e8e8' }}>
-              <Col>
-                <div>
-                  <div>
-                    선택악기:
-                    {instrumenticon.map((iconId) => (
-                      <span key={iconId} style={{ margin: '0 5px' }}>
-                        {icons.find((icon) => icon.id === iconId).component}
-                      </span>
-                    ))}
-                  </div>
-                  <span>pitch 변경사항: {control.pitch_value}</span>
 
-                </div>
+          <Col md={6} style={{ marginBottom: '20px' }}>
+
+            <Row style={{ height: '65vh', backgroundColor: '#e8e8e8' }}>
+              <Col>
+                <Card style={{ display: 'flex' }}>
+                  <CardBody style={{ padding: 0, margin: 0 }}>
+                    <span style={{ marginRight: 150 }}>음정 변경: {control.pitch_value}</span>
+
+                    <span>
+                      선택 악기:
+                      {instrumenticon.map((iconId) => (
+                        <span key={iconId} style={{ margin: '0 5px', fontSize: '20px' }}>
+                          {icons.find((icon) => icon.id === iconId).component}
+                        </span>
+                      ))}
+                    </span>
+                  </CardBody>
+
+                </Card>
+
                 <Vislyrics totaldata={totaldata} setPitchtime={setPitchtime} pitchtime={pitchtime} pitch={pitch} setPitch={setPitch} opacity={opacity} setOpacity={setOpacity} control={control} words={words} setWords={setWords} left={left} setLeft={setLeft} playtime={playtime} setPlaytime={setPlaytime} />
                 <MusicVisual phase={phase} currentemotion={currentemotion} emotionlist={emotionlist} setEmotionlist={setEmotionlist} beatlist={beatlist} setBeatlist={setBeatlist} setPhase={setPhase} midibeat={midibeat} setBeatamp={setBeatamp} totaldata={totaldata} control={control} setOpacity={setOpacity} opacity={opacity} playtime={playtime} pitches={pitch} times={pitchtime}></MusicVisual>
 
               </Col>
             </Row>
-            <Row style={{ height: '30%' }}>
+            <Row style={{ height: '35vh' }}>
               <Col style={{ padding: 0, margin: 0 }}>
                 {/* 중앙 아래쪽 작은 컬럼 */}
                 <TimelineEditor duration={duration} mockdata={mockdata} setMockdata={setMockdata} totaldata={totaldata} control={control} timedata={timedata} setAudiourl={setAudiourl} audiourl={audiourl} setLeft={setLeft} setPlaytime={setPlaytime}></TimelineEditor>
@@ -119,13 +126,27 @@ function App() {
               </Col>
             </Row>
           </Col>
-          <Col md={2} style={{ height: '100vh', margin: 0, padding: 0 }}>
-            {/* 오른쪽 큰 컬럼 */}
-            <Userfile totaldata={totaldata} editnum={editnum} setCnum={setCnum} cnum={cnum} user={user} setUser={setUser}></Userfile>
 
-            <Control currentemotion={currentemotion} setCurrentemotion={setCurrentemotion} setPlaytime={setPlaytime} setPrompt={setPrompt} setInstrumenticon={setInstrumenticon} instrumenticon={instrumenticon} user={user} editnum={editnum} setEditnum={setEditnum} setCnum={setCnum} cnum={cnum} setChangedata={setChangedata} beatlist={beatlist} setPitchlist={setPitchlist} pitchlist={pitchlist} phase={phase} emotionlist={emotionlist} setEmotionlist={setEmotionlist} playtime={playtime} setDuration={setDuration} mockdata={mockdata} setMockdata={setMockdata} totaldata={totaldata} setTotaldata={setTotaldata} setControl={setControl} setTimedata={setTimedata} setAudiourl={setAudiourl} control={control}></Control>
-            <PromptDisplay prompt={prompt} setPrompt={setPrompt} totaldata={totaldata} changedata={changedata}></PromptDisplay>
-            <HapticComponent beatamp={beatamp} />
+          <Col md={3} style={{ margin: 0, padding: 0, }}>
+            {/* 오른쪽 큰 컬럼 */}
+            <Row style={{ height: '5vh', margin: 0, padding: 0 }}>
+              <Col md={6}>
+                <Userfile totaldata={totaldata} editnum={editnum} setCnum={setCnum} cnum={cnum} user={user} setUser={setUser}></Userfile>
+              </Col>
+              <Col md={6}>
+                <HapticComponent beatamp={beatamp} />
+              </Col>
+
+
+            </Row>
+            <Row style={{ height: '60vh' }}>
+              <Control currentemotion={currentemotion} setCurrentemotion={setCurrentemotion} setPlaytime={setPlaytime} setPrompt={setPrompt} setInstrumenticon={setInstrumenticon} instrumenticon={instrumenticon} user={user} editnum={editnum} setEditnum={setEditnum} setCnum={setCnum} cnum={cnum} setChangedata={setChangedata} beatlist={beatlist} setPitchlist={setPitchlist} pitchlist={pitchlist} phase={phase} emotionlist={emotionlist} setEmotionlist={setEmotionlist} playtime={playtime} setDuration={setDuration} mockdata={mockdata} setMockdata={setMockdata} totaldata={totaldata} setTotaldata={setTotaldata} setControl={setControl} setTimedata={setTimedata} setAudiourl={setAudiourl} control={control}></Control>
+
+            </Row>
+            <Row style={{ height: '35vh' }}>
+              <PromptDisplay prompt={prompt} setPrompt={setPrompt} totaldata={totaldata} changedata={changedata}></PromptDisplay>
+
+            </Row>
 
           </Col>
         </Row>
