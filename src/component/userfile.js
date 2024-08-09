@@ -45,7 +45,7 @@ class Userfile extends Component {
                 const endJson = {
                     User: this.props.user,
                     Time: this.state.time,
-                    Creation: this.props.createnum,
+                    Creation: this.props.cnum,
                     Edit: this.props.editnum,
                     Result: this.props.totaldata
                 }
