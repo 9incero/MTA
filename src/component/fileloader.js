@@ -4,8 +4,8 @@ import Button from 'react-bootstrap/Button';
 import Form from 'react-bootstrap/Form';
 import axios from "axios"
 //여기에 사용자 마지막 생성한 파일
-import test from '../assets/musicdata/music.wav.json'
-import log from '../assets/log/logtest.json'
+import test from '../assets/log/황진endlog.json'
+import log from '../assets/log/황진log(7).json'
 import env from '../assets/env.json'
 import Modal from 'react-bootstrap/Modal';
 
@@ -19,6 +19,7 @@ class Fileloader extends Component {
       textvalue: '',
       audioSrc: '',
       show: false,
+      redo: false,
     };
     this.fileInput = createRef();
   }
@@ -41,39 +42,47 @@ class Fileloader extends Component {
       this.calculateAudioDuration(url)
 
     }
-    const fname = this.fileInput.current.files[0].name
-    console.log('fname ', fname)
-    //다른 노트북으로 실험시 여기 url 고치기
-    const data = {
-      url: env.data_path + fname,
-      lyrics: this.state.textvalue
-    };
 
-    axios.post('http://127.0.0.1:5001/analysis', data)
-      .then((response) => {
-        console.log(response.data);
-        this.props.setTotaldata({
-          BPM: '',
-          Beat_amplitude: [],
-          Emotions: [],
-          Instruments: [],
-          Lyrics: [],
-          Pitch: []
-        }
+    if (this.state.redo === true) {
+      this.redoButtonClick()
+    }
+    else {
 
-        )
+      const fname = this.fileInput.current.files[0].name
+      console.log('fname ', fname)
+      //다른 노트북으로 실험시 여기 url 고치기
+      const data = {
+        url: env.data_path + fname,
+        lyrics: this.state.textvalue
+      };
 
-        this.props.setCnum(this.props.cnum + 1)
-        this.props.setTotaldata({ ...response.data })
-        console.log(this.props.totaldata)
-        this.setState({ show: true })
+      axios.post('http://127.0.0.1:5001/analysis', data)
+        .then((response) => {
+          console.log(response.data);
+          this.props.setTotaldata({
+            BPM: '',
+            Beat_amplitude: [],
+            Emotions: [],
+            Instruments: [],
+            Lyrics: [],
+            Pitch: []
+          }
+
+          )
+
+          this.props.setCnum(this.props.cnum + 1)
+          this.props.setTotaldata({ ...response.data })
+          console.log(this.props.totaldata)
+          this.setState({ show: true })
 
 
 
-      })
-      .catch((error) => {
-        console.log('Error!', error);
-      });
+        })
+        .catch((error) => {
+          console.log('Error!', error);
+        });
+
+    }
 
 
 
@@ -117,23 +126,36 @@ class Fileloader extends Component {
     this.props.setPrompt('')
   };
 
+  redoClick = () => {
+    this.setState({ redo: true });
+
+    this.fileInput.current.click();
+
+  }
 
   redoButtonClick = () => {
+    console.log(log.Beat)
+    console.log(test.Lyrics)
+
+
 
     // this.props.setTotaldata({ ...test });
     this.props.setTotaldata(prevState => ({
-      BPM: test.BPM,
+      BPM: test.Result.BPM,
       Beat_amplitude: log.Beat,
-      Emotions: test.Emotions,
+      Emotions: test.Result.Emotions,
       Instruments: log.Instruments,
-      Lyrics: test.Lyrics,
-      Pitch: test.Pitch
+      Lyrics: test.Result.Lyrics,
+      Pitch: test.Result.Pitch
     }));
     const emotionsArray = log.Emotions.map(emotion => [emotion.start, emotion.end, emotion.emotions]);
     const pitchArray = log.Pitch.map(pitch => [pitch.start, pitch.end, pitch.meta_tag]);
 
     this.props.setEmotionlist([...emotionsArray])
     this.props.setPitchlist([...pitchArray])
+    this.setState({ redo: false });
+
+
 
   }
 
@@ -154,7 +176,7 @@ class Fileloader extends Component {
         <input type="file" ref={this.fileInput} onChange={this.handleClick} style={{ display: "none" }} />
         {/* </Card> */}
         <Button style={{ width: '100%', marginTop: '10px', borderColor: 'black', color: 'black', backgroundColor: 'lightskyblue' }} onClick={this.fileinputclick}>음악 업로드</Button>{' '}
-        <Button style={{ width: '100%', marginTop: '10px', borderColor: 'black', color: 'black', backgroundColor: 'lightskyblue' }} onClick={this.redoButtonClick}>불러오기</Button>{' '}
+        <Button style={{ width: '100%', marginTop: '10px', borderColor: 'black', color: 'black', backgroundColor: 'lightskyblue' }} onClick={this.redoClick}>불러오기</Button>{' '}
 
         {/* <button onClick={this.handleButtonClick}>test</button> */}
         {/* <button onClick={this.redoButtonClick}>불러오기</button> */}
