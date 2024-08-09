@@ -42,6 +42,9 @@ class Fileloader extends Component {
       this.calculateAudioDuration(url)
 
     }
+    this.props.setEmotionlist([])
+    this.props.setPitchlist([])
+    this.props.setPrompt('')
 
     if (this.state.redo === true) {
       this.redoButtonClick()
