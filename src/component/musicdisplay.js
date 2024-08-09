@@ -392,7 +392,15 @@ class MusicVisual extends Component {
             .domain([d3.min(pitches), d3.max(pitches)]);
 
 
+        const mapAmplitudeToSize = (amplitude) => {
+            const minAmplitude = 0;
+            const maxAmplitude = 1;
+            const minSize = 15;
+            const maxSize = 40;
 
+            // 선형 변환
+            return minSize + (amplitude - minAmplitude) * (maxSize - minSize) / (maxAmplitude - minAmplitude);
+        };
         const adjustLuminance = (hex, luminance) => {
             // hex가 문자열인지 확인
             if (typeof hex !== 'string') {
@@ -470,7 +478,7 @@ class MusicVisual extends Component {
         const color = noteToColorWithLuminance(pitchToNote(Math.floor(interpolatedPitch)))
         const radius = this.mapRange(this.props.control.volume_value, 0, 100, 1, 30);
         const yRadius = this.mapRange(this.props.control.volume_value, 0, 100, 20, 80); // pitch_value를 사용하여 y 반지름 설정
-        const size = this.mapRange(this.props.control.volume_value, 0, 100, 1, 30);
+        let size = 50
 
         // if (this.control.shape_value === 1) {
         svg.append('circle')
@@ -497,8 +505,12 @@ class MusicVisual extends Component {
                 // console.log("clear", playtime)
                 changeflag = 0
             }
+            // size=beat.Beat_amplitude*
             if (playtime >= beat.time) {
+                size = mapAmplitudeToSize(beat.amplitude);
+                console.log(size)
                 if (playtime < this.state.currentbeattime) {
+
                     svg.append('rect')
                         .attr('x', xScale(beat.time))
                         .attr('y', 0)
