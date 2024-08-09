@@ -231,6 +231,22 @@ class Control extends Component {
 
     }
     render() {
+        const emotionToko = {
+            'aggressive': '공격적인',
+            'calm': '차분한',
+            'chilled': '차가운',
+            'dark': '어두운',
+            'energetic': '활기찬',
+            'epic': '웅장한',
+            'happy': '행복한',
+            'romantic': '로맨틱한',
+            'sad': '슬픈',
+            'scary': '무서운',
+            'sexy': '섹시한',
+            'ethereal': '미묘한',
+            'uplifting': '희망적인'
+
+        }
         return (
 
             <div >
@@ -254,7 +270,7 @@ class Control extends Component {
                             </div>
                             <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', marginBottom: '1rem' }}>
                                 <span>감정 선택: </span>
-                                <DropdownButton id="dropdown-basic-button" title={this.state.font_value}>
+                                <DropdownButton id="dropdown-basic-button" title={emotionToko[this.state.font_value] || '감정'}>
                                     <Dropdown.Item style={{ fontFamily: 'aggressive', fontSize: '16px' }} onClick={() => this.handleChange({ target: { value: 'aggressive' } }, 'font_value')}>
                                         <span>공격적인</span>
                                         <span style={{ color: '#FF0000', marginLeft: '5px' }}>●</span>

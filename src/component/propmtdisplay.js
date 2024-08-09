@@ -9,6 +9,23 @@ const PromptDisplay = ({ prompt, setPrompt, changedata, totaldata }) => {
     let pitchPrompt = '';
     let metaCodes = [];
 
+    const emotionToko = {
+        'aggressive': '공격적인',
+        'calm': '차분한',
+        'chilled': '차가운',
+        'dark': '어두운',
+        'energetic': '활기찬',
+        'epic': '웅장한',
+        'happy': '행복한',
+        'romantic': '로맨틱한',
+        'sad': '슬픈',
+        'scary': '무서운',
+        'sexy': '섹시한',
+        'ethereal': '미묘한',
+        'uplifting': '희망적인'
+
+    }
+
     useEffect(() => {
         setPrompt('')
     }, [totaldata])
@@ -39,8 +56,8 @@ const PromptDisplay = ({ prompt, setPrompt, changedata, totaldata }) => {
 
             for (let i = 0; i < emotions.length; i++) {
                 emotionPrompt += `${emotions[i].start}에서 ${emotions[i].end}구간의 감정을 ${emotions[i].emotions} 느낌으로, `;
-                if (!metaCodes.includes(emotions[i].emotions)) {
-                    metaCodes.push(emotions[i].emotions);
+                if (!metaCodes.includes(emotionToko[emotions[i].emotions])) {
+                    metaCodes.push(emotionToko[emotions[i].emotions]);
                 }
             }
             emotionPrompt += '재생성해줘';
