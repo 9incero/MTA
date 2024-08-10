@@ -99,12 +99,12 @@ function App() {
               <Col>
                 <Card style={{ display: 'flex' }}>
                   <CardBody style={{ padding: 0, margin: 0 }}>
-                    <span style={{ marginRight: 150 }}>음정 변경: {control.pitch_value}</span>
+                    <span style={{ fontSize: '30px', marginRight: 150 }}>음정 변경: {control.pitch_value}</span>
 
-                    <span>
+                    <span style={{ fontSize: '30px' }}>
                       선택 악기:
                       {instrumenticon.map((iconId) => (
-                        <span key={iconId} style={{ margin: '0 5px', fontSize: '20px' }}>
+                        <span key={iconId} style={{ margin: '0 5px', fontSize: '30px' }}>
                           {icons.find((icon) => icon.id === iconId).component}
                         </span>
                       ))}
