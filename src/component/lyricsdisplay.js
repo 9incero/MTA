@@ -138,9 +138,9 @@ class Vislyrics extends Component {
     const lyricslen = this.countCharacters([{ word: lyricsPhaseData.lyrics }]);
 
     // x축 time으로 지정
-    const scaleWidth = 150;
-    const availableWidth = (800 - (30 * lyricslen.charCount + 30 * lyricslen.spaceCount - 30)) / lyricslen.wordCount;
-
+    const scaleWidth = 1000;
+    // const availableWidth = (800 - (30 * lyricslen.charCount + 30 * lyricslen.spaceCount - 30)) / lyricslen.wordCount;
+    const availableWidth = 250
     const newWord = { phase: phase, start: start, text: word, tendency: this.tendency, targetWidth: availableWidth };
     this.setState((prevState) => {
       const wordExists = prevState.words.some(word => word.start === start);
@@ -165,9 +165,9 @@ class Vislyrics extends Component {
       <div style={{ display: 'flex', justifyContent: 'space-between' }}>
         <div>
           <div ref={this.scrollLyricsRef} style={{
-            textAlign: 'left', overflow: "auto", scrollbarWidth: 'none', whiteSpace: "nowrap", width: 800, height: 200
+            textAlign: 'left', overflow: "auto", scrollbarWidth: 'none', whiteSpace: "nowrap", width: 900, height: 200
           }}>
-            <div style={{ marginTop: 100 }}>
+            <div style={{ marginTop: 70 }}>
               <div id="target-div">
                 {this.state.words.map((wordObj, index) => (
                   <Loader

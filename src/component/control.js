@@ -13,7 +13,7 @@ import Fileloader from './fileloader';
 import './modulestyle/font.css'
 import { toHaveStyle } from '@testing-library/jest-dom/matchers';
 import InstrumentPicker from './Instrumentpicker';
-
+import buttonbackground from '../img/btn_재생성etc@3x.png'
 
 
 
@@ -272,56 +272,56 @@ class Control extends Component {
                                 <span>감정 선택: </span>
                                 <DropdownButton id="dropdown-basic-button" title={emotionToko[this.state.font_value] || '감정'}>
                                     <Dropdown.Item style={{ fontFamily: 'aggressive', fontSize: '16px' }} onClick={() => this.handleChange({ target: { value: 'aggressive' } }, 'font_value')}>
-                                        <span>공격적인</span>
+                                        <span >Aggressive</span>
                                         <span style={{ color: '#FF0000', marginLeft: '5px' }}>●</span>
                                     </Dropdown.Item>
                                     <Dropdown.Item style={{ fontFamily: 'calm', fontSize: '16px' }} onClick={() => this.handleChange({ target: { value: 'calm' } }, 'font_value')}>
-                                        <span style={{ fontSize: '16px' }}>차분한</span>
+                                        <span style={{ fontSize: '18px' }}>Calm</span>
                                         <span style={{ color: '#87CEEB', marginLeft: '5px' }}>●</span>
                                     </Dropdown.Item>
                                     <Dropdown.Item style={{ fontFamily: 'chilled' }} onClick={() => this.handleChange({ target: { value: 'chilled' } }, 'font_value')}>
-                                        <span>차가운</span>
+                                        <span>Chilled</span>
                                         <span style={{ color: '#E0FFFF', marginLeft: '5px' }}>●</span>
                                     </Dropdown.Item>
                                     <Dropdown.Item style={{ fontFamily: 'dark' }} onClick={() => this.handleChange({ target: { value: 'dark' } }, 'font_value')}>
-                                        <span>어두운</span>
+                                        <span>Dark</span>
                                         <span style={{ color: '#2F4F4F', marginLeft: '5px' }}>●</span>
                                     </Dropdown.Item>
                                     <Dropdown.Item style={{ fontFamily: 'energetic' }} onClick={() => this.handleChange({ target: { value: 'energetic' } }, 'font_value')}>
-                                        <span>활기찬</span>
+                                        <span>Energetic</span>
                                         <span style={{ color: '#FFA500', marginLeft: '5px' }}>●</span>
                                     </Dropdown.Item>
                                     <Dropdown.Item style={{ fontFamily: 'epic' }} onClick={() => this.handleChange({ target: { value: 'epic' } }, 'font_value')}>
-                                        <span>웅장한</span>
+                                        <span style={{ fontSize: '25px' }}>Epic</span>
                                         <span style={{ color: '#8A2BE2', marginLeft: '5px' }}>●</span>
                                     </Dropdown.Item>
                                     <Dropdown.Item style={{ fontFamily: 'happy' }} onClick={() => this.handleChange({ target: { value: 'happy' } }, 'font_value')}>
-                                        <span>행복한</span>
+                                        <span>Happy</span>
                                         <span style={{ color: '#FFFF00', marginLeft: '5px' }}>●</span>
                                     </Dropdown.Item>
                                     <Dropdown.Item style={{ fontFamily: 'romantic' }} onClick={() => this.handleChange({ target: { value: 'romantic' } }, 'font_value')}>
-                                        <span>로맨틱한</span>
+                                        <span style={{ fontSize: '30px', marginTop: 0 }}>Romantic</span>
                                         <span style={{ color: '#FF69B4', marginLeft: '5px' }}>●</span>
 
                                     </Dropdown.Item>
                                     <Dropdown.Item style={{ fontFamily: 'sad' }} onClick={() => this.handleChange({ target: { value: 'sad' } }, 'font_value')}>
-                                        <span>슬픈</span>
+                                        <span style={{ fontSize: '25px' }} >Sad</span>
                                         <span style={{ color: '#4682B4', marginLeft: '5px' }}>●</span>
                                     </Dropdown.Item>
                                     <Dropdown.Item style={{ fontFamily: 'scary' }} onClick={() => this.handleChange({ target: { value: 'scary' } }, 'font_value')}>
-                                        <span>무서운</span>
+                                        <span style={{ fontSize: '25px' }}>Scary</span>
                                         <span style={{ color: '#800000', marginLeft: '5px' }}>●</span>
                                     </Dropdown.Item>
                                     <Dropdown.Item style={{ fontFamily: 'sexy' }} onClick={() => this.handleChange({ target: { value: 'sexy' } }, 'font_value')}>
-                                        <span>섹시한</span>
+                                        <span style={{ fontSize: '25px' }} >Sexy</span>
                                         <span style={{ color: '#FF1493', marginLeft: '5px' }}>●</span>
                                     </Dropdown.Item>
                                     <Dropdown.Item style={{ fontFamily: 'ethereal' }} onClick={() => this.handleChange({ target: { value: 'ethereal' } }, 'font_value')}>
-                                        <span>미묘한</span>
+                                        <span style={{ fontSize: '25px' }}>Ethereal</span>
                                         <span style={{ color: '#d3ade5', marginLeft: '5px' }}>●</span>
                                     </Dropdown.Item>
                                     <Dropdown.Item style={{ fontFamily: 'uplifting' }} onClick={() => this.handleChange({ target: { value: 'uplifting' } }, 'font_value')}>
-                                        <span>희망적인</span>
+                                        <span>Uplifting</span>
                                         <span style={{ color: '#00FF00', marginLeft: '5px' }}>●</span>
                                     </Dropdown.Item>
                                 </DropdownButton>
@@ -365,7 +365,11 @@ class Control extends Component {
 
 
 
-                            <Button onClick={this.exportValue} style={{ width: '100%', marginTop: '10px', borderColor: 'black', color: 'black', backgroundColor: 'lightskyblue' }}>재생성</Button>{' '}
+                            <Button onClick={this.exportValue} style={{
+                                width: '100%', marginTop: '10px', backgroundColor: 'white', color: 'black', border: 'none', backgroundImage: 'url(' + buttonbackground
+                                    + ')', backgroundSize: '100% 100%',
+                                backgroundRepeat: 'no-repeat'
+                            }}>재생성</Button>{' '}
 
                         </Tab>
 

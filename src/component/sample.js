@@ -197,7 +197,7 @@ const Loader = ({ text = '', tendency, targetWidth, control, opacity }) => {
         fontWeight: mapRange(control.volume_value, 0, 100, 100, 900),
         width: targetWidth,
         // whiteSpace: 'normal',
-        marginLeft: '30px',
+        marginLeft: '20px',
         fontFamily: fontFamily
 
       }}
@@ -207,7 +207,7 @@ const Loader = ({ text = '', tendency, targetWidth, control, opacity }) => {
         <span
           key={index}
           style={{
-            fontSize: '30px',
+            fontSize: '45px',
             fontWeight: 700,
             color: control.color_value,
             opacity: opacity, //이거 정규화해서 쓸지 말지 결정

@@ -490,14 +490,14 @@ class MusicVisual extends Component {
 
         const currentBeatData = this.state.savebeat.filter(beat => beat.time <= times[times.length - 1] && beat.time > times[0]);
 
-        // 비트 값의 평균 계산
-        const averageAmplitude = currentBeatData.reduce((sum, beat) => sum + beat.amplitude, 0) / currentBeatData.length;
+        // // 비트 값의 평균 계산
+        // const averageAmplitude = currentBeatData.reduce((sum, beat) => sum + beat.amplitude, 0) / currentBeatData.length;
 
-        // 평균 이상인 비트만 필터링
-        const filteredBeatData = currentBeatData.filter(beat => beat.amplitude >= averageAmplitude);
+        // // 평균 이상인 비트만 필터링
+        // const filteredBeatData = currentBeatData.filter(beat => beat.amplitude >= averageAmplitude);
         // console.log(currentBeatData)
         // 수직선을 추가하는 함수
-        filteredBeatData.forEach(beat => {
+        currentBeatData.forEach(beat => {
             if (changeflag === 1) {
                 // svg.selectAll('line').remove();
                 svg.selectAll('rect').remove();

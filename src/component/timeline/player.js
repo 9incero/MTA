@@ -3,7 +3,8 @@ import { Select } from 'antd';
 import React, { useEffect, useState, useRef } from 'react';
 import lottieControl from './lottieControl';
 import { scale, scaleWidth, startLeft } from './mock';
-
+import timebackground from '../../img/btn_time@3x.png'
+import playbackground from '../../img/btn_악기선택활성화@3x.png'
 const { Option } = Select;
 export const Rates = [0.2, 0.5, 1.0, 1.5, 2.0];
 
@@ -117,14 +118,24 @@ const TimelinePlayer = ({ control, audiourl, setAudiourl, timelineState, autoScr
     };
 
     return (
-        <div className="timeline-player" style={{}}>
+        <div className="timeline-player">
             <div>
                 <audio ref={audioRef} controls src={audiourl} hidden="hidden" />
             </div>
-            <span className="play-control" onClick={handlePlayOrPause}>
-                {isPlaying ? <PauseOutlined /> : <CaretRightOutlined />}
-            </span>
-            <span className="time">{timeRender(time)}</span>
+            <div style={{ padding: '5px' }}>
+                <span className="play-control" onClick={handlePlayOrPause} style={{
+                    backgroundImage: 'url(' + playbackground
+                        + ')', backgroundSize: '100% 100%',
+                    backgroundRepeat: 'no-repeat', fontSize: '20px', padding: '2px', marginRight: '10px'
+                }}>
+                    {isPlaying ? <PauseOutlined /> : <CaretRightOutlined />}
+                </span>
+                <span style={{
+                    backgroundImage: 'url(' + timebackground
+                        + ')', backgroundSize: '100% 100%',
+                    backgroundRepeat: 'no-repeat', fontSize: "20px", height: '100%', padding: '3px'
+                }} className="time">{timeRender(time)}</span>
+            </div>
             <div className="rate-control">
                 {/* <Select size={'small'} defaultValue={1} style={{ width: 120 }} onChange={handleRateChange}>
                     {Rates.map((rate) => (

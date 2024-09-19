@@ -8,8 +8,9 @@ import test from '../assets/log/황진endlog.json'
 import log from '../assets/log/황진log(7).json'
 import env from '../assets/env.json'
 import Modal from 'react-bootstrap/Modal';
-
-
+import uploadbackground from '../img/btn_재생성etc@3x.png'
+import reloadbackground from '../img/btn_test-불러오기@3x.png'
+import lyricsbackground from '../img/field_가사입력@3x.png'
 class Fileloader extends Component {
   // 생성자 함수에서 변수를 정의
   constructor(props) {
@@ -175,11 +176,24 @@ class Fileloader extends Component {
         {/* <textarea name="content" onChange={this.handleTextChange}
             value={this.state.textvalue} cols="40" rows="8" placeholder='가사를 넣어주세요.' ></textarea> */}
         <Form.Control as="textarea" name="content" onChange={this.handleTextChange}
-          value={this.state.textvalue} placeholder='가사를 넣어주세요.' rows={10} />
+          value={this.state.textvalue} placeholder='가사를 넣어주세요.' rows={10} style={{
+            backgroundImage: 'url(' + lyricsbackground
+              + ')', backgroundSize: '100% 100%',
+            backgroundRepeat: 'no-repeat', border: 'none'
+          }} />
         <input type="file" ref={this.fileInput} onChange={this.handleClick} style={{ display: "none" }} />
         {/* </Card> */}
-        <Button style={{ width: '100%', marginTop: '10px', borderColor: 'black', color: 'black', backgroundColor: 'lightskyblue' }} onClick={this.fileinputclick}>음악 업로드</Button>{' '}
-        <Button style={{ width: '100%', marginTop: '10px', borderColor: 'black', color: 'black', backgroundColor: 'lightskyblue' }} onClick={this.redoClick}>불러오기</Button>{' '}
+        <Button style={{
+          width: '100%', marginTop: '10px',
+          backgroundColor: 'white', color: 'black', border: 'none', backgroundImage: 'url(' + uploadbackground
+            + ')', backgroundSize: '100% 100%',
+          backgroundRepeat: 'no-repeat'
+        }} onClick={this.fileinputclick}>음악 업로드</Button>{' '}
+        <Button style={{
+          width: '100%', marginTop: '10px', backgroundColor: 'white', color: 'black', border: 'none', backgroundImage: 'url(' + reloadbackground
+            + ')', backgroundSize: '100% 100%',
+          backgroundRepeat: 'no-repeat'
+        }} onClick={this.redoClick}>불러오기</Button>{' '}
 
         {/* <button onClick={this.handleButtonClick}>test</button> */}
         {/* <button onClick={this.redoButtonClick}>불러오기</button> */}

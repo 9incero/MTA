@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { GiGuitar, GiGrandPiano, GiViolin, GiHarp, GiDrum, GiFlute, GiSaxophone } from "react-icons/gi";
 import { PiGuitar, PiBellFill } from "react-icons/pi";
 import Button from 'react-bootstrap/Button';
-
+import guitaricon from '../img/icon_guitar@3x.png'
 
 const icons = [
     { id: 'acousticGuitar', component: <PiGuitar /> },

@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import Button from 'react-bootstrap/Button';
-
+import buttonbackground from '../img/햅틱해제@3x.png'
 const HapticComponent = ({ beatamp }) => {
     const [amp, setAmp] = useState(50);
     const [hapticDevices, setHapticDevices] = useState([]);
@@ -136,9 +136,17 @@ const HapticComponent = ({ beatamp }) => {
             <button onClick={() => handleHapticPlay(195)}>Play2</button>
             <button onClick={() => handleHapticPlay(254)}>Play3</button>
             <button onClick={() => handleHapticPlay(330)}>Play4</button> */}
-            <Button onClick={requestHapticDevice} style={{ borderColor: 'black', color: 'black', backgroundColor: 'lightskyblue' }}>햅틱 연결</Button>{' '}
+            <Button onClick={requestHapticDevice} style={{
+                backgroundColor: 'white', color: 'black', border: 'none', backgroundImage: 'url(' + buttonbackground
+                    + ')', backgroundSize: '100%',
+                backgroundRepeat: 'no-repeat'
+            }}>햅틱 연결</Button>{' '}
 
-            <Button onClick={() => disconnectHapticDevice(hapticDevices[0]?.device.id)} style={{ borderColor: 'black', color: 'black', backgroundColor: 'lightskyblue' }}>햅틱 해제</Button>{' '}
+            <Button onClick={() => disconnectHapticDevice(hapticDevices[0]?.device.id)} style={{
+                backgroundColor: 'white', color: 'black', border: 'none', backgroundImage: 'url(' + buttonbackground
+                    + ')', backgroundSize: '100%',
+                backgroundRepeat: 'no-repeat'
+            }}>햅틱 해제</Button>{' '}
 
             {/* <button onClick={requestHapticDevice}>햅틱기기 연결</button>
             <button onClick={() => disconnectHapticDevice(hapticDevices[0]?.device.id)}>햅틱 해제</button> */}

@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import Dropdown from 'react-bootstrap/Dropdown';
 import DropdownButton from 'react-bootstrap/DropdownButton';
 import Button from 'react-bootstrap/Button';
+import buttonbackground from '../img/Start@3x.png'
 
 
 class Userfile extends Component {
@@ -99,7 +100,7 @@ class Userfile extends Component {
 
         return (
             <div style={{ display: 'flex' }}>
-                <DropdownButton id="dropdown-basic-button" title={this.state.participant}>
+                <DropdownButton id="dropdown-basic-button" title={this.state.participant} style={{ backgroundColor: 'white' }}>
                     {names.map((name, index) => (
                         <Dropdown.Item
                             key={index}
@@ -109,7 +110,11 @@ class Userfile extends Component {
                         </Dropdown.Item>
                     ))}
                 </DropdownButton>
-                <Button onClick={this.handleButtonClick} style={{ marginLeft: 5, borderColor: 'black', color: 'black', backgroundColor: 'lightskyblue' }}>{buttonText}</Button>{' '}
+                <Button onClick={this.handleButtonClick} style={{
+                    marginLeft: 5, backgroundColor: 'white', color: 'black', border: 'none', backgroundImage: 'url(' + buttonbackground
+                        + ')', backgroundSize: '100% 100%',
+                    backgroundRepeat: 'no-repeat'
+                }}>{buttonText}</Button>{' '}
 
             </div>
         );

@@ -20,7 +20,10 @@ import Userfile from './component/userfile';
 import path from './assets/env.json'
 import { GiGuitar, GiGrandPiano, GiViolin, GiHarp, GiDrum, GiFlute, GiSaxophone } from "react-icons/gi";
 import { PiGuitar, PiBellFill } from "react-icons/pi";
-
+//image file
+import mainbackground from "./img/area_main@3x.png"
+import playbarbackground from "./img/area_playbar@3x.png"
+import topbackground from "./img/area_top@3x.png"
 function App() {
   const [left, setLeft] = useState(0);
   const [playtime, setPlaytime] = useState(0)
@@ -86,68 +89,80 @@ function App() {
       <Container fluid className="p-0">
         <Row>
           <Col md={3} style={{
-            backgroundColor: 'lightblue', height: '100vh', margin: 0, padding: 0
+            height: '100vh', margin: 0, padding: 0
           }}>
             {/* 왼쪽 큰 컬럼 */}
             <iframe src={path.gradio_path} width='100%' height='100%' style={{ overflowX: 'scroll', overflowY: 'scroll' }}></iframe>
 
           </Col>
+          <Col md={9} style={{
 
-          <Col md={6} style={{ marginBottom: '20px' }}>
-
-            <Row style={{ height: '65vh', backgroundColor: '#e8e8e8' }}>
-              <Col>
-                <Card style={{ display: 'flex' }}>
-                  <CardBody style={{ padding: 0, margin: 0 }}>
-                    <span style={{ fontSize: '30px', marginRight: 150 }}>음정 변경: {control.pitch_value}</span>
-
-                    <span style={{ fontSize: '30px' }}>
-                      선택 악기:
-                      {instrumenticon.map((iconId) => (
-                        <span key={iconId} style={{ margin: '0 5px', fontSize: '30px' }}>
-                          {icons.find((icon) => icon.id === iconId).component}
-                        </span>
-                      ))}
-                    </span>
-                  </CardBody>
-
-                </Card>
-
-                <Vislyrics totaldata={totaldata} setPitchtime={setPitchtime} pitchtime={pitchtime} pitch={pitch} setPitch={setPitch} opacity={opacity} setOpacity={setOpacity} control={control} words={words} setWords={setWords} left={left} setLeft={setLeft} playtime={playtime} setPlaytime={setPlaytime} />
-                <MusicVisual phase={phase} currentemotion={currentemotion} emotionlist={emotionlist} setEmotionlist={setEmotionlist} beatlist={beatlist} setBeatlist={setBeatlist} setPhase={setPhase} midibeat={midibeat} setBeatamp={setBeatamp} totaldata={totaldata} control={control} setOpacity={setOpacity} opacity={opacity} playtime={playtime} pitches={pitch} times={pitchtime}></MusicVisual>
-
-              </Col>
-            </Row>
-            <Row style={{ height: '35vh' }}>
-              <Col style={{ padding: 0, margin: 0 }}>
-                {/* 중앙 아래쪽 작은 컬럼 */}
-                <TimelineEditor duration={duration} mockdata={mockdata} setMockdata={setMockdata} totaldata={totaldata} control={control} timedata={timedata} setAudiourl={setAudiourl} audiourl={audiourl} setLeft={setLeft} setPlaytime={setPlaytime}></TimelineEditor>
-                <MidiBeatMaker midibeat={midibeat} playtime={playtime} totaldata={totaldata} setMidibeat={setMidibeat}></MidiBeatMaker>
-              </Col>
-            </Row>
-          </Col>
-
-          <Col md={3} style={{ margin: 0, padding: 0, }}>
-            {/* 오른쪽 큰 컬럼 */}
-            <Row style={{ height: '5vh', margin: 0, padding: 0 }}>
-              <Col md={6}>
-                <Userfile totaldata={totaldata} editnum={editnum} setCnum={setCnum} cnum={cnum} user={user} setUser={setUser}></Userfile>
-              </Col>
-              <Col md={6}>
+          }}>
+            <Row style={{
+              // paddingBottom: '5px', backgroundImage: 'url(' + topbackground
+              //   + ')', backgroundSize: '97.5% 100%',
+              // backgroundRepeat: 'no-repeat', padding: '2px'
+            }}>
+              <Col md={8} style={{
+                marginLeft: '-10px', textAlign: 'left',
+              }}>
                 <HapticComponent beatamp={beatamp} />
               </Col>
-
-
+              <Col md={3} style={{ display: 'flex', justifyContent: 'flex-end', marginLeft: '95px' }}>
+                <Userfile totaldata={totaldata} editnum={editnum} setCnum={setCnum} cnum={cnum} user={user} setUser={setUser}></Userfile>
+              </Col>
             </Row>
-            <Row style={{ height: '60vh' }}>
-              <Control currentemotion={currentemotion} setCurrentemotion={setCurrentemotion} setPlaytime={setPlaytime} setPrompt={setPrompt} setInstrumenticon={setInstrumenticon} instrumenticon={instrumenticon} user={user} editnum={editnum} setEditnum={setEditnum} setCnum={setCnum} cnum={cnum} setChangedata={setChangedata} beatlist={beatlist} setPitchlist={setPitchlist} pitchlist={pitchlist} phase={phase} emotionlist={emotionlist} setEmotionlist={setEmotionlist} playtime={playtime} setDuration={setDuration} mockdata={mockdata} setMockdata={setMockdata} totaldata={totaldata} setTotaldata={setTotaldata} setControl={setControl} setTimedata={setTimedata} setAudiourl={setAudiourl} control={control}></Control>
+            <Row>
+              <Col md={8} style={{ marginBottom: '20px' }}>
+                <Row style={{
+                  height: '65vh', backgroundImage: 'url(' + mainbackground + ')', backgroundSize: '100% auto',
+                  backgroundRepeat: 'no-repeat'
+                }}>
+                  <Col>
+                    <div>
+                      <span style={{ fontSize: '20px', marginRight: 150 }}>음정 변경: {control.pitch_value}</span>
 
+                      <span style={{ fontSize: '20px' }}>
+                        선택 악기:
+                        {instrumenticon.map((iconId) => (
+                          <span key={iconId} style={{ margin: '0 5px', fontSize: '20px' }}>
+                            {icons.find((icon) => icon.id === iconId).component}
+                          </span>
+                        ))}
+                      </span>
+                    </div>
+
+                    <Vislyrics totaldata={totaldata} setPitchtime={setPitchtime} pitchtime={pitchtime} pitch={pitch} setPitch={setPitch} opacity={opacity} setOpacity={setOpacity} control={control} words={words} setWords={setWords} left={left} setLeft={setLeft} playtime={playtime} setPlaytime={setPlaytime} />
+                    <MusicVisual phase={phase} currentemotion={currentemotion} emotionlist={emotionlist} setEmotionlist={setEmotionlist} beatlist={beatlist} setBeatlist={setBeatlist} setPhase={setPhase} midibeat={midibeat} setBeatamp={setBeatamp} totaldata={totaldata} control={control} setOpacity={setOpacity} opacity={opacity} playtime={playtime} pitches={pitch} times={pitchtime}></MusicVisual>
+
+                  </Col>
+                </Row>
+                <Row style={{
+                  height: '35vh', backgroundImage: 'url(' + playbarbackground
+                    + ')', backgroundSize: '100% auto',
+                  backgroundRepeat: 'no-repeat'
+                }}>
+                  <Col style={{ padding: 0, margin: 0 }}>
+                    {/* 중앙 아래쪽 작은 컬럼 */}
+                    <TimelineEditor duration={duration} mockdata={mockdata} setMockdata={setMockdata} totaldata={totaldata} control={control} timedata={timedata} setAudiourl={setAudiourl} audiourl={audiourl} setLeft={setLeft} setPlaytime={setPlaytime}></TimelineEditor>
+                    <MidiBeatMaker midibeat={midibeat} playtime={playtime} totaldata={totaldata} setMidibeat={setMidibeat}></MidiBeatMaker>
+                  </Col>
+                </Row>
+              </Col>
+
+              <Col md={4} style={{ margin: 0, padding: 0, }}>
+                {/* 오른쪽 큰 컬럼 */}
+                <Row style={{ height: '60vh' }}>
+                  <Control currentemotion={currentemotion} setCurrentemotion={setCurrentemotion} setPlaytime={setPlaytime} setPrompt={setPrompt} setInstrumenticon={setInstrumenticon} instrumenticon={instrumenticon} user={user} editnum={editnum} setEditnum={setEditnum} setCnum={setCnum} cnum={cnum} setChangedata={setChangedata} beatlist={beatlist} setPitchlist={setPitchlist} pitchlist={pitchlist} phase={phase} emotionlist={emotionlist} setEmotionlist={setEmotionlist} playtime={playtime} setDuration={setDuration} mockdata={mockdata} setMockdata={setMockdata} totaldata={totaldata} setTotaldata={setTotaldata} setControl={setControl} setTimedata={setTimedata} setAudiourl={setAudiourl} control={control}></Control>
+
+                </Row>
+                <Row style={{ height: '35vh' }}>
+                  <PromptDisplay prompt={prompt} setPrompt={setPrompt} totaldata={totaldata} changedata={changedata}></PromptDisplay>
+
+                </Row>
+
+              </Col>
             </Row>
-            <Row style={{ height: '35vh' }}>
-              <PromptDisplay prompt={prompt} setPrompt={setPrompt} totaldata={totaldata} changedata={changedata}></PromptDisplay>
-
-            </Row>
-
           </Col>
         </Row>
 

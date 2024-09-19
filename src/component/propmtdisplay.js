@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import Card from 'react-bootstrap/Card';
-
+import prompttext from '../img/field_prompt@3x.png'
 const PromptDisplay = ({ prompt, setPrompt, changedata, totaldata }) => {
 
     let beatPrompt = '';
@@ -86,13 +86,19 @@ const PromptDisplay = ({ prompt, setPrompt, changedata, totaldata }) => {
 
 
     return (
-        <div style={{ width: '100%' }}>
+        <div style={{
+            width: '100%'
+        }}>
             <Card style={{ width: '90%', padding: '10px', marginLeft: 10 }}>
-                <Card.Body>
-                    <Card.Title>[프롬프트]</Card.Title>
-                    <Card.Text>
+                <Card.Title style={{ padding: '10px' }}>프롬프트</Card.Title>
+
+                <Card.Body style={{
+                    backgroundImage: 'url(' + prompttext + ')', backgroundSize: '100% 100%',
+                    backgroundRepeat: 'no-repeat', backgroundPosition: 'center'
+                }}>
+                    <p>
                         {prompt}
-                    </Card.Text>
+                    </p>
                 </Card.Body>
             </Card>
         </div>
