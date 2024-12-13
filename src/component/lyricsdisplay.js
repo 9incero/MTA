@@ -140,7 +140,7 @@ class Vislyrics extends Component {
     // x축 time으로 지정
     const scaleWidth = 1000;
     // const availableWidth = (800 - (30 * lyricslen.charCount + 30 * lyricslen.spaceCount - 30)) / lyricslen.wordCount;
-    const availableWidth = 250
+    const availableWidth = 80
     const newWord = { phase: phase, start: start, text: word, tendency: this.tendency, targetWidth: availableWidth };
     this.setState((prevState) => {
       const wordExists = prevState.words.some(word => word.start === start);

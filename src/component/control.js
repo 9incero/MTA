@@ -25,7 +25,7 @@ class Control extends Component {
         this.currentphase = 0
         this.state = {
             // 여긴 현재만 저장!
-            pitch_value: '음정',
+            pitch_value: 'Pitch',
             volume_value: 50,
             font_value: this.props.totaldata.Emotions[0],
         };
@@ -258,19 +258,19 @@ class Control extends Component {
                         id="uncontrolled-tab-example"
                         className="mb-3"
                     >
-                        <Tab eventKey="음악정보입력" title="음악정보입력">
+                        <Tab eventKey="음악정보입력" title="Music Information">
                             <Fileloader playtime={this.props.playtime} setPlaytime={this.props.setPlaytime} setPrompt={this.props.setPrompt} cnum={this.props.cnum} setCnum={this.props.setCnum} editnum={this.props.editnum} setEditnum={this.props.setEditnum} emotionlist={this.props.emotionlist} pitchlist={this.props.pitchlist} setEmotionlist={this.props.setEmotionlist} setPitchlist={this.props.setPitchlist} setDuration={this.props.setDuration} totaldata={this.props.totaldata} setTotaldata={this.props.setTotaldata} setTimedata={this.props.setTimedata} setAudiourl={this.props.setAudiourl}></Fileloader>
                         </Tab>
 
                         {/* test */}
-                        <Tab eventKey="음악편집" title="음악편집">
+                        <Tab eventKey="음악편집" title="Music Edit">
                             <div style={{ alignItems: 'center', marginBottom: '1rem' }}>
                                 <InstrumentPicker instrumenticon={this.props.instrumenticon} setInstrumenticon={this.props.setInstrumenticon}></InstrumentPicker>
 
                             </div>
                             <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', marginBottom: '1rem' }}>
-                                <span>감정 선택: </span>
-                                <DropdownButton id="dropdown-basic-button" title={emotionToko[this.state.font_value] || '감정'}>
+                                <span>Emotions Selection: </span>
+                                <DropdownButton id="dropdown-basic-button" title={this.state.font_value || 'Emotion'}>
                                     <Dropdown.Item style={{ fontFamily: 'aggressive', fontSize: '16px' }} onClick={() => this.handleChange({ target: { value: 'aggressive' } }, 'font_value')}>
                                         <span >Aggressive</span>
                                         <span style={{ color: '#FF0000', marginLeft: '5px' }}>●</span>
@@ -329,15 +329,15 @@ class Control extends Component {
 
 
                             <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', marginBottom: '1rem' }}>
-                                <span>음정 선택: </span>
+                                <span>Pitch Selection: </span>
 
                                 <DropdownButton id="dropdown-basic-button" title={this.state.pitch_value}>
-                                    <Dropdown.Item onClick={() => this.handleChange({ target: { value: '단순한' } }, 'pitch_value')}>단순한</Dropdown.Item>
-                                    <Dropdown.Item onClick={() => this.handleChange({ target: { value: '복잡한' } }, 'pitch_value')}>복잡한</Dropdown.Item>
-                                    <Dropdown.Item onClick={() => this.handleChange({ target: { value: '고조되는' } }, 'pitch_value')}>고조되는</Dropdown.Item>
-                                    <Dropdown.Item onClick={() => this.handleChange({ target: { value: '저하되는' } }, 'pitch_value')}>저하되는</Dropdown.Item>
-                                    <Dropdown.Item onClick={() => this.handleChange({ target: { value: '반복적인' } }, 'pitch_value')}>반복적인</Dropdown.Item>
-                                    <Dropdown.Item onClick={() => this.handleChange({ target: { value: '변화무쌍한' } }, 'pitch_value')}>변화무쌍한</Dropdown.Item>
+                                    <Dropdown.Item onClick={() => this.handleChange({ target: { value: 'Simple' } }, 'pitch_value')}>Simple</Dropdown.Item>
+                                    <Dropdown.Item onClick={() => this.handleChange({ target: { value: 'Complex' } }, 'pitch_value')}>Complex</Dropdown.Item>
+                                    <Dropdown.Item onClick={() => this.handleChange({ target: { value: 'Ascending' } }, 'pitch_value')}>Ascending</Dropdown.Item>
+                                    <Dropdown.Item onClick={() => this.handleChange({ target: { value: 'Descending' } }, 'pitch_value')}>Descending</Dropdown.Item>
+                                    <Dropdown.Item onClick={() => this.handleChange({ target: { value: 'Repetitive' } }, 'pitch_value')}>Repetitive</Dropdown.Item>
+                                    <Dropdown.Item onClick={() => this.handleChange({ target: { value: 'Varied' } }, 'pitch_value')}>Varied</Dropdown.Item>
                                 </DropdownButton>
                             </div>
 
@@ -369,7 +369,7 @@ class Control extends Component {
                                 width: '100%', marginTop: '10px', backgroundColor: 'white', color: 'black', border: 'none', backgroundImage: 'url(' + buttonbackground
                                     + ')', backgroundSize: '100% 100%',
                                 backgroundRepeat: 'no-repeat'
-                            }}>재생성</Button>{' '}
+                            }}>Regenerative</Button>{' '}
 
                         </Tab>
 

@@ -24,6 +24,8 @@ import { PiGuitar, PiBellFill } from "react-icons/pi";
 import mainbackground from "./img/area_main@3x.png"
 import playbarbackground from "./img/area_playbar@3x.png"
 import topbackground from "./img/area_top@3x.png"
+import Chatbot from './component/chatbot'
+
 function App() {
   const [left, setLeft] = useState(0);
   const [playtime, setPlaytime] = useState(0)
@@ -85,16 +87,18 @@ function App() {
 
 
   return (
-    <div className="App">
-      <Container fluid className="p-0">
+    <div className="App" style={{ height: '100vh' }}>
+      <Container fluid style={{ height: '100%' }} className="p-0">
         <Row>
+
           <Col md={3} style={{
             height: '100vh', margin: 0, padding: 0
           }}>
             {/* 왼쪽 큰 컬럼 */}
-            <iframe src={path.gradio_path} width='100%' height='100%' style={{ overflowX: 'scroll', overflowY: 'scroll' }}></iframe>
-
+            {/* <iframe src={path.gradio_path} width='100%' height='100%' style={{ overflowX: 'scroll', overflowY: 'scroll' }}></iframe> */}
+            <Chatbot></Chatbot>
           </Col>
+
           <Col md={9} style={{
 
           }}>
@@ -120,10 +124,10 @@ function App() {
                 }}>
                   <Col>
                     <div>
-                      <span style={{ fontSize: '20px', marginRight: 150 }}>음정 변경: {control.pitch_value}</span>
+                      <span style={{ fontSize: '20px', marginRight: 150 }}>Selected Pitch: {control.pitch_value}</span>
 
                       <span style={{ fontSize: '20px' }}>
-                        선택 악기:
+                        Selected Instruments:
                         {instrumenticon.map((iconId) => (
                           <span key={iconId} style={{ margin: '0 5px', fontSize: '20px' }}>
                             {icons.find((icon) => icon.id === iconId).component}
@@ -138,8 +142,8 @@ function App() {
                   </Col>
                 </Row>
                 <Row style={{
-                  height: '35vh', backgroundImage: 'url(' + playbarbackground
-                    + ')', backgroundSize: '100% auto',
+                  height: '20vh', backgroundImage: 'url(' + playbarbackground
+                    + ')', backgroundSize: '100%',
                   backgroundRepeat: 'no-repeat'
                 }}>
                   <Col style={{ padding: 0, margin: 0 }}>
@@ -156,10 +160,10 @@ function App() {
                   <Control currentemotion={currentemotion} setCurrentemotion={setCurrentemotion} setPlaytime={setPlaytime} setPrompt={setPrompt} setInstrumenticon={setInstrumenticon} instrumenticon={instrumenticon} user={user} editnum={editnum} setEditnum={setEditnum} setCnum={setCnum} cnum={cnum} setChangedata={setChangedata} beatlist={beatlist} setPitchlist={setPitchlist} pitchlist={pitchlist} phase={phase} emotionlist={emotionlist} setEmotionlist={setEmotionlist} playtime={playtime} setDuration={setDuration} mockdata={mockdata} setMockdata={setMockdata} totaldata={totaldata} setTotaldata={setTotaldata} setControl={setControl} setTimedata={setTimedata} setAudiourl={setAudiourl} control={control}></Control>
 
                 </Row>
-                <Row style={{ height: '35vh' }}>
+                {/* <Row style={{ height: '35vh' }}>
                   <PromptDisplay prompt={prompt} setPrompt={setPrompt} totaldata={totaldata} changedata={changedata}></PromptDisplay>
 
-                </Row>
+                </Row> */}
 
               </Col>
             </Row>

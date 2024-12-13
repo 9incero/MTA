@@ -149,7 +149,7 @@ const Loader = ({ text = '', tendency, targetWidth, control, opacity }) => {
         // console.log('Total Char Width:', totalCharWidth);
 
         // 각 문자 사이의 최대 간격 계산
-        let spaceAdjustment = Math.floor((targetWidth - totalCharWidth) / (text.length - 1));
+        let spaceAdjustment = Math.floor((targetWidth - totalCharWidth) / (text.length - 1))
         // console.log('Space Adjustment (initial):', spaceAdjustment);
 
         // spaceAdjustment가 음수인 경우, 텍스트 너비를 targetWidth로 조정할 수 없음
@@ -197,7 +197,7 @@ const Loader = ({ text = '', tendency, targetWidth, control, opacity }) => {
         fontWeight: mapRange(control.volume_value, 0, 100, 100, 900),
         width: targetWidth,
         // whiteSpace: 'normal',
-        marginLeft: '20px',
+        marginLeft: '50px',
         fontFamily: fontFamily
 
       }}
@@ -207,7 +207,7 @@ const Loader = ({ text = '', tendency, targetWidth, control, opacity }) => {
         <span
           key={index}
           style={{
-            fontSize: '45px',
+            fontSize: '20px',
             fontWeight: 700,
             color: control.color_value,
             opacity: opacity, //이거 정규화해서 쓸지 말지 결정

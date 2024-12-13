@@ -9,10 +9,10 @@ class Userfile extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            buttonText: '시작',
+            buttonText: 'Start',
             time: 0,
             isActive: false,
-            participant: '실험자',
+            participant: 'Participant',
 
         };
         this.interval = null;
@@ -20,10 +20,10 @@ class Userfile extends Component {
 
     handleButtonClick = () => {
         this.setState(prevState => {
-            if (prevState.buttonText === '시작') {
-                return { buttonText: '끝', isActive: true };
+            if (prevState.buttonText === 'Start') {
+                return { buttonText: 'End', isActive: true };
             } else {
-                return { buttonText: '시작', isActive: false };
+                return { buttonText: 'Start', isActive: false };
             }
         });
     };

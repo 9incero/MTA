@@ -8,6 +8,24 @@
 
 }
 
+body {
+  margin: 0;
+  white-space: normal;
+}
+
+html,
+body,
+#root {
+  height: 100%;
+  overflow: hidden;
+  /* 스크롤바 제거 */
+
+}
+
+#root {
+  margin-top: 0 !important;
+  padding-top: 0px !important;
+}
 
 .App-logo {
   height: 40vmin;

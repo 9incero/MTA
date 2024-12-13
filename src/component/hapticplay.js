@@ -140,13 +140,13 @@ const HapticComponent = ({ beatamp }) => {
                 backgroundColor: 'white', color: 'black', border: 'none', backgroundImage: 'url(' + buttonbackground
                     + ')', backgroundSize: '100%',
                 backgroundRepeat: 'no-repeat'
-            }}>햅틱 연결</Button>{' '}
+            }}>Haptic Connect</Button>{' '}
 
             <Button onClick={() => disconnectHapticDevice(hapticDevices[0]?.device.id)} style={{
                 backgroundColor: 'white', color: 'black', border: 'none', backgroundImage: 'url(' + buttonbackground
                     + ')', backgroundSize: '100%',
                 backgroundRepeat: 'no-repeat'
-            }}>햅틱 해제</Button>{' '}
+            }}>Haptic Unconnect</Button>{' '}
 
             {/* <button onClick={requestHapticDevice}>햅틱기기 연결</button>
             <button onClick={() => disconnectHapticDevice(hapticDevices[0]?.device.id)}>햅틱 해제</button> */}

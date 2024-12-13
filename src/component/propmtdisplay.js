@@ -40,43 +40,41 @@ const PromptDisplay = ({ prompt, setPrompt, changedata, totaldata }) => {
         const origininstruments = totaldata.Instruments;
 
         if (pitchChanges != undefined && pitchChanges.length !== 0) {
-            pitchPrompt = '주어진 음악의 ';
+            pitchPrompt = '';
 
             for (let i = 0; i < pitchChanges.length; i++) {
-                pitchPrompt += `${pitchChanges[i].start}에서 ${pitchChanges[i].end}구간의 음정을 ${pitchChanges[i].meta_tag} 멜로디로, `;
+                pitchPrompt += `From ${pitchChanges[i].start} to ${pitchChanges[i].end} melody,`;
                 if (!metaCodes.includes(pitchChanges[i].meta_tag)) {
                     metaCodes.push(pitchChanges[i].meta_tag);
                 }
             }
-            pitchPrompt += '재생성해줘';
+            pitchPrompt += 'Please regenerate it';
         }
-
         if (emotions != undefined && emotions.length !== 0) {
-            emotionPrompt = '주어진 음악의 ';
-
+            emotionPrompt = '';
             for (let i = 0; i < emotions.length; i++) {
-                emotionPrompt += `${emotions[i].start}에서 ${emotions[i].end}구간의 감정을 ${emotions[i].emotions} 느낌으로, `;
+                emotionPrompt += `The emotions in the interval of ${emotions[i].start} to ${emotions[i].end} feel like ${emotions[i].emotion},`;
                 if (!metaCodes.includes(emotionToko[emotions[i].emotions])) {
                     metaCodes.push(emotionToko[emotions[i].emotions]);
                 }
             }
-            emotionPrompt += '재생성해줘';
+            emotionPrompt += 'Please regenerate it';
         }
 
 
         if (newBeats != undefined && newBeats.length !== 0 && originalBeats !== undefined) {
             const beatRatio = newBeats.length / originalBeats.length;
-            beatPrompt = `주어진 음악의 시간을 ${beatRatio}배로 늘려줘`;
+            beatPrompt = `Increase the amount of time spent on a given piece of music by ${beatRatio} times`;
         }
 
         if (newinstruments != undefined && newinstruments.length !== 0 && origininstruments !== undefined) {
             const uniqueinstruments = newinstruments.filter(instrument => !origininstruments.includes(instrument));
-            instrumentsPrompt = `주어진 음악에 ${uniqueinstruments} 악기를 추가해줘`;
+            instrumentsPrompt = `Add ${uniqueinstruments} instruments to the given music`;
             metaCodes = metaCodes.concat(uniqueinstruments);
         }
 
         // make metaCodes list to string
-        const metaCodesText = `Suno API 메타코드 리스트: ${metaCodes.join(', ')}`;
+        const metaCodesText = `Suno API metacode list: ${metaCodes.join(', ')}`;
 
         setPrompt(`${pitchPrompt}\n\n${emotionPrompt}\n\n${beatPrompt}\n\n${instrumentsPrompt}\n\n${metaCodesText}`);
 
@@ -90,7 +88,7 @@ const PromptDisplay = ({ prompt, setPrompt, changedata, totaldata }) => {
             width: '100%'
         }}>
             <Card style={{ width: '90%', padding: '10px', marginLeft: 10 }}>
-                <Card.Title style={{ padding: '10px' }}>프롬프트</Card.Title>
+                <Card.Title style={{ padding: '10px' }}>Prompt</Card.Title>
 
                 <Card.Body style={{
                     backgroundImage: 'url(' + prompttext + ')', backgroundSize: '100% 100%',

@@ -80,7 +80,7 @@ const InstrumentPicker = ({ setInstrumenticon, instrumenticon }) => {
     return (
         <div style={containerStyle}>
 
-            <Button onClick={handleButtonClick} >{isPickerVisible ? '닫기' : '악기 선택'}</Button>{' '}
+            <Button onClick={handleButtonClick} >{isPickerVisible ? 'Close' : 'Instrument Selection'}</Button>{' '}
 
             {isPickerVisible && (
                 <div style={iconListStyle}>
@@ -97,7 +97,7 @@ const InstrumentPicker = ({ setInstrumenticon, instrumenticon }) => {
             )}
             {selectedIcons.length > 0 && (
                 <div style={selectedIconStyle}>
-                    선택악기:
+                    Selected Instruments:
                     {selectedIcons.map((iconId) => (
                         <span key={iconId} style={{ margin: '0 5px' }}>
                             {icons.find((icon) => icon.id === iconId).component}

@@ -168,15 +168,15 @@ class Fileloader extends Component {
     return (
       <div>
         {/* <Card style={{ width: '18rem', padding: '10px' }}> */}
-        <Card.Title>[음악 정보 입력]</Card.Title>
+        <Card.Title>[Music Information]</Card.Title>
         <Card.Text>
-          Suno를 사용해 만든 가사를 붙여넣고<br />
-          음악을 업로드 해주세요!
+          Please paste the lyrics you made using Suno <br />
+          and upload the music!
         </Card.Text>
         {/* <textarea name="content" onChange={this.handleTextChange}
             value={this.state.textvalue} cols="40" rows="8" placeholder='가사를 넣어주세요.' ></textarea> */}
         <Form.Control as="textarea" name="content" onChange={this.handleTextChange}
-          value={this.state.textvalue} placeholder='가사를 넣어주세요.' rows={10} style={{
+          value={this.state.textvalue} placeholder='Please input the lyrics.' rows={10} style={{
             backgroundImage: 'url(' + lyricsbackground
               + ')', backgroundSize: '100% 100%',
             backgroundRepeat: 'no-repeat', border: 'none'
@@ -188,24 +188,24 @@ class Fileloader extends Component {
           backgroundColor: 'white', color: 'black', border: 'none', backgroundImage: 'url(' + uploadbackground
             + ')', backgroundSize: '100% 100%',
           backgroundRepeat: 'no-repeat'
-        }} onClick={this.fileinputclick}>음악 업로드</Button>{' '}
+        }} onClick={this.fileinputclick}>Music Upload</Button>{' '}
         <Button style={{
           width: '100%', marginTop: '10px', backgroundColor: 'white', color: 'black', border: 'none', backgroundImage: 'url(' + reloadbackground
             + ')', backgroundSize: '100% 100%',
           backgroundRepeat: 'no-repeat'
-        }} onClick={this.redoClick}>불러오기</Button>{' '}
+        }} onClick={this.redoClick}>Load</Button>{' '}
 
-        {/* <button onClick={this.handleButtonClick}>test</button> */}
-        {/* <button onClick={this.redoButtonClick}>불러오기</button> */}
+        {/* <button onClick={this.handleButtonClick}>test</button>
+        <button onClick={this.redoButtonClick}>불러오기</button> */}
 
         <Modal show={this.state.show}>
           <Modal.Header closeButton>
-            <Modal.Title>음악분석 완료!</Modal.Title>
+            <Modal.Title>Music analysis completed!</Modal.Title>
           </Modal.Header>
-          <Modal.Body>음악 저작을 시작하세요.</Modal.Body>
+          <Modal.Body>Start writing music.</Modal.Body>
           <Modal.Footer>
             <Button variant="secondary" onClick={() => { this.setState({ show: false }) }}>
-              닫기
+              Close
             </Button>
           </Modal.Footer>
         </Modal>
