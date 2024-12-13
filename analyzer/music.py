@@ -191,22 +191,25 @@ class MusicAnalyzer:
         }
 
     def _get_beat_amplitudes(self):
-        y, sr = librosa.load(self.url, sr=None)
-
+        y, sr = librosa.load(self.url, sr=None ,dtype='float64')
         proc = madmom.features.beats.RNNBeatProcessor()
         act = proc(self.url)
         beats = madmom.features.beats.DBNBeatTrackingProcessor(fps=100)(act)
+        # print(beats)
         beat_samples = librosa.time_to_samples(beats, sr=sr)
+        print(beat_samples)
+        beat_samples = beat_samples[beat_samples < len(y)]
         beat_amplitude = y[beat_samples]
-        normalized_amp = normalize(beat_amplitude)
+        # print(beat_amplitude)
 
+        normalized_amp = normalize(beat_amplitude)
         for beat, amp in zip(beats, normalized_amp):
             self.beat_amp.append({'time': float(beat), 'amplitude': float(amp)})
 
         return y, sr, beats, normalized_amp
 
     def _get_all_pitches(self):
-        y, sr = librosa.load(self.url)
+        y, sr = librosa.load(self.url, dtype='float64')
         harmonic, percussive = librosa.effects.hpss(y)
         pitches, magnitudes = librosa.core.piptrack(y=harmonic, sr=sr)
 
