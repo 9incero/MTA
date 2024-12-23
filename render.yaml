@@ -3,9 +3,12 @@ services:
     name: my-python-app
     env: python
     buildCommand: |
-      apt-get update && apt-get install -y portaudio19-dev
-      pip install --upgrade pip setuptools wheel
+      export CPATH=/usr/include/python3.7m && \
+      apt-get update && \
+      apt-get install -y build-essential portaudio19-dev python3.7-dev && \
+      apt-get clean && \
+      pip install --upgrade pip setuptools wheel && \
       pip install -r requirements.txt
     startCommand: flask run
     envVars:
-      PYTHON_VERSION: 3.9
+      PYTHON_VERSION: 3.7
