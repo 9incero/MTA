@@ -3,6 +3,9 @@ services:
     name: my-python-app
     env: python
     buildCommand: |
-      apk add --no-cache portaudio-dev
+      apt-get update && apt-get install -y portaudio19-dev
       pip install --upgrade pip setuptools wheel
       pip install -r requirements.txt
+    startCommand: flask run
+    envVars:
+      PYTHON_VERSION: 3.9
