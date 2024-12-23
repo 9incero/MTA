@@ -4,6 +4,7 @@ from flask_cors import CORS
 import json
 import traceback
 from analyzer.music import MusicAnalyzer
+import os
 from chatbot.chat import submit_message, wait_on_run, get_response
 app = Flask(__name__)
 CORS(app)
@@ -92,4 +93,5 @@ def music_discussion():
         
 if __name__ == '__main__':
     dotenv.load_dotenv()
-    app.run(host="0.0.0.0",port=10000)
+    port = int(os.getenv("PORT", 10000))  # Render 환경 변수 PORT 사용
+    app.run(host="0.0.0.0", port=port)
