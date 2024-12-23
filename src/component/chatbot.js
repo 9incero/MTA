@@ -1,6 +1,5 @@
 // src/ChatBot.js
 import React, { useState, useEffect, useRef } from 'react';
-import env from '../assets/env.json';
 import axios from 'axios';
 import { FaArrowCircleUp } from "react-icons/fa";
 import './modulestyle/chatbot.css'; // 추가: CSS 파일을 import
@@ -24,10 +23,9 @@ const ChatBot = () => {
         setIsSending(true);
 
         try {
-            const link = import.meta.env.ENDPOINT;
             // Flask 백엔드의 '/chatting' 엔드포인트로 user message만 전송
             const response = await axios.post(
-                link + '/chatting',
+                process.env.REACT_APP_ENDPOINT + '/chatting',
                 { userMessage },
                 {
                     headers: {
