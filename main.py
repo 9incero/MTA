@@ -88,6 +88,8 @@ def music_discussion():
         # 에러를 콘솔에 출력하고 클라이언트에 반환
         print("Error:", e)
         return jsonify({'error': str(e)}), 500
+
+        
 if __name__ == '__main__':
     dotenv.load_dotenv()
     app.run(debug=True)
