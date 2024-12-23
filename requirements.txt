@@ -159,7 +159,7 @@ pyannote.core==5.0.0
 pyannote.database==5.1.0
 pyannote.metrics==3.2.1
 pyannote.pipeline==3.0.1
-PyAudio==0.2.14
+# PyAudio==0.2.14
 pycparser==2.22
 pydantic==2.8.2
 pydantic_core==2.20.1

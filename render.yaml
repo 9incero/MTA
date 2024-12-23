@@ -3,7 +3,7 @@ services:
     name: my-python-app
     env: python
     buildCommand: |
-      export CPATH=/usr/include/python3.7m && \
+      export CPATH=/usr/include/python3.9m && \
       apt-get update && \
       apt-get install -y build-essential portaudio19-dev python3.7-dev && \
       apt-get clean && \
@@ -11,4 +11,4 @@ services:
       pip install -r requirements.txt
     startCommand: flask run
     envVars:
-      PYTHON_VERSION: 3.7
+      PYTHON_VERSION: 3.9
