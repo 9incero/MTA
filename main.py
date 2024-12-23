@@ -92,4 +92,4 @@ def music_discussion():
         
 if __name__ == '__main__':
     dotenv.load_dotenv()
-    app.run(debug=True)
+    app.run(host="0.0.0.0",port=5000)
