@@ -55,9 +55,15 @@ def analyze_music():
         
          # Google Drive 링크 처리
         if "drive.google.com" in music_path:
-            file_id = music_path.split('/d/')[1].split('/')[0]
+            if "/file/d/" in music_path:
+                file_id = music_path.split('/d/')[1].split('/')[0]
+            elif "id=" in music_path:
+                file_id = music_path.split("id=")[1].split("&")[0]
+            else:
+                raise ValueError("Invalid Google Drive URL")
             music_path = f"https://drive.google.com/uc?id={file_id}&export=download"
             print(f"Converted Google Drive link to direct download URL: {music_path}")
+
 
         # 파일 다운로드
         response = requests.get(music_path, stream=True)
@@ -69,7 +75,7 @@ def analyze_music():
             for chunk in response.iter_content(chunk_size=1024):
                 f.write(chunk)
 
-        la = MusicAnalyzer(music_path, lyrics)
+        la = MusicAnalyzer("temp_music_file.wav", lyrics)
         la.analyze()
         result = la.get_final_format()
         
