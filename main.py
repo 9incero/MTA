@@ -1,11 +1,14 @@
 import dotenv
-from flask import Flask, request, jsonify
+from flask import Flask, request, jsonify, send_file
 from flask_cors import CORS
 import json
 import traceback
 from analyzer.music import MusicAnalyzer
 import os
 from chatbot.chat import submit_message, wait_on_run, get_response
+import requests
+from io import BytesIO
+
 app = Flask(__name__)
 CORS(app)
 
@@ -50,9 +53,28 @@ def analyze_music():
 
         print(f"Music path: {music_path}, Lyrics: {lyrics}")
         
+         # Google Drive 링크 처리
+        if "drive.google.com" in music_path:
+            file_id = music_path.split('/d/')[1].split('/')[0]
+            music_path = f"https://drive.google.com/uc?id={file_id}&export=download"
+            print(f"Converted Google Drive link to direct download URL: {music_path}")
+
+        # 파일 다운로드
+        response = requests.get(music_path, stream=True)
+        if response.status_code != 200:
+            raise ValueError("Failed to download the music file")
+
+        # 파일을 로컬에 임시 저장
+        with open("temp_music_file.wav", "wb") as f:
+            for chunk in response.iter_content(chunk_size=1024):
+                f.write(chunk)
+
         la = MusicAnalyzer(music_path, lyrics)
         la.analyze()
         result = la.get_final_format()
+        
+        # 임시 파일 삭제
+        os.remove("temp_music_file.wav")
 
         return jsonify(result), 200
     except ValueError as ve:
