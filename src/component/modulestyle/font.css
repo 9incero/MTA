@@ -9,14 +9,14 @@
     font-family: "calm";
     font-style: normal;
     font-weight: 100;
-    src: url("../../fonts/J송명-Regular.otf") format("opentype");
+    src: url("../../fonts/J-Regular.otf") format("opentype");
 }
 
 @font-face {
     font-family: "chilled";
     font-style: normal;
     font-weight: 100;
-    src: url("../../fonts/ELAND나이스OTFM.otf") format("opentype");
+    src: url("../../fonts/ELANDOTFM.otf") format("opentype");
 }
 
 @font-face {
@@ -45,7 +45,7 @@
     font-style: normal;
     font-weight: 100;
     src:
-        url("../../fonts/잘풀리는오늘OTFMedium.otf") format("opentype");
+        url("../../fonts/todayOTFMedium.otf") format("opentype");
 }
 
 @font-face {
@@ -90,5 +90,5 @@
     font-style: normal;
     font-weight: 100;
     src:
-        url("../../fonts/나눔손글씨끄트머리체.ttf") format("truetype");
+        url("../../fonts/nanum.ttf") format("truetype");
 }
