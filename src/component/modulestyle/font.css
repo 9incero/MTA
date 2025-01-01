@@ -2,42 +2,42 @@
     font-family: "aggressive";
     font-style: normal;
     font-weight: 100;
-    src: url("/src/fonts/HeirofLightOTFRegular.otf") format("opentype");
+    src: url("/fonts/HeirofLightOTFRegular.otf") format("opentype");
 }
 
 @font-face {
     font-family: "calm";
     font-style: normal;
     font-weight: 100;
-    src: url("/src/fonts/J송명-Regular.otf") format("opentype");
+    src: url("/fonts/J송명-Regular.otf") format("opentype");
 }
 
 @font-face {
     font-family: "chilled";
     font-style: normal;
     font-weight: 100;
-    src: url("/src/fonts/ELAND나이스OTFM.otf") format("opentype");
+    src: url("/fonts/ELAND나이스OTFM.otf") format("opentype");
 }
 
 @font-face {
     font-family: "dark";
     font-style: normal;
     font-weight: 100;
-    src: url("/src/fonts/BlackHanSans-Regular.ttf") format("truetype");
+    src: url("/fonts/BlackHanSans-Regular.ttf") format("truetype");
 }
 
 @font-face {
     font-family: "energetic";
     font-style: normal;
     font-weight: 100;
-    src: url("/src/fonts/Giants-Regular.ttf") format("truetype");
+    src: url("/fonts/Giants-Regular.ttf") format("truetype");
 }
 
 @font-face {
     font-family: "epic";
     font-style: normal;
     font-weight: 100;
-    src: url("/src/fonts/JSArirang.otf") format("opentype");
+    src: url("/fonts/JSArirang.otf") format("opentype");
 }
 
 @font-face {
@@ -45,21 +45,21 @@
     font-style: normal;
     font-weight: 100;
     src:
-        url("/src/fonts/잘풀리는오늘OTFMedium.otf") format("opentype");
+        url("/fonts/잘풀리는오늘OTFMedium.otf") format("opentype");
 }
 
 @font-face {
     font-family: "romantic";
     font-style: normal;
     font-weight: 100;
-    src: url("/src/fonts/Romantic.ttf") format("truetype");
+    src: url("/fonts/Romantic.ttf") format("truetype");
 }
 
 @font-face {
     font-family: "sad";
     font-style: normal;
     font-weight: 100;
-    src: url("/src/fonts/sad.ttf") format("truetype");
+    src: url("/fonts/sad.ttf") format("truetype");
 }
 
 
@@ -67,21 +67,21 @@
     font-family: "sexy";
     font-style: normal;
     font-weight: 100;
-    src: url("/src/fonts/UhBeeibuson.ttf") format("truetype");
+    src: url("/fonts/UhBeeibuson.ttf") format("truetype");
 }
 
 @font-face {
     font-family: "uplifting";
     font-style: normal;
     font-weight: 100;
-    src: url("/src/fonts/Cafe24Dangdanghae-v2.0.otf") format("opentype");
+    src: url("/fonts/Cafe24Dangdanghae-v2.0.otf") format("opentype");
 }
 
 @font-face {
     font-family: "ethereal";
     font-style: normal;
     font-weight: 100;
-    src: url("/src/fonts/ethereal.ttf") format("truetype");
+    src: url("/fonts/ethereal.ttf") format("truetype");
 }
 
 
@@ -90,5 +90,5 @@
     font-style: normal;
     font-weight: 100;
     src:
-        url("/src/fonts/나눔손글씨끄트머리체.ttf") format("truetype");
+        url("/fonts/나눔손글씨끄트머리체.ttf") format("truetype");
 }
