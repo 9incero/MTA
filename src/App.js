@@ -17,7 +17,6 @@ import MidiBeatMaker from './component/beatdisplay';
 import HapticComponent from './component/hapticplay';
 import PromptDisplay from './component/propmtdisplay';
 import Userfile from './component/userfile';
-import path from './assets/env.json'
 import { GiGuitar, GiGrandPiano, GiViolin, GiHarp, GiDrum, GiFlute, GiSaxophone } from "react-icons/gi";
 import { PiGuitar, PiBellFill } from "react-icons/pi";
 //image file

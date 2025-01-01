@@ -4,9 +4,8 @@ import Button from 'react-bootstrap/Button';
 import Form from 'react-bootstrap/Form';
 import axios from "axios"
 //여기에 사용자 마지막 생성한 파일
-import test from '../assets/log/황진endlog.json'
-import log from '../assets/log/황진log(7).json'
-import env from '../assets/env.json'
+// import test from '../assets/log/황진endlog.json'
+// import log from '../assets/log/황진log(7).json'
 import Modal from 'react-bootstrap/Modal';
 import uploadbackground from '../img/btn_재생성etc@3x.png'
 import reloadbackground from '../img/btn_test-불러오기@3x.png'
@@ -18,6 +17,7 @@ class Fileloader extends Component {
     this.state = {
       someValue: '',
       textvalue: '',
+      filepath: '',
       audioSrc: '',
       show: false,
       redo: false,
@@ -56,11 +56,11 @@ class Fileloader extends Component {
       console.log('fname ', fname)
       //다른 노트북으로 실험시 여기 url 고치기
       const data = {
-        url: env.data_path + fname,
+        url: this.state.filepath,
         lyrics: this.state.textvalue
       };
 
-      axios.post('http://127.0.0.1:5001/analysis', data)
+      axios.post(process.env.REACT_APP_ENDPOINT + '/analysis', data)
         .then((response) => {
           console.log(response.data);
           this.props.setTotaldata({
@@ -104,6 +104,9 @@ class Fileloader extends Component {
     this.setState({ textvalue: event.target.value });
   };
 
+  handlePathChange = (event) => {
+    this.setState({ filepath: event.target.value });
+  }
   componentDidUpdate(prevProps) {
     if (prevProps.totaldata !== this.props.totaldata) {
       console.log('>>', this.props.totaldata); // 상태가 업데이트된 후에 로그 출력
@@ -136,32 +139,32 @@ class Fileloader extends Component {
     this.fileInput.current.click();
 
   }
-
-  redoButtonClick = () => {
-    console.log(log.Beat)
-    console.log(test.Lyrics)
-
-
-
-    // this.props.setTotaldata({ ...test });
-    this.props.setTotaldata(prevState => ({
-      BPM: test.Result.BPM,
-      Beat_amplitude: log.Beat,
-      Emotions: test.Result.Emotions,
-      Instruments: log.Instruments,
-      Lyrics: test.Result.Lyrics,
-      Pitch: test.Result.Pitch
-    }));
-    const emotionsArray = log.Emotions.map(emotion => [emotion.start, emotion.end, emotion.emotions]);
-    const pitchArray = log.Pitch.map(pitch => [pitch.start, pitch.end, pitch.meta_tag]);
-
-    this.props.setEmotionlist([...emotionsArray])
-    this.props.setPitchlist([...pitchArray])
-    this.setState({ redo: false });
+  //불러오기
+  // redoButtonClick = () => {
+  //   console.log(log.Beat)
+  //   console.log(test.Lyrics)
 
 
 
-  }
+  //   // this.props.setTotaldata({ ...test });
+  //   this.props.setTotaldata(prevState => ({
+  //     BPM: test.Result.BPM,
+  //     Beat_amplitude: log.Beat,
+  //     Emotions: test.Result.Emotions,
+  //     Instruments: log.Instruments,
+  //     Lyrics: test.Result.Lyrics,
+  //     Pitch: test.Result.Pitch
+  //   }));
+  //   const emotionsArray = log.Emotions.map(emotion => [emotion.start, emotion.end, emotion.emotions]);
+  //   const pitchArray = log.Pitch.map(pitch => [pitch.start, pitch.end, pitch.meta_tag]);
+
+  //   this.props.setEmotionlist([...emotionsArray])
+  //   this.props.setPitchlist([...pitchArray])
+  //   this.setState({ redo: false });
+
+
+
+  // }
 
 
   render() {
@@ -181,6 +184,15 @@ class Fileloader extends Component {
               + ')', backgroundSize: '100% 100%',
             backgroundRepeat: 'no-repeat', border: 'none'
           }} />
+
+        <Form.Control as="textarea" name="content" onChange={this.handlePathChange}
+          value={this.state.filepath} placeholder='Please enter the path of the folder where you saved the music.' rows={3}
+          style={{
+            backgroundImage: 'url(' + lyricsbackground
+              + ')', backgroundSize: '100% 100%',
+            backgroundRepeat: 'no-repeat', border: 'none', marginTop: '10px'
+          }} />
+
         <input type="file" ref={this.fileInput} onChange={this.handleClick} style={{ display: "none" }} />
         {/* </Card> */}
         <Button style={{
@@ -189,11 +201,11 @@ class Fileloader extends Component {
             + ')', backgroundSize: '100% 100%',
           backgroundRepeat: 'no-repeat'
         }} onClick={this.fileinputclick}>Music Upload</Button>{' '}
-        <Button style={{
+        {/* <Button style={{
           width: '100%', marginTop: '10px', backgroundColor: 'white', color: 'black', border: 'none', backgroundImage: 'url(' + reloadbackground
             + ')', backgroundSize: '100% 100%',
           backgroundRepeat: 'no-repeat'
-        }} onClick={this.redoClick}>Load</Button>{' '}
+        }} onClick={this.redoClick}>Load</Button>{' '} */}
 
         {/* <button onClick={this.handleButtonClick}>test</button>
         <button onClick={this.redoButtonClick}>불러오기</button> */}

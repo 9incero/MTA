@@ -2,6 +2,7 @@
   "name": "dhh-music-tool",
   "version": "0.1.0",
   "private": true,
+  "proxy": "https://mta-4bnv.onrender.com",
   "dependencies": {
     "@itershukov/react-timeline-editor": "^2.1.2",
     "@testing-library/jest-dom": "^5.17.0",
