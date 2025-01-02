@@ -10,7 +10,7 @@ import requests
 from io import BytesIO
 
 app = Flask(__name__)
-CORS(app)
+CORS(app, origins=["https://mta-static.onrender.com"])
 
 
 # @app.route('/analysis', methods=['POST'])
