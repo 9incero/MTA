@@ -24,7 +24,8 @@ const ChatBot = () => {
 
         try {
             // Flask 백엔드의 '/chatting' 엔드포인트로 user message만 전송
-            const response = await axios.post('/chatting',
+            const response = await axios.post(
+                process.env.REACT_APP_ENDPOINT + '/chatting',
                 { userMessage },
                 {
                     headers: {
