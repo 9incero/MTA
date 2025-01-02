@@ -60,7 +60,7 @@ class Fileloader extends Component {
         lyrics: this.state.textvalue
       };
 
-      axios.post(process.env.REACT_APP_ENDPOINT + '/analysis', data)
+      axios.post('/analysis', data)
         .then((response) => {
           console.log(response.data);
           this.props.setTotaldata({
