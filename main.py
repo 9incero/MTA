@@ -90,8 +90,7 @@ def music_discussion():
 
 
     # current_user ID 추출
-    current_user_id = current_user if isinstance(current_user, str) else current_user.get('id')
-    
+    current_user_id = current_user['user']
     if not current_user_id:
         return jsonify({'error': 'Invalid current user ID'}), 400
 
