@@ -5,7 +5,7 @@ import json
 import traceback
 from analyzer.music import MusicAnalyzer
 import os
-from chatbot.chat import submit_message, wait_on_run, get_response
+from chatbot.chat import submit_message, get_response
 import requests
 from io import BytesIO
 
