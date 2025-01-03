@@ -90,13 +90,17 @@ class Userfile extends Component {
         clearInterval(this.interval);
     }
     handleChange = (event, name) => {
-        this.setState({ [name]: event.target.value })
-        console.log(this.state.participant)
-        this.props.setUser(event.target.value)
+        const newValue = event.target.value;
+
+        this.setState({ [name]: newValue }, () => {
+            console.log(this.state.participant); // 상태가 업데이트된 후 출력
+            this.props.setUser(newValue); // 상태가 업데이트된 값을 사용
+        });
     };
+
     render() {
         const { buttonText, time } = this.state;
-        const names = ['황진', '정유진', '서문영', '허성지', '박신식', '임상희', '이태헌', '윤철희', '김호성'];
+        const names = ['P1', 'P2', 'P3', 'P4'];
 
         return (
             <div style={{ display: 'flex' }}>

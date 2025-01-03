@@ -6,12 +6,19 @@ import './modulestyle/chatbot.css'; // 추가: CSS 파일을 import
 
 
 
-const ChatBot = () => {
+const ChatBot = (user) => {
     const [input, setInput] = useState('');
     const [messages, setMessages] = useState([]);
     const [isSending, setIsSending] = useState(false);
     const messagesContainerRef = useRef(null); // 스크롤 위치를 조정할 참조 생성
     const messagesEndRef = useRef(null); // 스크롤 끝 지점 참조 생성
+    const [currentUser, setCurrentUser] = useState(user);
+
+    useEffect(() => {
+        setCurrentUser(user);
+        console.log("user가 변경되어 currentUser가 업데이트되었습니다:", user);
+    }, [user]); // user가 변경될 때마다 실행
+
 
     const handleInputChange = (e) => setInput(e.target.value);
 
@@ -21,12 +28,12 @@ const ChatBot = () => {
         const userMessage = { role: 'user', content: input };
         setMessages([...messages, userMessage]);
         setIsSending(true);
-
+        console.log('ww', currentUser);
         try {
             // Flask 백엔드의 '/chatting' 엔드포인트로 user message만 전송
             const response = await axios.post(
                 process.env.REACT_APP_ENDPOINT + '/chatting',
-                { userMessage },
+                { userMessage, currentUser },
                 {
                     headers: {
                         'Content-Type': 'application/json',

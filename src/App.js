@@ -95,7 +95,7 @@ function App() {
           }}>
             {/* 왼쪽 큰 컬럼 */}
             {/* <iframe src={path.gradio_path} width='100%' height='100%' style={{ overflowX: 'scroll', overflowY: 'scroll' }}></iframe> */}
-            <Chatbot></Chatbot>
+            <Chatbot user={user}></Chatbot>
           </Col>
 
           <Col md={9} style={{
