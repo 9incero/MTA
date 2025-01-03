@@ -10,30 +10,9 @@ import requests
 from io import BytesIO
 
 app = Flask(__name__)
-CORS(app, origins=["https://mta-static.onrender.com"])
+CORS(app, origins=["https://mta-static.onrender.com","http://localhost:10000"])
 
-
-# @app.route('/analysis', methods=['POST'])
-# def analyze_music():
-#     try:
-#         post_data = request.json
-#         music_path = post_data['url']
-#         lyrics = post_data.get('lyrics', '""')
-#         print(music_path, lyrics)
-#         la = MusicAnalyzer(music_path, lyrics)
-#         la.analyze()
-#         result = la.get_final_format()
-
-#         # response result to client
-#         return jsonify(result), 200
-#     except Exception as e:
-#         error_message = {
-#             'error': str(e),
-#             'traceback': traceback.format_exc()
-#         }
-#         # 로그에 상세 오류 정보 출력
-#         print(json.dumps(error_message, indent=4))
-#         return jsonify(error_message), 400
+# CORS(app)
 
 
 @app.route('/analysis', methods=['POST'])
@@ -101,14 +80,21 @@ def analyze_music():
 @app.route('/chatting', methods=['POST'])
 def music_discussion():
     data = request.get_json()
+
     user_message = data.get('userMessage')
+    current_user = data.get('currentUser')
+
+    # 데이터 출력
+    print("User Message:", user_message)
+    print("Current User:", current_user)
+
 
     # 메시지를 제출하고 assistant 실행
-    run = submit_message(user_message['content'])
-    run = wait_on_run(run)
+    run = submit_message(user_message['content'],current_user)
+    run = wait_on_run(run,current_user)
     try:
         # 응답 확인 및 상태 전환 처리
-        messages = get_response()
+        messages = get_response(current_user)
         print(messages)
         messages_json = [{'role': msg.role, 'content': msg.content[0].text.value} for msg in messages]
         return jsonify(messages_json)

@@ -15,12 +15,20 @@ def show_json(obj):
 
 now_assistant=os.getenv('ASSISTANT_ID')
 
-#스레드 userid마다 따로 설정해야됨
-thread = client.beta.threads.create()
-show_json(thread)
 
-user_profile = client.beta.threads.messages.create(
-    thread_id=thread.id,
+
+# 생성된 스레드 ID를 저장할 딕셔너리
+thread_ids = {}
+
+# 사용자별로 스레드 생성 및 ID 저장
+for user_id in ['P1', 'P2', 'P3', 'P4']:
+    # 스레드 생성 및 ID 추출
+    thread_id = client.beta.threads.create().id
+    thread_ids[user_id] = thread_id  # ID 저장
+    print(f"Thread created for {user_id} with ID: {thread_id}")
+    print(thread_ids)
+    client.beta.threads.messages.create(
+    thread_id=thread_id,
     role="assistant",
     content="""Objective:
 Engage in a conversation to help the user deeply explore their lyrical ideas and musical preferences. Gather enough details to create a structured song template like the one below:
@@ -133,39 +141,40 @@ Offer examples or suggestions if the user seems unsure.
 Provide positive feedback to encourage participation.
 """
 ) 
-show_json(user_profile)
 
 
 
-def submit_message(user_message):
+
+
+
+def submit_message(user_message, p_index):
     assistant_id=now_assistant
-    
-    
+    print(thread_ids[p_index])
     # 사용자 입력 메시지를 스레드에 추가합니다.
     client.beta.threads.messages.create(
         # Thread ID가 필요합니다.
         # 사용자 입력 메시지 이므로 role은 "user"로 설정합니다.
         # 사용자 입력 메시지를 content에 지정합니다.
-        thread_id=thread.id,
+        thread_id=thread_ids[p_index],
         role="user",
         content=user_message,
     )
     # 스레드에 메시지가 입력이 완료되었다면,
     # Assistant ID와 Thread ID를 사용하여 실행을 준비합니다.
     run = client.beta.threads.runs.create(
-        thread_id=thread.id,
+        thread_id=thread_ids[p_index],
         assistant_id=assistant_id,
     )
     return run
 
 
-def wait_on_run(run):
+def wait_on_run(run, p_index):
     # 주어진 실행(run)이 완료될 때까지 대기합니다.
     # status 가 "queued" 또는 "in_progress" 인 경우에는 계속 polling 하며 대기합니다.
     while run.status == "queued" or run.status == "in_progress":
         # run.status 를 업데이트합니다.
         run = client.beta.threads.runs.retrieve(
-            thread_id=thread.id,
+            thread_id=thread_ids[p_index],
             run_id=run.id,
         )
         # API 요청 사이에 잠깐의 대기 시간을 두어 서버 부하를 줄입니다.
@@ -173,9 +182,9 @@ def wait_on_run(run):
     return run
 
 
-def get_response():
+def get_response(p_index):
     # 스레드에서 메시지 목록을 가져옵니다.
-    messages = client.beta.threads.messages.list(thread_id=thread.id, order="asc")
+    messages = client.beta.threads.messages.list(thread_id=thread_ids[p_index], order="asc")
     
                 # 메시지를 제출하고 assistant 실행
                 # run = client.beta.threads.runs.create(
