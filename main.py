@@ -90,11 +90,11 @@ def music_discussion():
 
 
     # 메시지를 제출하고 assistant 실행
-    run = submit_message(user_message['content'],current_user)
-    run = wait_on_run(run,current_user)
+    run = submit_message(user_message['content'],current_user['user'])
+    run = wait_on_run(run,current_user['user'])
     try:
         # 응답 확인 및 상태 전환 처리
-        messages = get_response(current_user)
+        messages = get_response(current_user['user'])
         print(messages)
         messages_json = [{'role': msg.role, 'content': msg.content[0].text.value} for msg in messages]
         return jsonify(messages_json)
