@@ -21,32 +21,47 @@ const ChatBot = (user) => {
 
 
     const handleInputChange = (e) => setInput(e.target.value);
-
     const handleSend = async () => {
         if (!input.trim() || isSending) return;
 
         const userMessage = { role: 'user', content: input };
         setMessages([...messages, userMessage]);
         setIsSending(true);
-        console.log('ww', currentUser);
-        try {
-            // Flask 백엔드의 '/chatting' 엔드포인트로 user message만 전송
-            const response = await axios.post(
-                process.env.REACT_APP_ENDPOINT + '/chatting',
-                { userMessage, currentUser },
-                {
-                    headers: {
-                        'Content-Type': 'application/json',
-                    },
-                }
-            );
-            // 응답 데이터 확인
-            console.log("Response Data:", response.data);
+        console.log('Current User:', currentUser);
 
-            // 첫 번째 항목에 접근하여 content를 가져오기
-            const lastMessage = response.data[response.data.length - 1];
-            const botMessage = { role: 'assistant', content: lastMessage.content };
-            setMessages((prevMessages) => [...prevMessages, botMessage]);
+        try {
+            // Flask 백엔드의 '/chatting' 엔드포인트로 user message 전송
+            const response = await axios({
+                method: 'post',
+                url: process.env.REACT_APP_ENDPOINT + '/chatting',
+                data: { userMessage, currentUser },
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                responseType: 'stream', // 스트리밍 응답 처리
+            });
+
+            // 스트리밍 데이터를 처리
+            const reader = response.data.getReader();
+            const decoder = new TextDecoder();
+
+            let done = false;
+
+            while (!done) {
+                const { value, done: readerDone } = await reader.read();
+                done = readerDone;
+
+                if (value) {
+                    const chunk = decoder.decode(value, { stream: true });
+                    const lines = chunk.split('\n').filter((line) => line.startsWith('data:'));
+
+                    for (const line of lines) {
+                        const data = JSON.parse(line.replace('data: ', '').trim());
+                        const botMessage = { role: 'assistant', content: data.content };
+                        setMessages((prevMessages) => [...prevMessages, botMessage]); // 메시지 추가
+                    }
+                }
+            }
         } catch (error) {
             console.error('Error:', error);
         } finally {
