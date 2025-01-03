@@ -25,8 +25,6 @@ for user_id in ['P1', 'P2', 'P3', 'P4']:
     # 스레드 생성 및 ID 추출
     thread_id = client.beta.threads.create().id
     thread_ids[user_id] = thread_id  # ID 저장
-    print(f"Thread created for {user_id} with ID: {thread_id}")
-    print(thread_ids)
     client.beta.threads.messages.create(
     thread_id=thread_id,
     role="assistant",
@@ -161,30 +159,25 @@ def submit_message(user_message, p_index):
     )
     # 스레드에 메시지가 입력이 완료되었다면,
     # Assistant ID와 Thread ID를 사용하여 실행을 준비합니다.
-    response = client.beta.threads.runs.create(
+    run = client.beta.threads.runs.create(
         thread_id=thread_ids[p_index],
         assistant_id=assistant_id,
-        stream=True  # 스트리밍 활성화
-
     )
-    # 스트리밍 데이터 처리
-    for chunk in response:
-        if chunk:  # 스트리밍 데이터가 있다면
-            print(f"Streamed data chunk: {chunk}")
-            yield chunk  # 스트리밍 데이터 반환
+    return run
 
-# def wait_on_run(run, p_index):
-#     # 주어진 실행(run)이 완료될 때까지 대기합니다.
-#     # status 가 "queued" 또는 "in_progress" 인 경우에는 계속 polling 하며 대기합니다.
-#     while run.status == "queued" or run.status == "in_progress":
-#         # run.status 를 업데이트합니다.
-#         run = client.beta.threads.runs.retrieve(
-#             thread_id=thread_ids[p_index],
-#             run_id=run.id,
-#         )
-#         # API 요청 사이에 잠깐의 대기 시간을 두어 서버 부하를 줄입니다.
-#         time.sleep(0.5)
-#     return run
+
+def wait_on_run(run, p_index):
+    # 주어진 실행(run)이 완료될 때까지 대기합니다.
+    # status 가 "queued" 또는 "in_progress" 인 경우에는 계속 polling 하며 대기합니다.
+    while run.status == "queued" or run.status == "in_progress":
+        # run.status 를 업데이트합니다.
+        run = client.beta.threads.runs.retrieve(
+            thread_id=thread_ids[p_index],
+            run_id=run.id,
+        )
+        # API 요청 사이에 잠깐의 대기 시간을 두어 서버 부하를 줄입니다.
+        time.sleep(0.5)
+    return run
 
 
 def get_response(p_index):
