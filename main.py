@@ -1,5 +1,5 @@
 import dotenv
-from flask import Flask, request, jsonify, send_file
+from flask import Flask, request, jsonify, send_file, Response
 from flask_cors import CORS
 import json
 import traceback
@@ -89,19 +89,21 @@ def music_discussion():
     print("Current User:", current_user)
 
 
-    # 메시지를 제출하고 assistant 실행
-    run = submit_message(user_message['content'],current_user['user'])
-    run = wait_on_run(run,current_user['user'])
-    try:
-        # 응답 확인 및 상태 전환 처리
-        messages = get_response(current_user['user'])
-        print(messages)
-        messages_json = [{'role': msg.role, 'content': msg.content[0].text.value} for msg in messages]
-        return jsonify(messages_json)
+    # current_user ID 추출
+    current_user_id = current_user if isinstance(current_user, str) else current_user.get('id')
     
+    if not current_user_id:
+        return jsonify({'error': 'Invalid current user ID'}), 400
+
+    # 스트리밍 응답 처리
+    try:
+        def generate_stream():
+            for chunk in submit_message(user_message['content'], current_user_id):
+                yield f"data: {json.dumps(chunk)}\n\n"
+
+        return Response(generate_stream(), mimetype="text/event-stream")
     except Exception as e:
-        # 에러를 콘솔에 출력하고 클라이언트에 반환
-        print("Error:", e)
+        print(f"Error during music discussion: {e}")
         return jsonify({'error': str(e)}), 500
 
         
