@@ -1,4 +1,6 @@
 import os
+import requests
+import time
 import json
 from typing import Dict, Any, List
 from enum import Enum
@@ -634,6 +636,46 @@ def extract_name_with_llm(llm, user_input: str) -> str:
 
     return name if name else "Unknown"
     
+def call_suno(title: str, lyrics: str, music_component: str) -> str:
+    print(f'lyrics: {lyrics}')
+    print(f'meta codes: {music_component}')
+    print(f'title: {title}')
+
+    if not os.path.exists('music'):
+        os.makedirs('music')
+    music_filename = os.path.join("music", f"{title}.wav")
+
+    post = {
+        'prompt': lyrics,
+        'tags': music_component,
+        'title': title,
+        'make_instrumental': False,
+        'wait_audio': True,
+    }
+    print(f'post message: {post}')
+
+    response = requests.post('http://localhost:3000/api/custom_generate', json=post)
+
+    if response.status_code == 200:
+        res_data = response.json()
+        print(res_data)
+        audio_url = res_data[0]['audio_url']
+
+        print(f'Downlaod music from {audio_url}')
+        start_time = time.time()
+        audio_res = requests.get(audio_url, stream=True, timeout=(5, 300))
+        audio_res.raise_for_status()
+        with open(music_filename, 'wb') as file:
+            for chunk in audio_res.iter_content(chunk_size=8192):
+                if chunk:
+                    file.write(chunk)
+            print(
+                f'\nProcessed Suno, Input Text: {lyrics}, Meta_codes: {music_component}, Title: {title}, Output Music: {music_filename}.')
+        print(f'Download done! Elapsed Time: {time.time() - start_time}')
+    else:
+        print(f'error code: {response.status_code}, message: {response.content}')
+
+    return music_filename
 
 
 
