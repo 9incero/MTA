@@ -5,6 +5,7 @@ import json
 from typing import Dict, Any, List
 from enum import Enum
 import re
+import datetime
 
 # langchain
 from langchain.chains import LLMChain
@@ -34,7 +35,7 @@ STEP_VAR_DESCRIPTIONS = {
     # 1) Therapeutic_Connection
     ChatbotState.THERAPEUTIC_CONNECTION.value: {
         "rapport_building": {
-            "concern": "사용자가 음악 만들기 활동에 대해서 가지는 걱정"
+            "user_ready": "사용자의 음악만들기에 대한 관심 여부"
         },
         "goal_and_motivation_building": {
             "motivation": "사용자가 음악만들기 활동을 통해 달성하고 싶은 목표",
@@ -49,18 +50,26 @@ STEP_VAR_DESCRIPTIONS = {
     # 2) Music_Creation
     ChatbotState.MUSIC_CREATION.value: {
         "making_concept": {
-            "concept": "음악/곡의 전반적인 컨셉 (분위기, 테마, 메시지 등)"
+            "concept": "음악의 전반적인 컨셉 (분위기, 테마, 메시지 등)"
         },
         "making_lyrics": {
             "lyrics_keyword": "가사에 들어갈 핵심 키워드 또는 아이디어",
-            "lyrics": "생성된 가사"
+            "lyrics_sentence":"가사의 핵심 문장",
+            "lyrics_flow": "가사의 흐름",
+        },
+        "lyrics_gen":{
+            "lyrics": "생성된 최종 가사"
         },
         "lyrics_discussion": {
             "discussion_feedback": "가사에 대한 사용자 의견"
         },
         "making_music": {
+            "title": "사용자가 만들 노래 제목",
             "music_component": "멜로디, 코드 진행, 리듬 등 구체적인 음악 아이디어"
         },
+        "style_gen":{
+            "style_prompt":"챗봇이 만들어준 노래 구성요소 프롬프트"
+        }
     },
 
     # 3) Music_Discussion
@@ -90,16 +99,13 @@ STEP_MAIN_PROMPTS = {
     ChatbotState.THERAPEUTIC_CONNECTION.value: {
         "rapport_building": """
             [라포 형성] 
-            1. 사용자가 편안함을 느끼도록 대화를 이끌고,
-            2. 음악만들기 활동에 대한 고민(concern)을 파악하세요. 고민에 대해 자세하게 물어보세요. 
-            
-            예시)
-            1번의 경우
-            - 반갑습니다, Name님. 오늘 저와 함께 이야기를 나누고, 그 이야기를 음악으로 표현해보면 어떨까요? Name님의 생각과 마음을 담아보는 데 제가 조금이나마 도움을 드릴 수 있으면 좋겠어요.
-            - 음악을 만든다는 게 어려워보일 수 있지만, Name님이 도와준다면 같이 멋진 음악을 만들 수 있을 것 같아요. 저와 함께 오늘의 음악을 만들어 볼 준비가 되셨나요?
-            - Name님, 오늘은 저와 함께 직접 가사와 음악을 만들어 볼거예요. 지금 느끼는 감정이나 어려운 점을 음악으로 표현하면서 마음을 조금 더 가볍게 만들어보는 게 어떨까요?
-            2번의 경우
-            - 음악 만들기 활동에 대해서 걱정이 있으신가요?
+            순서대로 진행하세요. 되도록 짧게 질문을 진행하세요. 
+            1. 사용자와 라포를 쌓기 위해서 아이스브레이킹을 진행하세요.
+                - 오늘 하루 어땠나요?
+            2. 사용자가 음악 만들기에 대해 관심이 있는지 물어보고 앞으로의 음악만들기 과정을 격려하세요.
+                 - 반갑습니다, Name님. 오늘 저와 함께 이야기를 나누고, 그 이야기를 음악으로 표현해보면 어떨까요? Name님의 생각과 마음을 담아보는 데 제가 조금이나마 도움을 드릴 수 있으면 좋겠어요.
+                - 음악을 만든다는 게 어려워보일 수 있지만, Name님이 도와준다면 같이 멋진 음악을 만들 수 있을 것 같아요. 저와 함께 오늘의 음악을 만들어 볼 준비가 되셨나요?
+                - Name님, 오늘은 저와 함께 직접 가사와 음악을 만들어 볼거예요. 지금 느끼는 감정이나 어려운 점을 음악으로 표현하면서 마음을 조금 더 가볍게 만들어보는 게 어떨까요?
             """,
         "goal_and_motivation_building": """
             [목표/동기 파악] 
@@ -128,7 +134,7 @@ STEP_MAIN_PROMPTS = {
             (예: “외부 문제(직장/인간관계), 내부 문제(성격/외모) 등이 있을까요?”)
             - 모든 질문을 한 번에 다 하지 말고, 사용자의 응답을 들은 뒤 추가 질문을 자연스럽게 이어가세요.
             - 사용자의 대답을 들으면 무조건 공감을 하고 대답을 해주세요.
-            - 변수를 다 채운 뒤 잘 진행해보자는 말로 격려를 해주세요. 
+            - 예시는 사용자가 대답을 망설일때만 제시하세요. 처음부터 제시하지 마세요. 
             """,
         "music_preference": """
             [음악 선호] 
@@ -136,12 +142,12 @@ STEP_MAIN_PROMPTS = {
 
             아래 조건을 지키며 사용자에게 질문하고, 대화를 진행해주세요:
             1. 먼저, 사용자가 평소에 음악을 좋아하는 편인지 물어보세요.
-            2-1. 만약 '그렇다'고 응답하면 아래의 예시와 같은 질문을 진행하세요.
+            2-1. 만약 '그렇다'고 응답하면 아래의 예시와 같은 질문을 진행하세요. (1~2개)
             - 최근 어떤 음악 활동(음악감상, 악기연주, 노래부르기 등)을 했나요?
             - 최근 주로 감상하는 음악은 무엇인가요?
             - 평소 좋아하는 음악은 무엇인가요?
             등을 물어보세요.
-            2-2. 만약 '좋아하지 않는다'고 응답한다면, 아래의 예시와 같은 질문을 진행하세요. 
+            2-2. 만약 '좋아하지 않는다'고 응답한다면, 아래와 같은 질문을 진행하세요. (1개)
             - 사용자가 특별히 원하는 음악이 있나요?
             - 제외하고 싶은 음악이 있나요?
 
@@ -156,60 +162,70 @@ STEP_MAIN_PROMPTS = {
         "making_concept": """
             [컨셉 설정] 
             곡(음악)의 전반적인 컨셉(concept)을 구체화하세요.
-            아래와 같은 대화 흐름을 따르세요.
             사용자가 어려워하면 이전의 대화 기록을 통해 추천해주세요.
             "없어요", "모르겠어요"와 같은 반응이 나오면 이전의 대화에서 추천해준 후 이 단계를 끝내세요. 
-            똑같은 질문을 계속 하지마세요.
-            
+            똑같은 질문을 반복하지 마세요.
+
+            아래와 같은 대화 흐름을 따르세요.
             (1) 주제 설정하기
-            "Difficulty에서 이야기한 주제를 바탕으로 음악을 만들어볼까요?"
-            (difficulty 변수가 있을 경우): "예를 들어, '{difficulty}'을(를) 음악으로 표현해볼 수도 있어요."
-            "아니면 다른 주제를 선택하고 싶나요? 어떤 감정이나 상황을 음악으로 담고 싶나요?"
+            - "{difficulty}에서 이야기한 주제를 바탕으로 음악을 만들어볼까요?"
+            - "어떤 감정이나 상황을 음악으로 담고 싶나요?"
 
             (2) 이야기 구체화하기
-            "이 노래 안에 어떤 이야기를 담고 싶나요?"
-            "그 이야기를 담고 싶은 이유가 있나요?"
-            "이 음악이 어떤 감정을 전달했으면 좋겠나요?"
+            - "이 노래 안에 어떤 이야기를 담고 싶나요?"
+            - "그 이야기를 담고 싶은 이유가 있나요?"
+            - "이 음악이 어떤 감정을 전달했으면 좋겠나요?"
             
-            사용자가 답변을 망설이면
-            예시를 제시하세요:
+            사용자가 어려움을 겪거나 모르겠다고 대답할때만 아래와 같은 응답을 진행하세요. 
+             - 예시를 제시하세요:
             "예를 들면, 극복하고 싶은 어려움, 행복했던 순간, 위로받고 싶은 감정 등이 있을까요?"
-            선택지를 제안할 수도 있어요:
+            - 선택지를 제안할 수도 있어요:
             "예를 들어, ‘외로움’, ‘성장’, ‘추억’, ‘희망’ 같은 주제도 가능해요."
             """,
         "making_lyrics": """
             [가사 작성] lyrics_keyword, lyrics(간단 가사)를 만들어보세요.
-            사용자가 가사의 방향을 설정하고, GPT가 이를 바탕으로 가사를 생성합니다.
-            무조건 "(3) 최종가사 생성" 단계를 거쳐야합니다. 
+            사용자가 가사의 키워드, 문장, 흐름을 이야기하면서 사용자의 이야기가 담긴 가사를 만들도록 유도합니다.
+            사용자의 의견을 최대한 많이 요구하새요.
+            처음부터 예시를 들어주지 마세요. 어려워하는 경우에만 예시를 들어 사용자를 도와줍니다. 
+            아래의 (1),(2),(3)의 과정을 거쳐서 사용자의 응답을 받아야합니다.
 
-            (1) 가사 키워드 도출하기
-            "이전 단계에서 정한 '{concept}' 를 음악으로 표현하려면, 어떤 단어나 느낌이 떠오르시나요?"
-            "이 주제를 떠올릴 때 가장 먼저 생각나는 단어가 있나요?"
-            "감정을 더 구체적으로 표현해볼까요? 예를 들면, ‘외로운 밤’, ‘빛을 향해 가는 길’, ‘차가운 바람’ 같은 이미지도 떠올려볼 수 있어요."
+            (1) 가사 키워드 도출하기 (아래의 질문을 진행하세요)
+                - "이전에 정한 '{concept}' 를 음악으로 표현하려면, 어떤 단어나 느낌이 떠오르시나요?"
+                - "이 주제를 떠올릴 때 가장 먼저 생각나는 단어가 있나요?"
+                - "감정을 더 구체적으로 표현해볼까요?"
 
-            사용자가 어려워하면
-            예시 단어를 제시하세요:
-            "예를 들어, ‘희망’, ‘눈물’, ‘바람’, ‘기다림’, ‘돌아봄’ 같은 단어도 좋아요."
-            감정과 분위기 선택지를 제안할 수도 있어요:
-            "이 노래는 밝은 느낌일까요? 아니면 차분한 분위기일까요?"
+                사용자가 어려워하면
+                - 예시 단어를 제시하세요:
+                "예를 들어, ‘희망’, ‘눈물’, ‘바람’, ‘기다림’, ‘돌아봄’ 같은 단어도 좋아요."
+                - 감정과 분위기 선택지를 제안할 수도 있어요:
+                "이 노래는 밝은 느낌일까요? 아니면 차분한 분위기일까요?"
             
-            (2) 가사 초안 작성하기
-            "가사를 편하게 작성해보시겠어요?"
-            "짧은 문장이나 단어라도 괜찮아요. 떠오르는 문구가 있다면 자유롭게 적어보세요."
-            "단어 또는 짧은 문장으로 먼저 제시해주시면, 제가 같이 작업해볼게요!"
-            사용자가 어려워하면
+            (2) 가사 핵심 문장 작성하기 (아래의 질문을 진행하세요)
+                "짧은 문장이나 단어라도 괜찮아요. 떠오르는 문구가 있다면 자유롭게 적어보세요."
+                "단어 또는 짧은 문장으로 먼저 제시해주시면, 제가 같이 작업해볼게요!"
+                
+                사용자가 어려워하면
+                - "첫 줄을 제가 시작해볼까요?" 
+                - "이런 느낌은 어떠세요?" 
+                + 가사 키워드를 가지고 가이드 문장을 제공
 
-            "첫 줄을 제가 시작해볼까요?"
-            예: "차가운 바람이 불어와도 / 난 다시 걸어가네"
-            "이런 느낌은 어떠세요?" 하고 가이드 문장을 제공
-            
-            (3) 최종 가사 생성
+            (3) 가사 흐름 작성하기 (아래의 질문을 진행하세요)
+                "그렇다면 가사의 흐름은 어떻게 진행되었으면 좋겠나요?"
+                "가사가 어떤 식으로 진행되었으면 좋겠나요?"
+
+
+
+            """,
+        "lyrics_gen":"""
+            [가사 생성]
             당신은 가사를 잘 만드는 작사가입니다.
-            주어진 주제와 감정을 바탕으로 짧은 노래 가사를 작성해주세요.
+            주어진 주제와 감정을 바탕으로 노래 가사를 작성해주세요.
 
             - 주제: {concept}
             - 음악스타일: {music_info}
-            - 포함해야 할 단어: {lyrics_keyword}
+            - 가사의 핵심키워드: {lyrics_keyword}
+            - 가사의 핵심문장: {lyrics_sentence}
+            - 가사의 흐름: {lyrics_flow}
 
             중요:
             - 감정을 효과적으로 전달하는 가사를 [Verse], [Chorus], [Bridge] 형식을 지켜서 생성합니다.
@@ -232,8 +248,7 @@ STEP_MAIN_PROMPTS = {
             ...
             [Chorus]
             ...
-
-            """,
+        """,
         "lyrics_discussion": """
             [가사 피드백] 
             현재까지의 가사를 바탕으로 discussion_feedback(피드백)을 이끌어내세요.
@@ -308,34 +323,39 @@ STEP_MAIN_PROMPTS = {
             “가사나 주제와 어울릴 만한 분위기"으로 자동 결정.
             -> 사용자가 계속 어려워하면 이전의 대화({concept})를 참고해 자동으로 선정
 
-
             5) 가수의 음색 (vocal_tone)  
             - "가수의 음색은 어떤 느낌이면 좋을까요? 예시: "허스키한, 맑은, 밝은, 깨끗한, 중후한, 묵직한, 따뜻한 등"  
             - "성별(남성/여성/중성)에 대한 선호가 있나요?"
             사용자가 어려워할 경우
             -> 이전의 대화({concept})를 참고해 자동으로 선정
 
-
-            [사용자가 어려워하는 경우] 추천 요청  
-            - "이 주제({concept})에 맞는 **템포, 멜로디 스타일** 등을 추천받고 싶나요?"  
-            -> 사용자가 요청하면 추천해주기
-
-            [장르, 빠르기, 악기, 분위기, 음색이 정해지면 대화를 바탕으로] 프롬프트 생성
-            모든 요소가 결정(혹은 자동으로 선정)되면, 최종적으로 노래 구성요소를 만들어주세요:
+            6) 노래 제목 선정
+            - {concept}과 같은 노래를 만드려는데 노래 제목은 뭘로 하는게 좋을까요?
+            - 떠오르는 노래 제목이 존재하시나요? 
+            """,
+        "style_gen":"""
+            [프롬프트 생성]
+            노래 구성요소 프롬프트를 만들어주세요:
 
             당신은 작곡 전문가입니다.
             노래주제: {concept},
             가사: {lyrics},
             요구조건: {user_music_component}
-            을 가지고 노래 구성요소(장르, 스타일, 빠르기, 악기, 분위기등등)을 만들어주세요.  
-            """,
+            을 가지고 노래 구성요소(장르, 스타일, 빠르기, 악기, 분위기등등)을 만들어주세요.
+            
+            예시와 같이 키워드만 쉼표로 구분해서 출력합니다. 
+            예시) 피아노, 밝게, 리듬
+
+            [중요]
+            200자내로 생성해야합니다.
+            되도록 키워드로 간결하게 설명해주세요. 
+        """
     },
     ChatbotState.MUSIC_DISCUSSION.value: {
         "music_opinion": """
             [음악 의견] 
             이 단계는 작곡 아이디어나 노래 제작 과정을 마친 후, 최종적으로 노래에 대한 감정과 느낌을 정리하는 목적입니다.             
-            질문은 1~2개 정도(후속질문 제외)로 충분합니다.
-            각 질문 후, 후속 질문을 1~2번 정도만 하고, 그 뒤 정리를 진행합니다.
+            1~2개의 질문 후, 후속 질문을 1~2번 정도만 하고, 그 뒤 정리를 진행합니다.
             마지막에 “더 궁금한 점이 없으시면 대화를 마무리하겠습니다.” 같은 문구로 자연스럽게 단계를 종료합니다.
             
             질문(개인 감정 & 장점) 예시
@@ -404,8 +424,10 @@ STATE_STEPS_ORDER = {
     ChatbotState.MUSIC_CREATION.value: [
         "making_concept",
         "making_lyrics",
+        "lyrics_gen",
         "lyrics_discussion",
         "making_music",
+        "style_gen",
     ],
     ChatbotState.MUSIC_DISCUSSION.value: [
         "music_opinion",
@@ -438,6 +460,7 @@ def generate_question_for_step(llm, state_name: str, step_name: str, context: Di
     #     - "JSON으로만 응답" 요청
     prompt_text = """
     당신은 청각장애인을 위한 상담 및 음악치료 보조 챗봇입니다.
+    청각장애인은 문해력이 떨어진다는 점 명심하세요. 
     사용자의 이름은 **{user_name}** 입니다.
 
     다음은 현재까지의 대화 내역입니다:
@@ -456,29 +479,33 @@ def generate_question_for_step(llm, state_name: str, step_name: str, context: Di
     - {user_name}님이 편안하게 대화할 수 있도록 배려하세요.
     - {user_name}님의 관심과 감정을 존중하며 질문하세요.
     - 추출해야 할 변수를 채우는 것을 최우선으로 하되 자연스럽게 대화를 이어가세요.
-    - 질문을 한 번에 하나씩만 진행하세요.
-    - 사용자의 응답에 공감을 무조건적으로 진행하세요. 
     - 비슷하거나 똑같은 질문은 삼가하세요. 
+    - 사용자는 문해력이 떨어지는 청각장애인이므로 되도록 간결하고 짧은 질문을 진행하세요. 
+    - 예시는 사용자가 모르겠다고 할때 제시하세요.
 
     """
 
     # (3) LangChain LLMChain 실행
     prompt = PromptTemplate(
-        input_variables=["user_name","chat_history","main_prompt","variable_explanations","concern", "motivation", "difficulty", "emotion", "music_info", "concept", "lyrics_keyword", "lyrics", "discussion_feedback", "music_component", "individual_emotion", "strength", "change_music", "change_mind", "feeling"],
+        input_variables=["user_name","chat_history","main_prompt","variable_explanations","user_ready", "motivation", "difficulty", "emotion", "music_info", "concept", "lyrics_keyword", "lyrics_sentence","lyrics_flow","lyrics", "discussion_feedback", "music_component","title","style_prompt", "individual_emotion", "strength", "change_music", "change_mind", "feeling"],
         template=prompt_text
     )
     chain = prompt | llm
     output = chain.invoke({
-        "concern": context.get("concern", ""),
+        "user_ready": context.get("user_ready", ""),
         "motivation": context.get("motivation", ""),
         "difficulty": context.get("difficulty", ""),
         "emotion": context.get("emotion", ""),
         "music_info": context.get("music_info", ""),
         "concept": context.get("concept", ""),
         "lyrics_keyword": context.get("lyrics_keyword", ""),
+        "lyrics_sentence": context.get("lyrics_sentence", ""),
+        "lyrics_flow": context.get("lyrics_flow", ""),
         "lyrics": context.get("lyrics", ""),
         "discussion_feedback": context.get("discussion_feedback", ""),
         "music_component": context.get("music_component", ""),
+        "title": context.get("title", ""),
+        "style_prompt": context.get("style_prompt", ""),
         "individual_emotion": context.get("individual_emotion", ""),
         "strength": context.get("strength", ""),
         "change_music": context.get("change_music", ""),
@@ -518,13 +545,12 @@ def generate_question_for_step(llm, state_name: str, step_name: str, context: Di
     # print("=== 최종 프롬프트 미리보기 ===")
     # print(rendered_prompt)
     # print("================================")
-    # (5) 대화 히스토리 업데이트
-    #     - 실제로는 사용자 입력도 추가해야 하지만, 여기서는 간단화
-    new_chat_history = context.get("chat_history", "") + f"\n[System Output - Step: {step_name}]\n{output}"
-    context["chat_history"] = new_chat_history
+
+    # new_chat_history = context.get("chat_history", "") + f"\n[System Output - Step: {step_name}]\n{output}"
+    # context["chat_history"] = new_chat_history
     return output
 
-def extract_reply_for_step(llm, state_name: str, step_name: str, context: Dict[str, Any]) -> str:
+def extract_reply_for_step(llm, state_name: str, step_name: str, context: Dict[str, Any], chat_history:str) -> str:
 
     # (1) 해당 스텝에서 필요한 변수와 그 설명 가져오기
     var_desc_dict = STEP_VAR_DESCRIPTIONS[state_name][step_name]
@@ -538,6 +564,7 @@ def extract_reply_for_step(llm, state_name: str, step_name: str, context: Dict[s
     prompt_text = """
     당신은 대화기록을 보고 특정 변수에 대답을 가공해서 넣는 전문가입니다.
     입력된 대화기록들을 보고 현재 단계에서 채워야하는 변수에 답변을 채우세요.
+    최근 대화(1~3턴)을 보고 판단하여 변수를 채웁니다. 
 
     다음은 현재까지의 대화 내역입니다:
 
@@ -569,7 +596,7 @@ def extract_reply_for_step(llm, state_name: str, step_name: str, context: Dict[s
     )
     chain = prompt | llm
     output = chain.invoke({       
-        "chat_history": context.get("chat_history", ""),
+        "chat_history": chat_history,
         "variable_explanations": "\n".join([f"- {var}: {desc}" for var, desc in var_desc_dict.items()])
 
     })  # 프롬프트에 넣을 input_variables가 없으므로 {}만 전달
@@ -593,8 +620,8 @@ def extract_reply_for_step(llm, state_name: str, step_name: str, context: Dict[s
 
     # (5) 대화 히스토리 업데이트
     #     - 실제로는 사용자 입력도 추가해야 하지만, 여기서는 간단화
-    new_chat_history = context.get("chat_history", "") + f"\n[System Output - Step: {step_name}]\n{output}"
-    context["chat_history"] = new_chat_history
+    # new_chat_history = context.get("chat_history", "") + f"\n[System Output - Step: {step_name}]\n{output}"
+    # context["chat_history"] = new_chat_history
     return output.content
 
 def extract_name_with_llm(llm, user_input: str) -> str:
@@ -604,17 +631,17 @@ def extract_name_with_llm(llm, user_input: str) -> str:
     prompt_text = """
         사용자가 다양한 방식으로 자신의 이름을 말할 수 있습니다. 
         예를 들어:
-        - 나는 지훈이요.
-        - 나를 지훈이라고 불러줘.
-        - 제 이름은 지훈입니다.
-        - 지훈이요
-        - 지훈
-        - 김지훈
+        - 나는 00이요.
+        - 나를 00이라고 불러줘.
+        - 제 이름은 00입니다.
+        - 00이요
+        - 00
+        - 김00
 
         당신의 역할은 **사용자의 입력에서 이름만 정확히 추출**하는 것입니다.
         위의 응답처럼 들어오면 아래와 같이 출력하세요.
 
-        - 지훈
+        - 00
         
         절대로 다른 문장이나 설명을 추가하지 마세요.
         한글이 깨지지 않도록 그대로 출력해주세요. 
@@ -623,8 +650,9 @@ def extract_name_with_llm(llm, user_input: str) -> str:
 
         사용자 입력: "{user_input}"
         사용자가 닉네임이나 초성만 입력했다면 그것을 그대로 출력해도 됩니다. 
+        사용자의 이름을 이해 못했다면 사용자라고 지칭합니다. 
 
-        """.strip()
+        """
 
     # LangChain LLM 실행
     prompt = PromptTemplate(input_variables=["user_input"], template=prompt_text)
@@ -677,7 +705,21 @@ def call_suno(title: str, lyrics: str, music_component: str) -> str:
 
     return music_filename
 
+def save_chat_history(context, user_name):
+    """대화 기록을 'chat_history_YYYY-MM-DD_HH-MM-SS.txt' 형식으로 저장"""
+    timestamp = datetime.datetime.now().strftime("%Y-%m-%d_%H-%M-%S")
+    filename = f"chat_history_{timestamp}_{user_name}.txt"
+    
+    # 폴더 존재 여부 확인 후 생성
+    if not os.path.exists("chat_logs"):
+        os.makedirs("chat_logs")
 
+    file_path = os.path.join("chat_logs", filename)
+    
+    with open(file_path, "w", encoding="utf-8") as file:
+        file.write(context["chat_history"])
+    
+    print(f"대화 기록이 '{file_path}' 파일로 저장되었습니다.")
 
 ################################################
 # (C) 전체 파이프라인(메인 함수)
@@ -702,12 +744,12 @@ def main():
 
     # 3) Context 딕셔너리 (대화 기록, 사용자 이름 저장)
     context: Dict[str, Any] = {
-        "chat_history": "",
+        "chat_history":"",
+        "step_chat_history": {},
         "user_name": user_name  # 사용자 이름 저장
     }
 
     print(f"좋아요! 앞으로 {user_name}님이라고 부를게요.")
-    
     # 4) State 순서 (선형 진행)
     states = [
         ChatbotState.THERAPEUTIC_CONNECTION,
@@ -716,52 +758,6 @@ def main():
         ChatbotState.WRAP_UP
     ]
 
-    # # 4) 메인 루프: State → Step 순서대로 진행
-    # for state in states:
-    #     state_name = state.value
-    #     steps = STATE_STEPS_ORDER[state_name]
-
-    #     print(f"===== [{state_name}] 단계를 시작합니다. =====")
-
-    #     for step_name in steps:
-    #         print(f"{step_name} start")
-    #         var_desc_dict = STEP_VAR_DESCRIPTIONS[state_name][step_name]
-    #         required_vars = list(var_desc_dict.keys())
-
-    #         # 필요한 변수들이 Unknown이면 계속 Q&A 반복
-    #         while any(
-    #             not context.get(var) or context[var] == "Unknown"
-    #             for var in required_vars
-    #         ):
-    #             # (A) 질문 생성
-    #             question_text = generate_question_for_step(llm, state_name, step_name, context)
-    #             print("\n[Assistant Question]")
-    #             print(question_text.content)
-
-    #             # (B) 사용자 답변
-    #             user_input = input(f"[{user_name}]: ")
-    #             # 대화이력에 누적
-    #             context["chat_history"] += f"\n{user_name}: {user_input}"
-
-    #             # (C) 사용자 답변을 바탕으로 변수를 추출
-    #             extract_reply_for_step(llm, state_name, step_name, context)
-
-    #         # 각 스텝 완료 후 어떤 값들이 채워졌는지 출력
-    #         print(f"\n--- 스텝 '{step_name}' 완료. 추출된 변수 ---")
-    #         for var in required_vars:
-    #             print(f"{var}: {context[var]}")
-    #         print("---------------------------------------")
-
-    # print("\n모든 스텝이 종료되었습니다! 수집된 변수 요약:")
-    # for k, v in context.items():
-    #     if k == "chat_history":
-    #         continue
-    #     print(f"- {k}: {v}")
-
-    # print("\n상담 및 음악치료 세션이 모두 마무리되었습니다. 수고하셨습니다!")
-
-
-    ##여기서부터
     # 분기 제어용 변수
     skip_to_state = None
     skip_to_step = None
@@ -788,25 +784,32 @@ def main():
                 not context.get(var) or context[var] == "Unknown"
                 for var in required_vars
             ):
+                if step_name not in context["step_chat_history"]:
+                    context["step_chat_history"][step_name] = ""
+
                 # (A) 질문 생성
                 question_text = generate_question_for_step(llm, state_name, step_name, context)
-                print("\n[Assistant Question]")
-                print(question_text.content)
+                timestamp = datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+                print("\n[Assistant Question]",question_text.content)
+                context["step_chat_history"][step_name] += f"\n[{timestamp}] Assistant: {question_text.content}"
+                context["chat_history"] += f"\n[{timestamp}] Assistant: {question_text.content}"
 
-                # (B) 사용자 답변
-                user_input = input(f"[{user_name}]: ")
-                # 대화이력에 누적
-                context["chat_history"] += f"\n{user_name}: {user_input}"
+                if (step_name == "style_gen" or step_name=="lyrics_gen"):
+                    pass
+                else:
+                    # (B) 사용자 답변
+                    user_input = input(f"[{user_name}]: ")
+
+                    # 대화이력에 누적
+                    timestamp = datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+                    context["step_chat_history"][step_name] += f"\n[{timestamp}] {user_name}: {user_input}"
+                    context["chat_history"] += f"\n[{timestamp}] {user_name}: {user_input}"
 
 
-                # (C) 사용자 답변을 바탕으로 변수 추출 (예: extract_reply_for_step)
-                extract_reply_for_step(llm, state_name, step_name, context)
-
-                # (예시 분기) goal_and_motivation_building에서 "go back" 이라는 키워드가 있으면
-                # rapport_building으로 돌아가고 이후 단계는 순서대로 다시 진행
                 if (
                     state == ChatbotState.MUSIC_DISCUSSION
                     and step_name == "music_recreation"
+
                 ):
                     prompt = PromptTemplate(input_variables=["user_input"], template="""
                     사용자의 답변 "{user_input}"을 분석하세요.
@@ -829,10 +832,33 @@ def main():
                         skip_to_step = "making_concept"  # 돌아가고 싶은 스텝
                         break  # while 루프 탈출
 
+                print("==========step_chat_history========")
+                print(context["step_chat_history"][step_name])
+                print("===================")
+
+                # (C) 사용자 답변을 바탕으로 변수 추출 (예: extract_reply_for_step)
+                extract_reply_for_step(llm, state_name, step_name, context, context["step_chat_history"][step_name])
+
+
+                #음악 생성
+                if (
+                    state == ChatbotState.MUSIC_CREATION
+                    and step_name == "style_gen"
+                    and context.get("style_prompt", "")
+                ):
+                    music_title=context.get("title", "")
+                    music_lyrics=context.get("lyrics", "")
+                    music_prompt=context.get("style_prompt", "")
+
+                    # 모든 필수 값이 존재할 때만 실행
+                    if all([music_title, music_lyrics, music_prompt]):
+                        call_suno(music_title, music_lyrics, music_prompt)
+                    else:
+                        print("음악을 생성하기 위해 필요한 정보가 부족합니다.")                    
+
             # 만약 skip_to_state가 설정됐다면 현재 스텝 루프 정지
             if skip_to_state is not None:
                 break
-
             # 스텝 완료
             print(f"\n--- 스텝 '{step_name}' 완료. 추출된 변수 ---")
             for var in required_vars:
@@ -863,6 +889,10 @@ def main():
 
     print("\n모든 진행이 끝났습니다. 수고하셨습니다.")
     print("수집된 변수:", context)
+
+    save_chat_history(context,user_name)
+
+
 
 if __name__ == "__main__":
     main()
