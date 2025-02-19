@@ -32,7 +32,11 @@ def generate_question_for_step(llm, state_name: str, step_name: str, context: Di
     """
     # (1) 해당 스텝에서 필요한 변수와 그 설명 가져오기
     var_desc_dict = STEP_VAR_DESCRIPTIONS[state_name][step_name]
-    required_vars = list(var_desc_dict.keys())
+    required_var_dict = {}
+    for var, desc in var_desc_dict.items():
+        if not context.get(var) or context[var] == "Unknown":
+            required_var_dict[var] = desc
+    required_vars = list(required_var_dict.keys())
 
     # (2) 프롬프트 생성
     #     - 현재 대화 내용
@@ -114,7 +118,7 @@ def generate_question_for_step(llm, state_name: str, step_name: str, context: Di
         "user_name": context.get("user_name", "Unknown"),
         "chat_history": context.get("chat_history", ""),
         "main_prompt": STEP_MAIN_PROMPTS[state_name][step_name],
-        "variable_explanations": "\n".join([f"- {var}: {desc}" for var, desc in var_desc_dict.items()])
+        "variable_explanations": "\n".join([f"- {var}: {desc}\n" for var, desc in required_var_dict.items()])
 
     })  # 프롬프트에 넣을 input_variables가 없으므로 {}만 전달
 
