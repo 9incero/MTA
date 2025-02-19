@@ -150,11 +150,16 @@ def generate_question_for_step(llm, state_name: str, step_name: str, context: Di
     # context["chat_history"] = new_chat_history
     return output
 
-def extract_reply_for_step(llm, state_name: str, step_name: str, context: Dict[str, Any], chat_history:str) -> str:
+def extract_reply_for_step(llm, state_name: str, step_name: str, context: Dict[str, Any]) -> str:
+    chat_history = context['step_chat_history'][step_name]
 
     # (1) 해당 스텝에서 필요한 변수와 그 설명 가져오기
     var_desc_dict = STEP_VAR_DESCRIPTIONS[state_name][step_name]
-    required_vars = list(var_desc_dict.keys())
+    required_var_dict = {}
+    for var, desc in var_desc_dict.items():
+        if not context.get(var) or context[var] == "Unknown":
+            required_var_dict[var] = desc
+    required_vars = list(required_var_dict.keys())
 
     # (2) 프롬프트 생성
     #     - 현재 대화 내용
@@ -197,7 +202,7 @@ def extract_reply_for_step(llm, state_name: str, step_name: str, context: Dict[s
     chain = prompt | llm
     output = chain.invoke({       
         "chat_history": chat_history,
-        "variable_explanations": "\n".join([f"- {var}: {desc}" for var, desc in var_desc_dict.items()])
+        "variable_explanations": "\n".join([f"- {var}: {desc}" for var, desc in required_var_dict.items()])
 
     })  # 프롬프트에 넣을 input_variables가 없으므로 {}만 전달
 
@@ -437,7 +442,7 @@ def main():
                 print("===================")
 
                 # (C) 사용자 답변을 바탕으로 변수 추출 (예: extract_reply_for_step)
-                extract_reply_for_step(llm, state_name, step_name, context, context["step_chat_history"][step_name])
+                extract_reply_for_step(llm, state_name, step_name, context)
 
 
                 #음악 생성
