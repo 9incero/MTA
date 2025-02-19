@@ -37,6 +37,7 @@ def generate_question_for_step(llm, state_name: str, step_name: str, context: Di
         if not context.get(var) or context[var] == "Unknown":
             required_var_dict[var] = desc
     required_vars = list(required_var_dict.keys())
+    print(f'Target vars to talk: {required_vars}\n')
 
     # (2) 프롬프트 생성
     #     - 현재 대화 내용
@@ -49,8 +50,6 @@ def generate_question_for_step(llm, state_name: str, step_name: str, context: Di
     [추출해야할 변수와 설명]은 본 대화를 통해 사용자로부터 추출하고자 하는 변수와 그 변수가 무엇인지에 대한 설명을 '변수: 설명'의 형태로 제공합니다.
     당신은 [대화 규칙]을 철저하게 지켜야 합니다.
     사용자의 이름은 **{user_name}** 입니다.
-
-    다음은 현재까지의 대화 내역입니다:
 
     [대화 내역]
     {chat_history}
@@ -65,16 +64,18 @@ def generate_question_for_step(llm, state_name: str, step_name: str, context: Di
     - {user_name}님이 편안하게 대화할 수 있도록 배려하세요.
     - {user_name}님의 관심과 감정을 존중하며 질문하세요.
     - 추출해야 할 변수를 채우는 것을 최우선으로 하되 자연스럽게 대화를 이어가세요.
-    - [대화 내역]에 있는 질문과 비슷하거나 똑같은 질문은 삼가하세요. 
-    - 사용자는 문해력이 떨어지는 청각장애인이므로 되도록 간결하고 짧은 질문을 진행하세요. 
-    - 예시는 사용자가 모르겠다고 할 때 제시하세요.
-
+    - [대화 내역]에 있는 질문과 비슷하거나 똑같은 질문은 하지 마세요. 
+    - 사용자는 문해력이 떨어지는 청각장애인이므로 되도록 간결하고 짧은 문장으로 질문을 진행하세요. 
+    - [예시]는 사용자가 모르겠다고 할 때 제시하세요.
+    - 한 번에 여러개의 질문을 하지 마세요. 추출해야 할 변수가 여러개인 경우, 종합적으로 혹은 순차적으로 정보를 얻을 수 있게 대화를 구성하세요.
     """
 
     wait_text = """
     잠깐, 당신이 생성한 [질문]은 [기존 프롬프트]의 [대화 규칙]을 엄격히 지키며 사용자로부터 [추출해야 할 변수와 설명]의 변수를 적절히 추출하도록 구성되었나요?
     혹시 사용자가 이미 적절한 답변을 하였음에도 기존에 했던 질문을 반복하고 있지는 않나요?
     창의력을 발휘하여 사용자와 친밀한 대화를 나누는 방향으로 질문을 하고 있는 지 다시 생각해보세요.
+    기존에 생성한 [질문]이 적절하다면 그대로 출력하고, 다시 생각해보니 수정이 필요하다고 생각되면 수정된 답변을 [대화 규칙]에 맞추어 출력하세요.
+    답변에 당신의 생각이 들어갈 필요는 없습니다. 사용자와의 대화문으로 출력하세요.
     
     [질문]
     {question}
@@ -93,7 +94,7 @@ def generate_question_for_step(llm, state_name: str, step_name: str, context: Di
         template=wait_text
     )
     chain = prompt | llm
-    wait_chain = {"question": chain, "prior_prompt": prompt} | wait_prompt
+    wait_chain = {"question": chain, "prior_prompt": prompt} | wait_prompt | llm
 
     output = wait_chain.invoke({
         "user_ready": context.get("user_ready", ""),
@@ -122,36 +123,6 @@ def generate_question_for_step(llm, state_name: str, step_name: str, context: Di
 
     })  # 프롬프트에 넣을 input_variables가 없으므로 {}만 전달
 
-
-    # # 최종 프롬프트 미리보기
-    # rendered_prompt = prompt.format(
-    #     concern= context.get("concern", ""),
-    #     motivation= context.get("motivation", ""),
-    #     difficulty= context.get("difficulty", ""),
-    #     emotion=context.get("emotion", ""),
-    #     music_info=context.get("music_info", ""),
-    #     concept= context.get("concept", ""),
-    #     lyrics_keyword= context.get("lyrics_keyword", ""),
-    #     lyrics=context.get("lyrics", ""),
-    #     discussion_feedback=context.get("discussion_feedback", ""),
-    #     music_component= context.get("music_component", ""),
-    #     individual_emotion=context.get("individual_emotion", ""),
-    #     strength= context.get("strength", ""),
-    #     change_music= context.get("change_music", ""),
-    #     change_mind= context.get("change_mind", ""),
-    #     feeling= context.get("feeling", ""),
-    #     user_name= context.get("user_name", "Unknown"),
-    #     chat_history= context.get("chat_history", ""),
-    #     main_prompt= STEP_MAIN_PROMPTS[state_name][step_name],
-    #     variable_explanations= "\n".join([f"- {var}: {desc}" for var, desc in var_desc_dict.items()])
-    # )
-
-    # print("=== 최종 프롬프트 미리보기 ===")
-    # print(rendered_prompt)
-    # print("================================")
-
-    # new_chat_history = context.get("chat_history", "") + f"\n[System Output - Step: {step_name}]\n{output}"
-    # context["chat_history"] = new_chat_history
     return output
 
 def extract_reply_for_step(llm, state_name: str, step_name: str, context: Dict[str, Any]) -> str:
@@ -164,6 +135,7 @@ def extract_reply_for_step(llm, state_name: str, step_name: str, context: Dict[s
         if not context.get(var) or context[var] == "Unknown":
             required_var_dict[var] = desc
     required_vars = list(required_var_dict.keys())
+    print(f"Target extract vars: {required_vars}")
 
     # (2) 프롬프트 생성
     #     - 현재 대화 내용
@@ -171,42 +143,59 @@ def extract_reply_for_step(llm, state_name: str, step_name: str, context: Dict[s
     #     - 추출해야 할 변수 목록 & 설명
     #     - "JSON으로만 응답" 요청
     prompt_text = """
-    당신은 대화기록을 보고 특정 변수에 대답을 가공해서 넣는 전문가입니다.
-    입력된 대화기록들을 보고 현재 단계에서 채워야하는 변수에 답변을 채우세요.
-    최근 대화(1~3턴)을 보고 판단하여 변수를 채웁니다. 
+    당신은 청각장애인을 위한 상담 및 음악치료 보조 챗봇입니다.
+    [추출해야 할 변수와 설명]에는 지금 주어진 [대화 내역]으로부터 추출해야하는 변수와 그에 대한 설명이 있습니다 (변수: 설명).
+    [대화 내역]에 기록된 유저의 응답으로부터 [추출해야 할 변수와 설명] 목록 중 변수에 대한 설명을 충족하는 대답을 추출하여 해당 변수에 채워넣으세요.
+    답변의 출력 형식은 [출력 규칙]을 철저히 지켜서 생성합니다.
 
-    다음은 현재까지의 대화 내역입니다:
-
-    --- 대화 내역 ---
+    [대화 내역]
     {chat_history}
-    ----------------
 
     [추출해야 할 변수와 설명]
     {variable_explanations}
 
-    [출력 형식 안내]
-    위 대화를 바탕으로, 아래의 변수를 JSON 형식으로만 반환하세요. 
-    가능한 정보를 최대한 채워주세요. 
-    만약 특정 변수를 알 수 없다면 "Unknown" 이라고 적어주세요.
-    절대 JSON 이외의 불필요한 문장은 쓰지 마세요.
+    [출력 규칙]
+    - 답변은 아래 [출력 예시]에서 제시한 대로 반드시 JSON 형식으로만 반환하세요. 
+    - 추출해야 하는 변수가 여러개일 경우 [대화 내역]에서 각 변수마다 추출 가능한 요소가 있는 지 모두 검사합니다. 
+    - 만약 [대화 내역]으로부터 특정 변수를 추출할 수 없다면 해당 변수는 "Unknown" 이라고 적어주세요.
+    - [대화 내역]은 최근 5턴 이내의 대화 내용만 참조합니다. 이 때, 1 턴은 Assitant와 사용자가 서로 주고 받은 한 번의 대화를 의미합니다.
 
-    출력 예시:
+    [출력 예시]
     {{
     "변수1": "...",
     "변수2": "...",
     ...
     }}
     """
+    wait_text = """
+        잠깐, 당신이 추출한 [결과]는 [기존 프롬프트]의 [출력 규칙]을 엄밀하게 지켰나요?
+        혹시 사용자가 추출해야 할 변수 리스트에 포함된 변수 중 하나에 적절한 답변을 하였음에도 놓치진 않았나요?
+        당신의 [결과]가 [기존 프롬프트]에서 요구한 요청사항을 엄밀히 지켰는 지 다시 생각해보세요.
+        당신이 생각한 [결과]가 맞다면 그대로 출력하고, 다시 생각해보니 수정이 필요하다면 [기존 프롬프트]의 [출력 규칙]을 엄밀히 지키며 새로운 출력을 생성하세요.
+        다시 한 번 말하지만 출력은 반드시 json 형식을 따라야 합니다.
+
+        [결과]
+        {result}
+
+        [기존 프롬프트]
+        {prior_prompt}
+        """
 
     # (3) LangChain LLMChain 실행
     prompt = PromptTemplate(
         input_variables=["chat_history","variable_explanations"],
         template=prompt_text
     )
+    wait_prompt = PromptTemplate(
+        input_variables=["result", "prior_prompt"],
+        template=wait_text
+    )
+
     chain = prompt | llm
-    output = chain.invoke({       
+    wait_chain = {"result": chain, "prior_prompt": prompt} | wait_prompt | llm
+    output = wait_chain.invoke({
         "chat_history": chat_history,
-        "variable_explanations": "\n".join([f"- {var}: {desc}" for var, desc in required_var_dict.items()])
+        "variable_explanations": "\n".join([f"- {var}: {desc}\n" for var, desc in required_var_dict.items()])
 
     })  # 프롬프트에 넣을 input_variables가 없으므로 {}만 전달
 
@@ -219,9 +208,11 @@ def extract_reply_for_step(llm, state_name: str, step_name: str, context: Dict[s
         for var in required_vars:
             if var in parsed_data:
                 context[var] = parsed_data[var]
+                print(f'Extracted {var}: {context[var]}')
             else:
                 # JSON에서 해당 key가 없으면 Unknown 처리
                 context[var] = "Unknown"
+                print(f"Fail: {output.content}")
     except json.JSONDecodeError:
         # LLM이 JSON 형식을 제대로 못 맞췄다면 fallback
         for var in required_vars:
