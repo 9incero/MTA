@@ -343,6 +343,11 @@ STEP_MAIN_PROMPTS = {
     ChatbotState.MUSIC_DISCUSSION.value: {
         "music_opinion": """
             [음악 의견] 
+            만들어진 음악의 정보는 다음과 같습니다. 
+            다음의 정보의 음악을 가지고 음악을 이해하여 사용자와 깊은 이야기를 나누세요. 
+            음악분석 정보: {music_analysis}
+            가사: {lyrics}
+
             이 단계는 작곡 아이디어나 노래 제작 과정을 마친 후, 최종적으로 노래에 대한 감정과 느낌을 정리하는 목적입니다.             
             1~2개의 질문 후, 후속 질문을 1~2번 정도만 하고, 그 뒤 정리를 진행합니다.
             마지막에 “더 궁금한 점이 없으시면 대화를 마무리하겠습니다.” 같은 문구로 자연스럽게 단계를 종료합니다.
@@ -476,7 +481,7 @@ def generate_question_for_step(llm, state_name: str, step_name: str, context: Di
 
     # (3) LangChain LLMChain 실행
     prompt = PromptTemplate(
-        input_variables=["user_name","chat_history","main_prompt","variable_explanations","user_ready", "motivation", "difficulty", "emotion", "music_info", "concept", "lyrics_keyword", "lyrics_sentence","lyrics_flow","lyrics", "discussion_feedback", "music_component","title","style_prompt", "individual_emotion", "strength", "change_music", "change_mind", "feeling"],
+        input_variables=["user_name","chat_history","main_prompt","variable_explanations","user_ready", "motivation", "difficulty", "emotion", "music_info", "concept", "lyrics_keyword", "lyrics_sentence","lyrics_flow","lyrics", "discussion_feedback","music_analysis", "music_component","title","style_prompt", "individual_emotion", "strength", "change_music", "change_mind", "feeling"],
         template=prompt_text
     )
     chain = prompt | llm
@@ -492,6 +497,7 @@ def generate_question_for_step(llm, state_name: str, step_name: str, context: Di
         "lyrics_flow": context.get("lyrics_flow", ""),
         "lyrics": context.get("lyrics", ""),
         "discussion_feedback": context.get("discussion_feedback", ""),
+        "music_analysis": context.get("music_analysis", ""),
         "music_component": context.get("music_component", ""),
         "title": context.get("title", ""),
         "style_prompt": context.get("style_prompt", ""),

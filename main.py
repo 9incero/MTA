@@ -78,6 +78,11 @@ def analyze_music():
         la.analyze()
         result = la.get_final_format()
         
+        user_id=post_data["currentUser"]
+        context=chatbot_states[user_id]['context']
+        context["music_analysis"]=json.dumps(result)
+        print("=====music ai infomation=====")
+        print(context["music_analysis"])
         # 임시 파일 삭제
         os.remove("temp_music_file.wav")
 
@@ -251,160 +256,6 @@ def process_response():
 
 
     return jsonify([{"role": "bot", "content": "응답을 처리했습니다. 다음 질문을 요청해주세요."}])
-
-
-# def music_chat():
- 
-#     user_name = session.get('user_name', 'Unknown')
-
-#     # 3) Context 딕셔너리 (대화 기록, 사용자 이름 저장)
-#     context: Dict[str, Any] = {
-#         "chat_history":"",
-#         "step_chat_history": {},
-#         "user_name": user_name  # 사용자 이름 저장
-#     }
-
-#     # 4) State 순서 (선형 진행)
-#     states = [
-#         ChatbotState.THERAPEUTIC_CONNECTION,
-#         ChatbotState.MUSIC_CREATION,
-#         ChatbotState.MUSIC_DISCUSSION,
-#         ChatbotState.WRAP_UP
-#     ]
-
-#     # 분기 제어용 변수
-#     skip_to_state = None
-#     skip_to_step = None
-#     done = False  # 모든 진행이 끝나면 True
-
-#     state_index = 0
-#     while state_index < len(states) and not done:
-#         state = states[state_index]
-#         state_name = state.value
-
-#         print(f"\n===== [{state_name}] 단계를 시작합니다. =====")
-#         steps = STATE_STEPS_ORDER[state_name]
-
-#         step_index = 0
-#         while step_index < len(steps) and not done:
-#             step_name = steps[step_index]
-#             print(f"{step_name} start")
-
-#             var_desc_dict = STEP_VAR_DESCRIPTIONS[state_name][step_name]
-#             required_vars = list(var_desc_dict.keys())
-
-#             # 필요한 변수들이 Unknown이면 계속 Q&A 반복
-#             while any(
-#                 not context.get(var) or context[var] == "Unknown"
-#                 for var in required_vars
-#             ):
-#                 if step_name not in context["step_chat_history"]:
-#                     context["step_chat_history"][step_name] = ""
-
-#                 # (A) 질문 생성
-#                 question_text = generate_question_for_step(llm, state_name, step_name, context)
-#                 timestamp = datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S")
-#                 print("\n[Assistant Question]",question_text.content)
-#                 context["step_chat_history"][step_name] += f"\n[{timestamp}] Assistant: {question_text.content}"
-#                 context["chat_history"] += f"\n[{timestamp}] Assistant: {question_text.content}"
-
-#                 if (step_name == "style_gen" or step_name=="lyrics_gen"):
-#                     pass
-#                 else:
-#                     # (B) 사용자 답변
-#                     user_input = input(f"[{user_name}]: ")
-
-#                     # 대화이력에 누적
-#                     timestamp = datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S")
-#                     context["step_chat_history"][step_name] += f"\n[{timestamp}] {user_name}: {user_input}"
-#                     context["chat_history"] += f"\n[{timestamp}] {user_name}: {user_input}"
-
-
-#                 if (
-#                     state == ChatbotState.MUSIC_DISCUSSION
-#                     and step_name == "music_recreation"
-
-#                 ):
-#                     prompt = PromptTemplate(input_variables=["user_input"], template="""
-#                     사용자의 답변 "{user_input}"을 분석하세요.
-
-#                     - 만약 사용자가 **생성된 음악에 대해 바꾸고 싶어하는 경우 경우**, "1"을 단독 출력하세요.
-#                     - 예시: "바꾸고 싶어", "마음에 안들어", "이 부분은 바꾸고 싶어"
-
-#                     - 만약 사용자가 **생성된 음악에 대해 만족하는 경우**, "0"을 단독 출력하세요.
-#                     - 예시: "너무 좋아", "좋다", "마음에 들어", "안 바뀌어도 될 것 같아", "없다", "없어"
-
-#                     - 출력은 반드시 **"0" 또는 "1"만 단독으로 출력**해야 합니다. **다른 단어나 문장은 출력하지 마세요.**
-#                     """)
-#                     chain = prompt | llm
-#                     output = chain.invoke({"user_input": user_input})  # 실행
-#                     match = re.search(r'\b[01]\b', output.content) 
-#                     recreation_flag=int(match.group())
-#                     if (recreation_flag):
-#                         print("⇒ 사용자가 '이전 라포 스텝으로 돌아가길 원함' → Music_Creation.making_concept 분기합니다.")
-#                         skip_to_state = ChatbotState.MUSIC_CREATION
-#                         skip_to_step = "making_concept"  # 돌아가고 싶은 스텝
-#                         break  # while 루프 탈출
-
-#                 print("==========step_chat_history========")
-#                 print(context["step_chat_history"][step_name])
-#                 print("===================")
-
-#                 # (C) 사용자 답변을 바탕으로 변수 추출 (예: extract_reply_for_step)
-#                 extract_reply_for_step(llm, state_name, step_name, context, context["step_chat_history"][step_name])
-
-
-#                 #음악 생성
-#                 if (
-#                     state == ChatbotState.MUSIC_CREATION
-#                     and step_name == "style_gen"
-#                     and context.get("style_prompt", "")
-#                 ):
-#                     music_title=context.get("title", "")
-#                     music_lyrics=context.get("lyrics", "")
-#                     music_prompt=context.get("style_prompt", "")
-
-#                     # 모든 필수 값이 존재할 때만 실행
-#                     if all([music_title, music_lyrics, music_prompt]):
-#                         call_suno(music_title, music_lyrics, music_prompt)
-#                     else:
-#                         print("음악을 생성하기 위해 필요한 정보가 부족합니다.")                    
-
-#             # 만약 skip_to_state가 설정됐다면 현재 스텝 루프 정지
-#             if skip_to_state is not None:
-#                 break
-#             # 스텝 완료
-#             print(f"\n--- 스텝 '{step_name}' 완료. 추출된 변수 ---")
-#             for var in required_vars:
-#                 print(f"{var}: {context.get(var, 'Unknown')}")
-#             print("---------------------------------------")
-
-#             step_index += 1
-
-#         # 만약 skip_to_state가 설정됐다면, 그쪽으로 점프
-#         if skip_to_state:
-#             # 다음에 진행할 state 인덱스
-#             state_index = states.index(skip_to_state)
-#             # 그 안에서 원하는 step 인덱스
-#             if skip_to_step:
-#                 all_steps = STATE_STEPS_ORDER[skip_to_state.value]
-#                 if skip_to_step in all_steps:
-#                     step_index = all_steps.index(skip_to_step)
-#                 else:
-#                     step_index = 0
-
-#             # 사용 후 초기화
-#             skip_to_state = None
-#             skip_to_step = None
-
-#         else:
-#             # 다음 State로 넘어감
-#             state_index += 1
-
-#     print("\n모든 진행이 끝났습니다. 수고하셨습니다.")
-#     print("수집된 변수:", context)
-
-#     save_chat_history(context,user_name)
 
 
         

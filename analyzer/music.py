@@ -197,7 +197,7 @@ class MusicAnalyzer:
         beats = madmom.features.beats.DBNBeatTrackingProcessor(fps=100)(act)
         # print(beats)
         beat_samples = librosa.time_to_samples(beats, sr=sr)
-        print(beat_samples)
+        # print(beat_samples)
         beat_samples = beat_samples[beat_samples < len(y)]
         beat_amplitude = y[beat_samples]
         # print(beat_amplitude)
