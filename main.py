@@ -80,9 +80,13 @@ def analyze_music():
         
         user_id=post_data["currentUser"]
         context=chatbot_states[user_id]['context']
-        context["music_analysis"]=json.dumps(result)
-        print("=====music ai infomation=====")
-        print(context["music_analysis"])
+        bpm = result['BPM']
+        instruments = result['Instruments']  # 예: ["piano","drum"]
+        emotions = result['Emotions']        # 예: ["happy","excited"]
+
+        # 리스트인 Instruments, Emotions를 문자열로 합치고, BPM을 포함해 하나의 문자열로 만듭니다.
+        final_str = f"BPM: {bpm}, Instruments: {', '.join(instruments)}, Emotions: {', '.join(emotions)}"
+        context["music_analysis"]=final_str
         # 임시 파일 삭제
         os.remove("temp_music_file.wav")
 
@@ -152,15 +156,17 @@ def generate_question():
     steps = STATE_STEPS_ORDER[current_state]
     step_name = steps[current_step_index]
     print(current_state, step_name)
+
+    context.setdefault("step_chat_history", {}).setdefault(step_name, "")
+    
     # 🔹 질문 생성
-    question_text = generate_question_for_step(llm, current_state, step_name, context)
+    question_text = generate_question_for_step(llm, current_state, step_name, context, context["step_chat_history"][step_name])
     
     timestamp = datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S")
-    context.setdefault("step_chat_history", {}).setdefault(step_name, "")
     context["step_chat_history"][step_name] += f"\n[{timestamp}] boy: {question_text.content}"
     context["chat_history"] = context.get("chat_history", "") + f"\n[{timestamp}] bot: {question_text.content}"
 
-    print(context)
+    # print(context)
     return jsonify([{"role": "bot", "content": question_text.content}])
 
 # ✅ (2) 사용자 응답 처리 (POST /chat/response)
@@ -235,7 +241,21 @@ def process_response():
             if all([music_title, music_lyrics, music_prompt]):
                 print("음악 생성 시작")
                 call_suno(music_title, music_lyrics, music_prompt)
-                return jsonify([{"role": "bot", "content": "음악을 생성 중입니다. 잠시만 기다려주세요!"}])
+                steps = STATE_STEPS_ORDER[current_state]
+                # 현재 step_index
+                cur_idx = chat_state["current_step"]
+
+                # 만약 steps 내에서 다음 인덱스가 있으면 +1
+                if cur_idx + 1 < len(steps):
+                    chat_state["current_step"] += 1
+                else:
+                    # 다음 step이 없으면 다음 state로 넘어감
+                    state_keys = list(STATE_STEPS_ORDER.keys())
+                    current_state_index = state_keys.index(current_state)
+                    if current_state_index + 1 < len(state_keys):
+                        chat_state["current_state"] = state_keys[current_state_index + 1]
+                        chat_state["current_step"] = 0
+                return jsonify([{"role": "bot", "content": "음악 생성 완료! 음악시각화를 진행하세요."}])
             else:
                 print("음악을 생성하기 위해 필요한 정보가 부족합니다.")
     # 🔹 필요한 변수가 모두 채워졌는지 확인
