@@ -39,17 +39,19 @@ const Chatbot = (user) => {
             setMessages((prevMessages) => [...prevMessages, { role: "bot", content: "이름을 설정하는 중 오류가 발생했습니다. 다시 시도해주세요." }]);
         }
     };
+    const hasFetchedFirstQuestion = useRef(false);
+
     useEffect(() => {
-        if (!userName) return;  // 🚀 username이 없으면 실행하지 않음
+        if (!userName || hasFetchedFirstQuestion.current) return;
+
+        hasFetchedFirstQuestion.current = true;
 
         const fetchFirstQuestion = async () => {
             try {
                 const response = await fetch("http://localhost:5000/chat/question", {
                     method: "POST",
-                    headers: {
-                        "Content-Type": "application/json"
-                    },
-                    body: JSON.stringify({ user_id: userName, currentUser: currentUser.user })  // 🚀 user_id 추가
+                    headers: { "Content-Type": "application/json" },
+                    body: JSON.stringify({ user_id: userName, currentUser: currentUser.user })
                 });
 
                 if (!response.ok) throw new Error(`HTTP error! Status: ${response.status}`);
@@ -65,7 +67,8 @@ const Chatbot = (user) => {
         };
 
         fetchFirstQuestion();
-    }, [userName]);  // 🚀 username이 설정된 이후 실행
+    }, [userName]);
+
 
 
     const sendMessage = async () => {

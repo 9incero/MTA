@@ -57,7 +57,8 @@ class Fileloader extends Component {
       //다른 노트북으로 실험시 여기 url 고치기
       const data = {
         url: this.state.filepath,
-        lyrics: this.state.textvalue
+        lyrics: this.state.textvalue,
+        currentUser: this.props.user
       };
 
       axios.post(process.env.REACT_APP_ENDPOINT + '/analysis', data)
