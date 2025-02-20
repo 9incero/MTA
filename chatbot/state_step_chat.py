@@ -8,7 +8,7 @@ import datetime
 
 # langchain
 from langchain.prompts import PromptTemplate
-from langchain.schema.runnable import RunnablePassthrough
+from langchain.schema.runnable import RunnableLambda
 
 
 ################################################
@@ -518,59 +518,48 @@ def generate_question_for_step(llm, state_name: str, step_name: str, context: Di
     main_prompt = PromptTemplate(
         input_variables=["previous_var","user_name","chat_history","variable_explanations","user_ready", "motivation", "difficulty", "emotion", "music_info", "concept", "lyrics_keyword", "lyrics_sentence","lyrics_flow","lyrics", "discussion_feedback","music_analysis", "music_component","title","style_prompt", "individual_emotion", "strength", "change_music", "change_mind", "feeling"],
         template=STEP_MAIN_PROMPTS[state_name][step_name]
+    ).format(
+        user_ready = context.get("user_ready", ""),
+        motivation = context.get("motivation", ""),
+        difficulty = context.get("difficulty", ""),
+        emotion = context.get("emotion", ""),
+        music_info = context.get("music_info", ""),
+        concept = context.get("concept", ""),
+        lyrics_keyword = context.get("lyrics_keyword", ""),
+        lyrics_sentence = context.get("lyrics_sentence", ""),
+        lyrics_flow = context.get("lyrics_flow", ""),
+        lyrics = context.get("lyrics", ""),
+        discussion_feedback = context.get("discussion_feedback", ""),
+        music_analysis = context.get("music_analysis", ""),
+        music_component = context.get("music_component", ""),
+        title = context.get("title", ""),
+        style_prompt = context.get("style_prompt", ""),
+        individual_emotion = context.get("individual_emotion", ""),
+        strength = context.get("strength", ""),
+        change_music = context.get("change_music", ""),
+        change_mind = context.get("change_mind", ""),
+        feeling = context.get("feeling", ""),
+        user_name = context.get("user_name", "Unknown"),
+        chat_history = chat_history,
+        variable_explanations = "\n".join([f"- {var}: {desc}" for var, desc in var_desc_dict.items()]),
+        previous_var = "\n".join(previous_var_desc) if previous_var_desc else "이전 변수 없음"
     )
     prompt = PromptTemplate(
-        input_variables=["previous_var","user_name","chat_history","main_prompt","variable_explanations","user_ready", "motivation", "difficulty", "emotion", "music_info", "concept", "lyrics_keyword", "lyrics_sentence","lyrics_flow","lyrics", "discussion_feedback","music_analysis", "music_component","title","style_prompt", "individual_emotion", "strength", "change_music", "change_mind", "feeling"],
+        input_variables=["user_name","chat_history","main_prompt","variable_explanations"],
         template=prompt_text
     )
-    main_chain = main_prompt | RunnablePassthrough()
-    chain = main_chain | prompt | llm
+
+    chain = prompt | llm
     output = chain.invoke({
-        "user_ready": context.get("user_ready", ""),
-        "motivation": context.get("motivation", ""),
-        "difficulty": context.get("difficulty", ""),
-        "emotion": context.get("emotion", ""),
-        "music_info": context.get("music_info", ""),
-        "concept": context.get("concept", ""),
-        "lyrics_keyword": context.get("lyrics_keyword", ""),
-        "lyrics_sentence": context.get("lyrics_sentence", ""),
-        "lyrics_flow": context.get("lyrics_flow", ""),
-        "lyrics": context.get("lyrics", ""),
-        "discussion_feedback": context.get("discussion_feedback", ""),
-        "music_analysis": context.get("music_analysis", ""),
-        "music_component": context.get("music_component", ""),
-        "title": context.get("title", ""),
-        "style_prompt": context.get("style_prompt", ""),
-        "individual_emotion": context.get("individual_emotion", ""),
-        "strength": context.get("strength", ""),
-        "change_music": context.get("change_music", ""),
-        "change_mind": context.get("change_mind", ""),
-        "feeling": context.get("feeling", ""),
         "user_name": context.get("user_name", "Unknown"),
         "chat_history": chat_history,
         "main_prompt": main_prompt,
         "variable_explanations": "\n".join([f"- {var}: {desc}" for var, desc in var_desc_dict.items()]),
-        "previous_var": "\n".join(previous_var_desc) if previous_var_desc else "이전 변수 없음"
     })  # 프롬프트에 넣을 input_variables가 없으므로 {}만 전달
 
 
     # 최종 프롬프트 미리보기
     rendered_prompt = prompt.format(
-        concern= context.get("concern", ""),
-        motivation= context.get("motivation", ""),
-        difficulty= context.get("difficulty", ""),
-        emotion=context.get("emotion", ""),
-        music_info=context.get("music_info", ""),
-        concept= context.get("concept", ""),
-        lyrics_keyword= context.get("lyrics_keyword", ""),
-        lyrics=context.get("lyrics", ""),
-        discussion_feedback=context.get("discussion_feedback", ""),
-        music_component= context.get("music_component", ""),
-        individual_emotion=context.get("individual_emotion", ""),
-        strength= context.get("strength", ""),
-        change_music= context.get("change_music", ""),
-        change_mind= context.get("change_mind", ""),
-        feeling= context.get("feeling", ""),
         user_name= context.get("user_name", "Unknown"),
         chat_history= context.get("chat_history", ""),
         main_prompt= STEP_MAIN_PROMPTS[state_name][step_name],
