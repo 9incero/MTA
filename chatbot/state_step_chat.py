@@ -94,9 +94,9 @@ STEP_MAIN_PROMPTS = {
             1. 사용자와 라포를 쌓기 위해서 아이스브레이킹을 진행하세요.
                 - 오늘 하루 어땠나요?
             2. 사용자가 음악 만들기에 대해 관심이 있는지 물어보고 앞으로의 음악만들기 과정을 격려하세요.
-                 - 반갑습니다, {Name}님. 오늘 저와 함께 이야기를 나누고, 그 이야기를 음악으로 표현해보면 어떨까요? Name님의 생각과 마음을 담아보는 데 제가 조금이나마 도움을 드릴 수 있으면 좋겠어요.
+                 - 반갑습니다, {Name}님. 오늘 저와 함께 이야기를 나누고, 그 이야기를 음악으로 표현해보면 어떨까요? {Name}님의 생각과 마음을 담아보는 데 제가 조금이나마 도움을 드릴 수 있으면 좋겠어요.
                 - 음악을 만든다는 게 어려워보일 수 있지만, Name님이 도와준다면 같이 멋진 음악을 만들 수 있을 것 같아요. 저와 함께 오늘의 음악을 만들어 볼 준비가 되셨나요?
-                - Name님, 오늘은 저와 함께 직접 가사와 음악을 만들어 볼거예요. 지금 느끼는 감정이나 어려운 점을 음악으로 표현하면서 마음을 조금 더 가볍게 만들어보는 게 어떨까요?
+                - {Name}님, 오늘은 저와 함께 직접 가사와 음악을 만들어 볼거예요. 지금 느끼는 감정이나 어려운 점을 음악으로 표현하면서 마음을 조금 더 가볍게 만들어보는 게 어떨까요?
             """,
         "goal_and_motivation_building": """
             [목표/동기 파악] 
@@ -159,7 +159,7 @@ STEP_MAIN_PROMPTS = {
 
             아래와 같은 대화 흐름을 따르세요.
             (1) 주제 설정하기
-            - {difficulty}에서 이야기한 주제를 바탕으로 음악을 만들어볼까요?
+            - {difficulty}라고 응답했던 것과 관련된 이야기한 주제를 바탕으로 음악을 만들어볼까요?
             - 어떤 감정이나 상황을 음악으로 담고 싶나요?
 
             (2) 이야기 구체화하기
@@ -514,11 +514,15 @@ def generate_question_for_step(llm, state_name: str, step_name: str, context: Di
     """
 
     # (3) LangChain LLMChain 실행
+    main_prompt = PromptTemplate(
+        input_variables=["previous_var","user_name","chat_history","main_prompt","variable_explanations","user_ready", "motivation", "difficulty", "emotion", "music_info", "concept", "lyrics_keyword", "lyrics_sentence","lyrics_flow","lyrics", "discussion_feedback","music_analysis", "music_component","title","style_prompt", "individual_emotion", "strength", "change_music", "change_mind", "feeling"],
+        template=STEP_MAIN_PROMPTS[state_name][step_name]
+    )
     prompt = PromptTemplate(
         input_variables=["previous_var","user_name","chat_history","main_prompt","variable_explanations","user_ready", "motivation", "difficulty", "emotion", "music_info", "concept", "lyrics_keyword", "lyrics_sentence","lyrics_flow","lyrics", "discussion_feedback","music_analysis", "music_component","title","style_prompt", "individual_emotion", "strength", "change_music", "change_mind", "feeling"],
         template=prompt_text
     )
-    chain = prompt | llm
+    chain = main_prompt | prompt | llm
     output = chain.invoke({
         "user_ready": context.get("user_ready", ""),
         "motivation": context.get("motivation", ""),
@@ -542,7 +546,7 @@ def generate_question_for_step(llm, state_name: str, step_name: str, context: Di
         "feeling": context.get("feeling", ""),
         "user_name": context.get("user_name", "Unknown"),
         "chat_history": chat_history,
-        "main_prompt": STEP_MAIN_PROMPTS[state_name][step_name],
+        "main_prompt": main_prompt,
         "variable_explanations": "\n".join([f"- {var}: {desc}" for var, desc in var_desc_dict.items()]),
         "previous_var": "\n".join(previous_var_desc) if previous_var_desc else "이전 변수 없음"
 
@@ -550,35 +554,35 @@ def generate_question_for_step(llm, state_name: str, step_name: str, context: Di
     })  # 프롬프트에 넣을 input_variables가 없으므로 {}만 전달
 
 
-    # # 최종 프롬프트 미리보기
-    # rendered_prompt = prompt.format(
-    #     concern= context.get("concern", ""),
-    #     motivation= context.get("motivation", ""),
-    #     difficulty= context.get("difficulty", ""),
-    #     emotion=context.get("emotion", ""),
-    #     music_info=context.get("music_info", ""),
-    #     concept= context.get("concept", ""),
-    #     lyrics_keyword= context.get("lyrics_keyword", ""),
-    #     lyrics=context.get("lyrics", ""),
-    #     discussion_feedback=context.get("discussion_feedback", ""),
-    #     music_component= context.get("music_component", ""),
-    #     individual_emotion=context.get("individual_emotion", ""),
-    #     strength= context.get("strength", ""),
-    #     change_music= context.get("change_music", ""),
-    #     change_mind= context.get("change_mind", ""),
-    #     feeling= context.get("feeling", ""),
-    #     user_name= context.get("user_name", "Unknown"),
-    #     chat_history= context.get("chat_history", ""),
-    #     main_prompt= STEP_MAIN_PROMPTS[state_name][step_name],
-    #     variable_explanations= "\n".join([f"- {var}: {desc}" for var, desc in var_desc_dict.items()])
-    # )
+    # 최종 프롬프트 미리보기
+    rendered_prompt = prompt.format(
+        concern= context.get("concern", ""),
+        motivation= context.get("motivation", ""),
+        difficulty= context.get("difficulty", ""),
+        emotion=context.get("emotion", ""),
+        music_info=context.get("music_info", ""),
+        concept= context.get("concept", ""),
+        lyrics_keyword= context.get("lyrics_keyword", ""),
+        lyrics=context.get("lyrics", ""),
+        discussion_feedback=context.get("discussion_feedback", ""),
+        music_component= context.get("music_component", ""),
+        individual_emotion=context.get("individual_emotion", ""),
+        strength= context.get("strength", ""),
+        change_music= context.get("change_music", ""),
+        change_mind= context.get("change_mind", ""),
+        feeling= context.get("feeling", ""),
+        user_name= context.get("user_name", "Unknown"),
+        chat_history= context.get("chat_history", ""),
+        main_prompt= STEP_MAIN_PROMPTS[state_name][step_name],
+        variable_explanations= "\n".join([f"- {var}: {desc}" for var, desc in var_desc_dict.items()])
+    )
 
-    # print("=== 최종 프롬프트 미리보기 ===")
-    # print(rendered_prompt)
-    # print("================================")
+    print("=== 최종 프롬프트 미리보기 ===")
+    print(rendered_prompt)
+    print("================================")
 
-    # new_chat_history = context.get("chat_history", "") + f"\n[System Output - Step: {step_name}]\n{output}"
-    # context["chat_history"] = new_chat_history
+    new_chat_history = context.get("chat_history", "") + f"\n[System Output - Step: {step_name}]\n{output}"
+    context["chat_history"] = new_chat_history
     return output
 
 def extract_reply_for_step(llm, state_name: str, step_name: str, context: Dict[str, Any], chat_history:str) -> str:
