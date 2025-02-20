@@ -8,6 +8,7 @@ import datetime
 
 # langchain
 from langchain.prompts import PromptTemplate
+from langchain.schema.runnable import RunnablePassthrough
 
 
 ################################################
@@ -515,14 +516,15 @@ def generate_question_for_step(llm, state_name: str, step_name: str, context: Di
 
     # (3) LangChain LLMChain 실행
     main_prompt = PromptTemplate(
-        input_variables=["previous_var","user_name","chat_history","main_prompt","variable_explanations","user_ready", "motivation", "difficulty", "emotion", "music_info", "concept", "lyrics_keyword", "lyrics_sentence","lyrics_flow","lyrics", "discussion_feedback","music_analysis", "music_component","title","style_prompt", "individual_emotion", "strength", "change_music", "change_mind", "feeling"],
+        input_variables=["previous_var","user_name","chat_history","variable_explanations","user_ready", "motivation", "difficulty", "emotion", "music_info", "concept", "lyrics_keyword", "lyrics_sentence","lyrics_flow","lyrics", "discussion_feedback","music_analysis", "music_component","title","style_prompt", "individual_emotion", "strength", "change_music", "change_mind", "feeling"],
         template=STEP_MAIN_PROMPTS[state_name][step_name]
     )
     prompt = PromptTemplate(
         input_variables=["previous_var","user_name","chat_history","main_prompt","variable_explanations","user_ready", "motivation", "difficulty", "emotion", "music_info", "concept", "lyrics_keyword", "lyrics_sentence","lyrics_flow","lyrics", "discussion_feedback","music_analysis", "music_component","title","style_prompt", "individual_emotion", "strength", "change_music", "change_mind", "feeling"],
         template=prompt_text
     )
-    chain = main_prompt | prompt | llm
+    main_chain = main_prompt | RunnablePassthrough()
+    chain = main_chain | prompt | llm
     output = chain.invoke({
         "user_ready": context.get("user_ready", ""),
         "motivation": context.get("motivation", ""),
@@ -549,8 +551,6 @@ def generate_question_for_step(llm, state_name: str, step_name: str, context: Di
         "main_prompt": main_prompt,
         "variable_explanations": "\n".join([f"- {var}: {desc}" for var, desc in var_desc_dict.items()]),
         "previous_var": "\n".join(previous_var_desc) if previous_var_desc else "이전 변수 없음"
-
-
     })  # 프롬프트에 넣을 input_variables가 없으므로 {}만 전달
 
 
