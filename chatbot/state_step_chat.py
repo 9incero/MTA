@@ -732,6 +732,26 @@ def call_suno(title: str, lyrics: str, music_component: str) -> str:
 
     return music_filename
 
+def call_suno_lyrics(prompt):
+    url = 'http://localhost:3000/api/generate_lyrics'
+    print(f'prompt: {prompt}')
+
+    post = {'prompt': prompt}
+    response = requests.post(url, json=post)
+
+    result = ''
+
+    if response.status_code == 200:
+        res_data = response.json()
+        print(res_data)
+        lyrics = res_data['text']
+        title = res_data['title']
+        result = f'{title}: {lyrics}'
+    else:
+        print(f'error code: {response.status_code}, message: {response.content}')
+
+    return result
+
 def save_chat_history(context, user_name):
     """대화 기록을 'chat_history_YYYY-MM-DD_HH-MM-SS.txt' 형식으로 저장"""
     timestamp = datetime.datetime.now().strftime("%Y-%m-%d_%H-%M-%S")
