@@ -114,6 +114,7 @@ def set_user_name():
     """
     data = request.get_json()
     print(data)
+
     user_input=data["userName"]
     user_id=data["currentUser"]
     # ✅ (1) 유저 입력이 없으면 챗봇이 먼저 질문

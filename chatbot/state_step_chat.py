@@ -714,8 +714,9 @@ def call_suno(title: str, lyrics: str, music_component: str) -> str:
         res_data = response.json()
         print(res_data)
         audio_url = res_data[0]['audio_url']
-
+        input_lyrics=res_data[0]['lyric']
         print(f'Downlaod music from {audio_url}')
+        print(f'가사 {input_lyrics}')
         start_time = time.time()
         audio_res = requests.get(audio_url, stream=True, timeout=(5, 300))
         audio_res.raise_for_status()
