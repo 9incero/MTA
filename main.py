@@ -131,7 +131,7 @@ def set_user_name():
     "user_name": user_name,
     "current_state": ChatbotState.THERAPEUTIC_CONNECTION.value,
     "current_step": 0,
-    "context": {}
+    "context": {    "user_name": user_name,}
     }
     print(f"저장된 유저 이름: {chatbot_states[user_id]['user_name']}")
 
@@ -160,7 +160,7 @@ def generate_question():
     context.setdefault("step_chat_history", {}).setdefault(step_name, "")
     
     # 🔹 질문 생성
-    question_text = generate_question_for_step(llm, current_state, step_name, context, context["step_chat_history"][step_name])
+    question_text = generate_question_for_step(llm, current_state, step_name, context)
     
     timestamp = datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S")
     context["step_chat_history"][step_name] += f"\n[{timestamp}] boy: {question_text.content}"
