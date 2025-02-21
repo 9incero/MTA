@@ -5,6 +5,9 @@ import json
 from typing import Dict, Any, List
 from enum import Enum
 import datetime
+import requests
+from requests.exceptions import RequestException, ChunkedEncodingError
+
 
 # langchain
 from langchain.prompts import PromptTemplate
@@ -52,7 +55,9 @@ STEP_VAR_DESCRIPTIONS = {
             "lyrics": "생성된 최종 가사"
         },
         "lyrics_discussion": {
-            "discussion_feedback": "가사에 대한 사용자 의견"
+            "discussion_feedback": "가사에 대한 사용자 의견",
+            "lyrics_flag":"가사변경 유무"
+
         },
         "making_music": {
             "title": "사용자가 만들 노래 제목",
@@ -238,26 +243,16 @@ STEP_MAIN_PROMPTS = {
             ...
             [Chorus]
             ...
+
         """,
         "lyrics_discussion": """
-            [가사 피드백] 
-            현재까지의 가사를 바탕으로 discussion_feedback(피드백)을 이끌어내세요.
-            사용자가 생성된 가사에 대한 피드백을 주고, 필요하면 수정합니다.
-
-            (1) 가사 피드백 요청하기
-            어떤가요? 이 가사가 마음에 드시나요?
-            이 느낌이 {concept}을(를) 잘 표현한 것 같나요?
-            더 드러났으면 하는 단어나 문장이 있을까요?
-            혹시 추가하고 싶은 내용이나 바꾸고 싶은 부분이 있으면 말씀해주세요!
+            [가사 피드백]
+            사용자가 생성된 가사에 대한 피드백을 주고 수정합니다. 
             
-            사용자가 고민하면
-            "예를 들어, 좀 더 감정을 강조하고 싶으신가요?"
-            "이 부분을 조금 더 시적으로 바꿔볼 수도 있어요. 예를 들면…" 하고 예시 제공
-            
-            (2) 가사 수정
+            가사 수정
             사용자의 피드백을 반영하여 가사 수정 -> 원하지 않으면 진행하지 않아도 됨
 
-            2-1) 피드백이 부정적이거나 수정 요청이 있을 경우
+            피드백이 부정적이거나 수정 요청이 있을 경우
                 당신은 가사를 잘 만드는 작사가입니다.
                 당신이 만든 가사에 대한 피드백이 들어왔습니다.
                 피드백을 무조건적으로 수용해서 가사를 수정하세요. 
@@ -277,8 +272,6 @@ STEP_MAIN_PROMPTS = {
                 [Verse 3]
                 [Chorus]
                 
-            2-2) 피드백이 긍정적이라면 (예시: "바꾸고 싶지 않아", "안 바꾸고 싶어", "응 좋아", "아니 없어", "~~한 감정이 느껴져", "내 마음을 잘 나타내는 것 같아")
-                가사를 확정하고 다음 단계로 진행
             """,
 
         "making_music": """
@@ -404,6 +397,10 @@ STEP_MAIN_PROMPTS = {
         - 활동 중에서 좋았던 부분은 무엇인가요?  
         - 활동 중에서 어려웠던 부분은 무엇인가요?  
         - 제가 어떤 것을 더 도와드리면 좋을까요?  
+
+        4) 상담종료
+        - 수고하셨습니다.
+        - 오늘 함께해서 즐거웠습니다. 
 
         """,
     }
@@ -707,28 +704,45 @@ def call_suno(title: str, lyrics: str, music_component: str) -> str:
         'wait_audio': True,
     }
     print(f'post message: {post}')
+    retry_delay=2
+    while True:
+        try:
+            # POST 요청
+            response = requests.post('http://localhost:3000/api/custom_generate', json=post, timeout=(5, 60))
 
-    response = requests.post('http://localhost:3000/api/custom_generate', json=post)
+            if response.status_code == 200:
+                res_data = response.json()
+                print(res_data)
+                audio_url = res_data[0]['audio_url']
+                input_lyrics = res_data[0]['lyric']
+                print(f'Download music from {audio_url}')
+                print(f'가사 {input_lyrics}')
 
-    if response.status_code == 200:
-        res_data = response.json()
-        print(res_data)
-        audio_url = res_data[0]['audio_url']
-        input_lyrics=res_data[0]['lyric']
-        print(f'Downlaod music from {audio_url}')
-        print(f'가사 {input_lyrics}')
-        start_time = time.time()
-        audio_res = requests.get(audio_url, stream=True, timeout=(5, 300))
-        audio_res.raise_for_status()
-        with open(music_filename, 'wb') as file:
-            for chunk in audio_res.iter_content(chunk_size=8192):
-                if chunk:
-                    file.write(chunk)
-            print(
-                f'\nProcessed Suno, Input Text: {lyrics}, Meta_codes: {music_component}, Title: {title}, Output Music: {music_filename}.')
-        print(f'Download done! Elapsed Time: {time.time() - start_time}')
-    else:
-        print(f'error code: {response.status_code}, message: {response.content}')
+                # 오디오 파일 다운로드
+                start_time = time.time()
+                audio_res = requests.get(audio_url, stream=True, timeout=(5, 300))
+                audio_res.raise_for_status()
+
+                with open(music_filename, 'wb') as file:
+                    for chunk in audio_res.iter_content(chunk_size=8192):
+                        if chunk:
+                            file.write(chunk)
+
+                print(f'\nProcessed Suno, Input Text: {lyrics}, Meta_codes: {music_component}, Title: {title}, Output Music: {music_filename}.')
+                print(f'Download done! Elapsed Time: {time.time() - start_time}')
+                
+                # 성공 시 루프 종료
+                break
+
+            else:
+                print(f'Error code: {response.status_code}, message: {response.content}')
+                print(f"Retrying in {retry_delay} seconds...")
+                time.sleep(retry_delay)
+
+        except (RequestException, ChunkedEncodingError) as e:
+            print(f"⚠️ Error occurred: {e}")
+            print(f"Retrying in {retry_delay} seconds...")
+            time.sleep(retry_delay)
 
     return music_filename
 
@@ -739,18 +753,17 @@ def call_suno_lyrics(prompt):
     post = {'prompt': prompt}
     response = requests.post(url, json=post)
 
-    result = ''
 
     if response.status_code == 200:
         res_data = response.json()
         print(res_data)
         lyrics = res_data['text']
-        title = res_data['title']
-        result = f'{title}: {lyrics}'
+        # title = res_data['title']
+        # result = f'{title}: {lyrics}'
     else:
         print(f'error code: {response.status_code}, message: {response.content}')
 
-    return result
+    return lyrics
 
 def save_chat_history(context, user_name):
     """대화 기록을 'chat_history_YYYY-MM-DD_HH-MM-SS.txt' 형식으로 저장"""
@@ -767,3 +780,4 @@ def save_chat_history(context, user_name):
         file.write(context["chat_history"])
     
     print(f"대화 기록이 '{file_path}' 파일로 저장되었습니다.")
+
