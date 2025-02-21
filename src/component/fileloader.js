@@ -57,7 +57,6 @@ class Fileloader extends Component {
       //다른 노트북으로 실험시 여기 url 고치기
       const data = {
         url: this.state.filepath,
-        lyrics: this.state.textvalue,
         currentUser: this.props.user
       };
 
@@ -174,17 +173,16 @@ class Fileloader extends Component {
         {/* <Card style={{ width: '18rem', padding: '10px' }}> */}
         <Card.Title>[Music Information]</Card.Title>
         <Card.Text>
-          Please paste the lyrics you made using Suno <br />
-          and upload the music!
+          Please upload the music!
         </Card.Text>
         {/* <textarea name="content" onChange={this.handleTextChange}
             value={this.state.textvalue} cols="40" rows="8" placeholder='가사를 넣어주세요.' ></textarea> */}
-        <Form.Control as="textarea" name="content" onChange={this.handleTextChange}
+        {/* <Form.Control as="textarea" name="content" onChange={this.handleTextChange}
           value={this.state.textvalue} placeholder='Please input the lyrics.' rows={10} style={{
             backgroundImage: 'url(' + lyricsbackground
               + ')', backgroundSize: '100% 100%',
             backgroundRepeat: 'no-repeat', border: 'none'
-          }} />
+          }} /> */}
 
         <Form.Control as="textarea" name="content" onChange={this.handlePathChange}
           value={this.state.filepath} placeholder='Please enter the path of the folder where you saved the music.' rows={3}

@@ -2,7 +2,6 @@ import React, { useState, useRef, useEffect } from "react";
 import { FaArrowCircleUp } from "react-icons/fa";
 import './modulestyle/chatbot.css'; // 추가: CSS 파일을 import
 
-
 const Chatbot = (user) => {
     const [messages, setMessages] = useState([{ role: "bot", content: "안녕하세요! 저는 음악 챗봇이에요. 먼저, 어떻게 부르면 될까요?" }]);
     const [input, setInput] = useState("");
@@ -10,6 +9,7 @@ const Chatbot = (user) => {
     const [isSettingName, setIsSettingName] = useState(true); // 이름 설정 중 여부
     const [isSending, setIsSending] = useState(false); // 메시지 전송 중 상태
     const messagesEndRef = useRef(null);
+    const inputRef = useRef(null); // ✅ 입력창에 접근하기 위한 useRef
     const [currentUser, setCurrentUser] = useState(user);
 
     useEffect(() => {
@@ -39,19 +39,16 @@ const Chatbot = (user) => {
             setMessages((prevMessages) => [...prevMessages, { role: "bot", content: "이름을 설정하는 중 오류가 발생했습니다. 다시 시도해주세요." }]);
         }
     };
-    const hasFetchedFirstQuestion = useRef(false);
 
     useEffect(() => {
-        if (!userName || hasFetchedFirstQuestion.current) return;
-
-        hasFetchedFirstQuestion.current = true;
+        if (!userName) return;  // 🚀 username이 없으면 실행하지 않음
 
         const fetchFirstQuestion = async () => {
             try {
                 const response = await fetch("http://localhost:5000/chat/question", {
                     method: "POST",
                     headers: { "Content-Type": "application/json" },
-                    body: JSON.stringify({ user_id: userName, currentUser: currentUser.user })
+                    body: JSON.stringify({ user_id: userName, currentUser: currentUser.user })  // 🚀 user_id 추가
                 });
 
                 if (!response.ok) throw new Error(`HTTP error! Status: ${response.status}`);
@@ -67,39 +64,34 @@ const Chatbot = (user) => {
         };
 
         fetchFirstQuestion();
-    }, [userName]);
-
-
+    }, [userName]);  // 🚀 username이 설정된 이후 실행
 
     const sendMessage = async () => {
         if (!input.trim()) return;
 
         if (isSettingName) {
-            // 🚀 1️⃣ 첫 입력이 사용자 이름 설정이면 setUserNameOnServer 호출
             setUserNameOnServer(input);
         } else {
             const userMessage = { role: "user", content: input };
             setMessages((prevMessages) => [...prevMessages, userMessage]);
             setIsSending(true);
 
-            // 🔹 "로딩 중..." 메시지 추가 (UX 개선)
+            // "로딩 중..." 메시지 추가
             setMessages((prevMessages) => [...prevMessages, { role: "bot", content: "로딩 중..." }]);
 
             try {
-                // 🚀 2️⃣ 사용자 응답 전송 (POST /chat/response)
                 const response = await fetch("http://localhost:5000/chat/response", {
                     method: "POST",
                     headers: { "Content-Type": "application/json" },
-                    body: JSON.stringify({ message: input, user_id: userName, currentUser: currentUser.user })  // 🚀 user_id 추가
+                    body: JSON.stringify({ message: input, user_id: userName, currentUser: currentUser.user })
                 });
 
                 if (!response.ok) throw new Error(`HTTP error! Status: ${response.status}`);
 
-                // ✅ 응답 성공하면 다음 질문 요청
                 const questionResponse = await fetch("http://localhost:5000/chat/question", {
                     method: "POST",
                     headers: { "Content-Type": "application/json" },
-                    body: JSON.stringify({ user_id: userName, currentUser: currentUser.user })  // 🚀 user_id 추가
+                    body: JSON.stringify({ user_id: userName, currentUser: currentUser.user })
                 });
 
                 if (!questionResponse.ok) throw new Error(`HTTP error! Status: ${questionResponse.status}`);
@@ -108,8 +100,8 @@ const Chatbot = (user) => {
 
                 setMessages((prevMessages) => {
                     const updatedMessages = [...prevMessages];
-                    updatedMessages.pop(); // 마지막 "로딩 중..." 메시지 제거
-                    return [...updatedMessages, ...data]; // 새로운 질문 추가
+                    updatedMessages.pop(); // "로딩 중..." 메시지 제거
+                    return [...updatedMessages, ...data];
                 });
             } catch (error) {
                 console.error("Error:", error);
@@ -120,25 +112,24 @@ const Chatbot = (user) => {
                 });
             } finally {
                 setIsSending(false);
+                inputRef.current.focus(); // ✅ 엔터 후 포커스 복원
             }
         }
 
         setInput(""); // 입력 초기화
     };
 
-
-    // Enter 키 이벤트 핸들링
+    const handleSubmit = (e) => {
+        e.preventDefault();
+        sendMessage();
+    };
     const handleKeyDown = (e) => {
-        if (e.key === 'Enter' && !e.repeat) {
-            e.preventDefault();
-            sendMessage();  // ✅ 메시지 전송 함수 실행
-        }
+
         if (e.key === " ") {
             e.preventDefault();
             e.stopPropagation();  // ✅ 스페이스바 입력이 상위 컴포넌트로 전파되는 것 방지
         }
     };
-
     // 자동 스크롤
     useEffect(() => {
         messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
@@ -155,20 +146,20 @@ const Chatbot = (user) => {
                 ))}
                 <div ref={messagesEndRef} />
             </div>
-            <div className="input-container">
+            <form className="input-container" onSubmit={handleSubmit}>
                 <input
                     type="text"
+                    ref={inputRef}
                     value={input}
                     onChange={(e) => setInput(e.target.value)}
                     placeholder={isSettingName ? "이름을 입력해주세요" : "음악에 대해 이야기해보세요"}
                     onKeyDown={handleKeyDown}
-                    disabled={isSending} // ✅ 메시지 전송 중에는 입력 비활성화
-
+                    disabled={isSending}
                 />
-                <button onClick={sendMessage} className="send-button">
+                <button type="submit" className="send-button" disabled={isSending}>
                     <FaArrowCircleUp />
                 </button>
-            </div>
+            </form>
         </div>
     );
 };
