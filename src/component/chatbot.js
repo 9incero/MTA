@@ -126,7 +126,6 @@ const Chatbot = (user) => {
     const handleKeyDown = (e) => {
 
         if (e.key === " ") {
-            e.preventDefault();
             e.stopPropagation();  // ✅ 스페이스바 입력이 상위 컴포넌트로 전파되는 것 방지
         }
     };
