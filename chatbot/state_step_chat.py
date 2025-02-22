@@ -11,7 +11,11 @@ from requests.exceptions import RequestException, ChunkedEncodingError
 
 # langchain
 from langchain.prompts import PromptTemplate
+from dotenv import load_dotenv
 
+
+load_dotenv()
+suno_end_point = os.getenv("SUNO_END_POINT")
 
 ################################################
 # (A) State/Step 구조 & 변수 설명
@@ -708,7 +712,7 @@ def call_suno(title: str, lyrics: str, music_component: str) -> str:
     while True:
         try:
             # POST 요청
-            response = requests.post('http://localhost:3000/api/custom_generate', json=post, timeout=(5, 60))
+            response = requests.post(suno_end_point+'/api/custom_generate', json=post, timeout=(5, 60))
 
             if response.status_code == 200:
                 res_data = response.json()
@@ -747,7 +751,7 @@ def call_suno(title: str, lyrics: str, music_component: str) -> str:
     return music_filename
 
 def call_suno_lyrics(prompt):
-    url = 'http://localhost:3000/api/generate_lyrics'
+    url = suno_end_point+'/api/generate_lyrics'
     print(f'prompt: {prompt}')
 
     post = {'prompt': prompt}
