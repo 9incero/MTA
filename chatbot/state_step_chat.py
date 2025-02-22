@@ -735,7 +735,7 @@ def call_suno(title: str, lyrics: str, music_component: str) -> str:
 
                 print(f'\nProcessed Suno, Input Text: {lyrics}, Meta_codes: {music_component}, Title: {title}, Output Music: {music_filename}.')
                 # print(f'Download done! Elapsed Time: {time.time() - start_time}')
-                
+                print('dd')
                 # 성공 시 루프 종료
                 return audio_url
 
