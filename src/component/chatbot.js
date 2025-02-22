@@ -22,7 +22,7 @@ const Chatbot = (user) => {
         setMessages((prevMessages) => [...prevMessages, { role: "user", content: name }]);
 
         try {
-            const response = await fetch("http://localhost:5000/set_user_name", {
+            const response = await fetch(process.env.REACT_APP_ENDPOINT + "/set_user_name", {
                 method: "POST",
                 headers: { "Content-Type": "application/json" },
                 body: JSON.stringify({ userName: name, currentUser: currentUser.user }),
@@ -45,7 +45,7 @@ const Chatbot = (user) => {
 
         const fetchFirstQuestion = async () => {
             try {
-                const response = await fetch("http://localhost:5000/chat/question", {
+                const response = await fetch(process.env.REACT_APP_ENDPOINT + "/chat/question", {
                     method: "POST",
                     headers: { "Content-Type": "application/json" },
                     body: JSON.stringify({ user_id: userName, currentUser: currentUser.user })  // 🚀 user_id 추가
@@ -80,7 +80,7 @@ const Chatbot = (user) => {
             setMessages((prevMessages) => [...prevMessages, { role: "bot", content: "로딩 중..." }]);
 
             try {
-                const response = await fetch("http://localhost:5000/chat/response", {
+                const response = await fetch(process.env.REACT_APP_ENDPOINT + "/chat/response", {
                     method: "POST",
                     headers: { "Content-Type": "application/json" },
                     body: JSON.stringify({ message: input, user_id: userName, currentUser: currentUser.user })
@@ -88,7 +88,7 @@ const Chatbot = (user) => {
 
                 if (!response.ok) throw new Error(`HTTP error! Status: ${response.status}`);
 
-                const questionResponse = await fetch("http://localhost:5000/chat/question", {
+                const questionResponse = await fetch(process.env.REACT_APP_ENDPOINT + "/chat/question", {
                     method: "POST",
                     headers: { "Content-Type": "application/json" },
                     body: JSON.stringify({ user_id: userName, currentUser: currentUser.user })
