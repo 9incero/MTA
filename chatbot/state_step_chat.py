@@ -708,6 +708,7 @@ def call_suno(title: str, lyrics: str, music_component: str) -> str:
         'wait_audio': True,
     }
     print(f'post message: {post}')
+
     retry_delay=2
     while True:
         try:
@@ -722,21 +723,21 @@ def call_suno(title: str, lyrics: str, music_component: str) -> str:
                 print(f'Download music from {audio_url}')
                 print(f'가사 {input_lyrics}')
 
-                # 오디오 파일 다운로드
-                start_time = time.time()
-                audio_res = requests.get(audio_url, stream=True, timeout=(5, 300))
-                audio_res.raise_for_status()
+                # # 오디오 파일 다운로드
+                # start_time = time.time()
+                # audio_res = requests.get(audio_url, stream=True, timeout=(5, 300))
+                # audio_res.raise_for_status()
 
-                with open(music_filename, 'wb') as file:
-                    for chunk in audio_res.iter_content(chunk_size=8192):
-                        if chunk:
-                            file.write(chunk)
+                # with open(music_filename, 'wb') as file:
+                #     for chunk in audio_res.iter_content(chunk_size=8192):
+                #         if chunk:
+                #             file.write(chunk)
 
                 print(f'\nProcessed Suno, Input Text: {lyrics}, Meta_codes: {music_component}, Title: {title}, Output Music: {music_filename}.')
-                print(f'Download done! Elapsed Time: {time.time() - start_time}')
+                # print(f'Download done! Elapsed Time: {time.time() - start_time}')
                 
                 # 성공 시 루프 종료
-                break
+                return audio_url
 
             else:
                 print(f'Error code: {response.status_code}, message: {response.content}')

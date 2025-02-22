@@ -117,6 +117,7 @@ def set_user_name():
     data = request.get_json()
     print(data)
     # print(call_suno_lyrics("hh"))
+    # call_suno("가나다","가나다라마바사","천천히")
     user_input=data["userName"]
     user_id=data["currentUser"]
     # ✅ (1) 유저 입력이 없으면 챗봇이 먼저 질문
@@ -177,8 +178,6 @@ def generate_question():
     
     if current_state == ChatbotState.MUSIC_CREATION.value and step_name == "lyrics_discussion" and context.get("lyrics_flag",0):
         feedback=question_text.content
-
-
         suno_gen_lyrics=call_suno_lyrics(feedback)
         timestamp = datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S")
         context["step_chat_history"][step_name] += f"\n[{timestamp}] bot: {suno_gen_lyrics}"
@@ -325,7 +324,7 @@ def process_response():
 
             if all([music_title, music_lyrics, music_prompt]):
                 print("음악 생성 시작")
-                call_suno(music_title, music_lyrics, music_prompt)
+                music_url=call_suno(music_title, music_lyrics, music_prompt)
                 steps = STATE_STEPS_ORDER[current_state]
                 # 현재 step_index
                 cur_idx = chat_state["current_step"]
@@ -340,7 +339,7 @@ def process_response():
                     if current_state_index + 1 < len(state_keys):
                         chat_state["current_state"] = state_keys[current_state_index + 1]
                         chat_state["current_step"] = 0
-                return jsonify([{"role": "bot", "content": "음악 생성 완료! 음악시각화를 진행하세요."}])
+                return jsonify([{"role": "bot", "content":music_url }])
             else:
                 print("음악을 생성하기 위해 필요한 정보가 부족합니다.")
     # 🔹 필요한 변수가 모두 채워졌는지 확인
@@ -362,6 +361,19 @@ def process_response():
 
     return jsonify([{"role": "bot", "content": "응답을 처리했습니다. 다음 질문을 요청해주세요."}])
 
+
+@app.route('/save_history', methods=['POST'])
+def save_chat():
+    data = request.get_json()
+    print(data)
+    user_id=data["currentUser"]
+    
+    chat_state = chatbot_states[user_id] 
+    user_name = chat_state["user_name"]
+    chat_history = chat_state["context"]["chat_history"]
+
+    print('---save---')
+    return jsonify([{"user_name":user_name,"history":chat_history}])
 
         
 if __name__ == '__main__':
