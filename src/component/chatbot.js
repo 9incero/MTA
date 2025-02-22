@@ -17,6 +17,7 @@ const Chatbot = (user) => {
         console.log("user가 변경되어 currentUser가 업데이트되었습니다:", user);
     }, [user]); // user가 변경될 때마다 실행
 
+
     // 사용자 이름을 서버에 설정하는 함수
     const setUserNameOnServer = async (name) => {
         setMessages((prevMessages) => [...prevMessages, { role: "user", content: name }]);
@@ -30,6 +31,7 @@ const Chatbot = (user) => {
 
             const data = await response.json();
             if (response.ok) {
+                console.log(data)
                 setUserName(data["userName"]);
                 setMessages((prevMessages) => [...prevMessages, { role: "bot", content: data["userName"] }]);
                 setIsSettingName(false);
@@ -70,14 +72,16 @@ const Chatbot = (user) => {
         if (!input.trim()) return;
 
         if (isSettingName) {
-            setUserNameOnServer(input);
+            await setUserNameOnServer(input);
+            setInput("");
         } else {
             const userMessage = { role: "user", content: input };
             setMessages((prevMessages) => [...prevMessages, userMessage]);
             setIsSending(true);
-
+            setInput("");
             // "로딩 중..." 메시지 추가
             setMessages((prevMessages) => [...prevMessages, { role: "bot", content: "로딩 중..." }]);
+
 
             try {
                 const response = await fetch(process.env.REACT_APP_ENDPOINT + "/chat/response", {
@@ -87,6 +91,19 @@ const Chatbot = (user) => {
                 });
 
                 if (!response.ok) throw new Error(`HTTP error! Status: ${response.status}`);
+
+                const file = await response.json();
+                console.log(file)
+                if (file['content'] && file['content'].includes("suno")) {
+                    console.log("---------");
+                    console.log(file);
+                    setMessages((prevMessages) => {
+                        const updatedMessages = [...prevMessages];
+                        updatedMessages.pop(); // "로딩 중..." 메시지 제거
+                        return [...updatedMessages, file];
+                    })
+                }
+
 
                 const questionResponse = await fetch(process.env.REACT_APP_ENDPOINT + "/chat/question", {
                     method: "POST",
@@ -113,10 +130,12 @@ const Chatbot = (user) => {
             } finally {
                 setIsSending(false);
                 inputRef.current.focus(); // ✅ 엔터 후 포커스 복원
+
             }
         }
 
-        setInput(""); // 입력 초기화
+        // setInput(""); // 입력 초기화
+
     };
 
     const handleSubmit = (e) => {

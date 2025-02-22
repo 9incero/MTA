@@ -28,6 +28,42 @@ class Userfile extends Component {
         });
     };
 
+    saveFile = async () => {
+        try {
+            const response = await fetch(process.env.REACT_APP_ENDPOINT + "/save_history", {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({ currentUser: this.state.participant })
+            });
+
+            if (!response.ok) throw new Error(`HTTP error! Status: ${response.status}`);
+
+            const file = await response.json();
+            console.log("Received File Data:", file);
+
+
+            // 서버에서 받은 데이터를 JSON 문자열로 변환
+            const jsonData = JSON.stringify(file);
+
+            // JSON 데이터를 Blob으로 변환
+            const blob = new Blob([jsonData], { type: 'application/json' });
+
+            // Blob을 가리키는 임시 URL 생성
+            const url = window.URL.createObjectURL(blob);
+
+            // 다운로드 링크 생성
+            const link = document.createElement('a');
+            link.href = url;
+            link.download = `${file['user_name'] || 'participant'}_endlog.json`;
+            link.click();
+
+            // URL과 링크 정리
+            window.URL.revokeObjectURL(url);
+        } catch (error) {
+            console.error("Error saving file:", error);
+        }
+    }
+
     componentDidMount() {
         if (this.state.isActive) {
             this.startTimer();
@@ -43,32 +79,16 @@ class Userfile extends Component {
                 // 여기에서 final json file 만들면됨
                 console.log("Final Time:", this.state.time);
 
-                const endJson = {
-                    User: this.props.user,
-                    Time: this.state.time,
-                    Creation: this.props.cnum,
-                    Edit: this.props.editnum,
-                    Result: this.props.totaldata
-                }
+                // const endJson = {
+                //     User: this.props.user,
+                //     Time: this.state.time,
+                //     Creation: this.props.cnum,
+                //     Edit: this.props.editnum,
+                //     Result: this.props.totaldata
+                // }
 
 
-                // 서버에서 받은 데이터를 JSON 문자열로 변환
-                const jsonData = JSON.stringify(endJson);
-
-                // JSON 데이터를 Blob으로 변환
-                const blob = new Blob([jsonData], { type: 'application/json' });
-
-                // Blob을 가리키는 임시 URL 생성
-                const url = window.URL.createObjectURL(blob);
-
-                // 다운로드 링크 생성
-                const link = document.createElement('a');
-                link.href = url;
-                link.download = this.props.user + 'endlog.json'; // 원하는 파일 이름 설정
-                link.click();
-
-                // URL과 링크 정리
-                window.URL.revokeObjectURL(url);
+                this.saveFile()
 
             }
         }
