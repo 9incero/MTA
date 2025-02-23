@@ -334,7 +334,7 @@ STEP_MAIN_PROMPTS = {
             예시) 피아노, 밝게, 리듬
 
             [중요]
-            200자내로 생성해야합니다.
+            150자내로 생성해야합니다.
             되도록 키워드로 간결하게 설명해주세요. 
         """
     },
@@ -710,7 +710,9 @@ def call_suno(title: str, lyrics: str, music_component: str) -> str:
     print(f'post message: {post}')
 
     retry_delay=2
-    while True:
+    max_retry=5
+    retry_num=0
+    while (retry_num<=max_retry):
         try:
             # POST 요청
             response = requests.post(suno_end_point+'/api/custom_generate', json=post, timeout=(5, 60))
@@ -719,9 +721,9 @@ def call_suno(title: str, lyrics: str, music_component: str) -> str:
                 res_data = response.json()
                 print(res_data)
                 audio_url = res_data[0]['audio_url']
-                input_lyrics = res_data[0]['lyric']
+                # input_lyrics = res_data[0]['lyric']
                 print(f'Download music from {audio_url}')
-                print(f'가사 {input_lyrics}')
+                # print(f'가사 {input_lyrics}')
 
                 # # 오디오 파일 다운로드
                 # start_time = time.time()
@@ -735,7 +737,6 @@ def call_suno(title: str, lyrics: str, music_component: str) -> str:
 
                 print(f'\nProcessed Suno, Input Text: {lyrics}, Meta_codes: {music_component}, Title: {title}, Output Music: {music_filename}.')
                 # print(f'Download done! Elapsed Time: {time.time() - start_time}')
-                print('dd')
                 # 성공 시 루프 종료
                 return audio_url
 

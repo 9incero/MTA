@@ -117,7 +117,7 @@ def set_user_name():
     data = request.get_json()
     print(data)
     # print(call_suno_lyrics("hh"))
-    # call_suno("가나다","가나다라마바사","천천히")
+    # music_url=call_suno("가나다","가나다라마바사","천천히")
     user_input=data["userName"]
     user_id=data["currentUser"]
     # ✅ (1) 유저 입력이 없으면 챗봇이 먼저 질문
@@ -139,7 +139,7 @@ def set_user_name():
     }
     print(f"저장된 유저 이름: {chatbot_states[user_id]['user_name']}")
 
-    return jsonify({"userName": f"좋아요, 앞으로 {user_name}님이라고 부를게요."})
+    return jsonify({"userName": f"좋아요, 앞으로 {user_name}님이라고 부를게요. {music_url}"})
 
 
 # ✅ (1) 질문 생성 (POST /chat/question)
@@ -339,6 +339,7 @@ def process_response():
                     if current_state_index + 1 < len(state_keys):
                         chat_state["current_state"] = state_keys[current_state_index + 1]
                         chat_state["current_step"] = 0
+                
                 return jsonify([{"role": "bot", "content":music_url }])
             else:
                 print("음악을 생성하기 위해 필요한 정보가 부족합니다.")
