@@ -139,7 +139,7 @@ def set_user_name():
     }
     print(f"저장된 유저 이름: {chatbot_states[user_id]['user_name']}")
 
-    return jsonify({"userName": f"좋아요, 앞으로 {user_name}님이라고 부를게요. {music_url}"})
+    return jsonify({"userName": f"좋아요, 앞으로 {user_name}님이라고 부를게요."})
 
 
 # ✅ (1) 질문 생성 (POST /chat/question)
