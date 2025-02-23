@@ -30,6 +30,8 @@ const Chatbot = (user) => {
             });
 
             const data = await response.json();
+
+
             if (response.ok) {
                 console.log(data)
                 setUserName(data["userName"]);
@@ -94,14 +96,26 @@ const Chatbot = (user) => {
 
                 const file = await response.json();
                 console.log(file)
-                if (file['content'] && file['content'].includes("suno")) {
+                const urlRegex = /(https?:\/\/[^\s]+)/;
+                console.log(urlRegex.test(String(file[0]['content'])))
+                console.log(file[0]['content'])
+                console.log(file[0]);
+                if ((file[0] !== undefined && file[0] !== null) && urlRegex.test(String(file[0]['content']))) {
                     console.log("---------");
                     console.log(file);
-                    setMessages((prevMessages) => {
-                        const updatedMessages = [...prevMessages];
-                        updatedMessages.pop(); // "로딩 중..." 메시지 제거
-                        return [...updatedMessages, file];
-                    })
+                    // 첫 번째 메시지 추가
+                    await new Promise((resolve) => {
+                        setMessages((prevMessages) => {
+                            const updatedMessages = [...prevMessages];
+                            updatedMessages.pop(); // "로딩 중..." 제거
+                            resolve();
+                            return [...updatedMessages, { role: "bot", content: file[0]['content'] }];
+                        });
+                    });
+
+                    // 이후 "로딩 중..." 추가
+                    setMessages((prevMessages) => [...prevMessages, { role: "bot", content: "로딩 중..." }]);
+
                 }
 
 
@@ -145,9 +159,16 @@ const Chatbot = (user) => {
     const handleKeyDown = (e) => {
 
         if (e.key === " ") {
+            console.log(e.key, e.code)
+            // e.preventDefault();
             e.stopPropagation();  // ✅ 스페이스바 입력이 상위 컴포넌트로 전파되는 것 방지
+
+            // e.stopImmediatePropagation();  // 모든 리스너에 대한 전파 차
         }
     };
+
+
+
     // 자동 스크롤
     useEffect(() => {
         messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
