@@ -60,7 +60,7 @@ function App() {
   const [user, setUser] = useState('')
   const [editnum, setEditnum] = useState(0)
   const [cnum, setCnum] = useState(0)
-
+  const [userlyrics, setUserlyrics] = useState('')
   const icons = [
     { id: 'acousticGuitar', component: <PiGuitar /> },
     { id: 'bassGuitar', component: <GiGuitar /> },
@@ -95,7 +95,7 @@ function App() {
           }}>
             {/* 왼쪽 큰 컬럼 */}
             {/* <iframe src={path.gradio_path} width='100%' height='100%' style={{ overflowX: 'scroll', overflowY: 'scroll' }}></iframe> */}
-            <Chatbot user={user}></Chatbot>
+            <Chatbot user={user} setUserlyrics={setUserlyrics} userlyrics={userlyrics}></Chatbot>
           </Col>
 
           <Col md={9} style={{
@@ -155,7 +155,7 @@ function App() {
 
               <Col md={4} style={{ margin: 0, padding: 0, }}>
                 {/* 오른쪽 큰 컬럼 */}
-                <Row style={{ height: '60vh' }}>
+                <Row style={{ height: '30vh' }}>
                   <Control currentemotion={currentemotion} setCurrentemotion={setCurrentemotion} setPlaytime={setPlaytime} setPrompt={setPrompt} setInstrumenticon={setInstrumenticon} instrumenticon={instrumenticon} user={user} editnum={editnum} setEditnum={setEditnum} setCnum={setCnum} cnum={cnum} setChangedata={setChangedata} beatlist={beatlist} setPitchlist={setPitchlist} pitchlist={pitchlist} phase={phase} emotionlist={emotionlist} setEmotionlist={setEmotionlist} playtime={playtime} setDuration={setDuration} mockdata={mockdata} setMockdata={setMockdata} totaldata={totaldata} setTotaldata={setTotaldata} setControl={setControl} setTimedata={setTimedata} setAudiourl={setAudiourl} control={control}></Control>
 
                 </Row>
@@ -163,6 +163,21 @@ function App() {
                   <PromptDisplay prompt={prompt} setPrompt={setPrompt} totaldata={totaldata} changedata={changedata}></PromptDisplay>
 
                 </Row> */}
+                <Row>
+                  <div style={{
+                    width: '100%'
+                  }}>
+                    <Card style={{ width: '90%', padding: '10px', marginLeft: 10 }}>
+                      <Card.Title style={{ padding: '10px' }}>[가사]</Card.Title>
+                      <Card.Body>
+                        <p>
+                          {userlyrics}
+                        </p>
+                      </Card.Body>
+                    </Card>
+                  </div>
+                </Row>
+
 
               </Col>
             </Row>

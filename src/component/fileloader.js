@@ -21,6 +21,7 @@ class Fileloader extends Component {
       audioSrc: '',
       show: false,
       redo: false,
+      post: false,
     };
     this.fileInput = createRef();
   }
@@ -59,6 +60,9 @@ class Fileloader extends Component {
         url: this.state.filepath,
         currentUser: this.props.user
       };
+
+      this.setState({ post: true })
+
 
       axios.post(process.env.REACT_APP_ENDPOINT + '/analysis', data)
         .then((response) => {
@@ -209,6 +213,18 @@ class Fileloader extends Component {
 
         {/* <button onClick={this.handleButtonClick}>test</button>
         <button onClick={this.redoButtonClick}>불러오기</button> */}
+
+        <Modal show={this.state.post}>
+          <Modal.Header closeButton>
+            <Modal.Title>음악시각화 로딩중</Modal.Title>
+          </Modal.Header>
+          <Modal.Body>잠시만 기다려주세요.</Modal.Body>
+          <Modal.Footer>
+            <Button variant="secondary" onClick={() => { this.setState({ post: false }) }}>
+              닫기
+            </Button>
+          </Modal.Footer>
+        </Modal>
 
         <Modal show={this.state.show}>
           <Modal.Header closeButton>

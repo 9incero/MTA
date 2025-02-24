@@ -2,7 +2,7 @@ import React, { useState, useRef, useEffect } from "react";
 import { FaArrowCircleUp } from "react-icons/fa";
 import './modulestyle/chatbot.css'; // 추가: CSS 파일을 import
 
-const Chatbot = (user) => {
+const Chatbot = ({ user, setUserlyrics, userlyrics }) => {
     const [messages, setMessages] = useState([{ role: "bot", content: "안녕하세요! 저는 음악챗봇이에요. 먼저 당신을 어떻게 부르면 될까요?" }]);
     const [input, setInput] = useState("");
     const [userName, setUserName] = useState(null); // 사용자 이름 저장
@@ -10,13 +10,13 @@ const Chatbot = (user) => {
     const [isSending, setIsSending] = useState(false); // 메시지 전송 중 상태
     const messagesEndRef = useRef(null);
     const inputRef = useRef(null); // ✅ 입력창에 접근하기 위한 useRef
-    const [currentUser, setCurrentUser] = useState(user);
 
     useEffect(() => {
-        setCurrentUser(user);
-        console.log("user가 변경되어 currentUser가 업데이트되었습니다:", user);
-    }, [user]); // user가 변경될 때마다 실행
-
+        // isSending이 false로 바뀔 때마다 포커스
+        if (!isSending) {
+            inputRef.current.focus();
+        }
+    }, [isSending]);
 
     // 사용자 이름을 서버에 설정하는 함수
     const setUserNameOnServer = async (name) => {
@@ -26,11 +26,10 @@ const Chatbot = (user) => {
             const response = await fetch(process.env.REACT_APP_ENDPOINT + "/set_user_name", {
                 method: "POST",
                 headers: { "Content-Type": "application/json" },
-                body: JSON.stringify({ userName: name, currentUser: currentUser.user }),
+                body: JSON.stringify({ userName: name, currentUser: user }),
             });
 
             const data = await response.json();
-
 
             if (response.ok) {
                 console.log(data)
@@ -52,7 +51,7 @@ const Chatbot = (user) => {
                 const response = await fetch(process.env.REACT_APP_ENDPOINT + "/chat/question", {
                     method: "POST",
                     headers: { "Content-Type": "application/json" },
-                    body: JSON.stringify({ user_id: userName, currentUser: currentUser.user })  // 🚀 user_id 추가
+                    body: JSON.stringify({ user_id: userName, currentUser: user })  // 🚀 user_id 추가
                 });
 
                 if (!response.ok) throw new Error(`HTTP error! Status: ${response.status}`);
@@ -61,6 +60,8 @@ const Chatbot = (user) => {
                 console.log("First question response:", data);
 
                 setMessages((prevMessages) => [...prevMessages, { role: "bot", content: data[0].content }]);
+                inputRef.current.focus(); // ✅ 엔터 후 포커스 복원
+
 
             } catch (error) {
                 console.error("Error fetching first question:", error);
@@ -89,21 +90,16 @@ const Chatbot = (user) => {
                 const response = await fetch(process.env.REACT_APP_ENDPOINT + "/chat/response", {
                     method: "POST",
                     headers: { "Content-Type": "application/json" },
-                    body: JSON.stringify({ message: input, user_id: userName, currentUser: currentUser.user })
+                    body: JSON.stringify({ message: input, user_id: userName, currentUser: user })
                 });
 
                 if (!response.ok) throw new Error(`HTTP error! Status: ${response.status}`);
 
                 const file = await response.json();
-                console.log(file)
+
+                //suno 링크만
                 const urlRegex = /(https?:\/\/[^\s]+)/;
-                console.log(urlRegex.test(String(file[0]['content'])))
-                console.log(file[0]['content'])
-                console.log(file[0]);
                 if ((file[0] !== undefined && file[0] !== null) && urlRegex.test(String(file[0]['content']))) {
-                    console.log("---------");
-                    console.log(file);
-                    // 첫 번째 메시지 추가
                     await new Promise((resolve) => {
                         setMessages((prevMessages) => {
                             const updatedMessages = [...prevMessages];
@@ -122,7 +118,7 @@ const Chatbot = (user) => {
                 const questionResponse = await fetch(process.env.REACT_APP_ENDPOINT + "/chat/question", {
                     method: "POST",
                     headers: { "Content-Type": "application/json" },
-                    body: JSON.stringify({ user_id: userName, currentUser: currentUser.user })
+                    body: JSON.stringify({ user_id: userName, currentUser: user })
                 });
 
                 if (!questionResponse.ok) throw new Error(`HTTP error! Status: ${questionResponse.status}`);
@@ -134,6 +130,13 @@ const Chatbot = (user) => {
                     updatedMessages.pop(); // "로딩 중..." 메시지 제거
                     return [...updatedMessages, ...data];
                 });
+
+                //가사 인식
+                if ((data[0] !== undefined && data[0] !== null) && (data[0]['lyrics'] == 1)) {
+                    console.log("----가사-----");
+                    console.log(data);
+                    setUserlyrics(data[0]['suno']);
+                }
             } catch (error) {
                 console.error("Error:", error);
                 setMessages((prevMessages) => {
@@ -158,8 +161,16 @@ const Chatbot = (user) => {
     };
     const handleKeyDown = (e) => {
 
-        if (e.key === " ") {
-            console.log(e.key, e.code)
+        // if (e.key === " ") {
+        //     console.log(e.key, e.code)
+        //     // e.preventDefault();
+        //     e.stopPropagation();  // ✅ 스페이스바 입력이 상위 컴포넌트로 전파되는 것 방지
+
+        //     // e.stopImmediatePropagation();  // 모든 리스너에 대한 전파 차
+        // }
+
+        if (e.code === "Space") {
+            // console.log(e.key, e.code)
             // e.preventDefault();
             e.stopPropagation();  // ✅ 스페이스바 입력이 상위 컴포넌트로 전파되는 것 방지
 
