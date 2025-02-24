@@ -376,6 +376,17 @@ def save_chat():
     print('---save---')
     return jsonify([{"user_name":user_name,"history":chat_history}])
 
+@app.route('/view_lyrics', methods=['POST'])
+def view_lyrics():
+    data = request.get_json()
+    print(data)
+    user_id=data["currentUser"]
+    
+    chat_state = chatbot_states[user_id] 
+    lyrics = chat_state["context"]["lyrics"]
+
+    print('---view---')
+    return jsonify([{"lyrics":lyrics}])
         
 if __name__ == '__main__':
     dotenv.load_dotenv()
