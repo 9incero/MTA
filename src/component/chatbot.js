@@ -3,7 +3,7 @@ import { FaArrowCircleUp } from "react-icons/fa";
 import './modulestyle/chatbot.css'; // 추가: CSS 파일을 import
 
 const Chatbot = (user) => {
-    const [messages, setMessages] = useState([{ role: "bot", content: "안녕하세요! 저는 음악 챗봇이에요. 먼저, 어떻게 부르면 될까요?" }]);
+    const [messages, setMessages] = useState([{ role: "bot", content: "안녕하세요! 저는 음악챗봇이에요. 먼저 당신을 어떻게 부르면 될까요?" }]);
     const [input, setInput] = useState("");
     const [userName, setUserName] = useState(null); // 사용자 이름 저장
     const [isSettingName, setIsSettingName] = useState(true); // 이름 설정 중 여부

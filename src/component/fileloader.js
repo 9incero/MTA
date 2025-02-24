@@ -171,9 +171,10 @@ class Fileloader extends Component {
     return (
       <div>
         {/* <Card style={{ width: '18rem', padding: '10px' }}> */}
-        <Card.Title>[Music Information]</Card.Title>
+        <Card.Title>[음악정보입력]</Card.Title>
         <Card.Text>
-          Please upload the music!
+          1. 입력칸에 음악파일 링크를 붙여넣기 해주세요.<br></br>
+          2. [음악업로드]를 눌러 사용자 컴퓨터에 저장한 음악파일을 업로드해주세요.
         </Card.Text>
         {/* <textarea name="content" onChange={this.handleTextChange}
             value={this.state.textvalue} cols="40" rows="8" placeholder='가사를 넣어주세요.' ></textarea> */}
@@ -185,7 +186,7 @@ class Fileloader extends Component {
           }} /> */}
 
         <Form.Control as="textarea" name="content" onChange={this.handlePathChange}
-          value={this.state.filepath} placeholder='Please enter the path of the folder where you saved the music.' rows={3}
+          value={this.state.filepath} placeholder='구글드라이브에서 복사한 링크를 붙여넣기 해주세요.' rows={3}
           style={{
             backgroundImage: 'url(' + lyricsbackground
               + ')', backgroundSize: '100% 100%',
@@ -199,7 +200,7 @@ class Fileloader extends Component {
           backgroundColor: 'white', color: 'black', border: 'none', backgroundImage: 'url(' + uploadbackground
             + ')', backgroundSize: '100% 100%',
           backgroundRepeat: 'no-repeat'
-        }} onClick={this.fileinputclick}>Music Upload</Button>{' '}
+        }} onClick={this.fileinputclick}>음악 업로드</Button>{' '}
         {/* <Button style={{
           width: '100%', marginTop: '10px', backgroundColor: 'white', color: 'black', border: 'none', backgroundImage: 'url(' + reloadbackground
             + ')', backgroundSize: '100% 100%',
@@ -211,16 +212,16 @@ class Fileloader extends Component {
 
         <Modal show={this.state.show}>
           <Modal.Header closeButton>
-            <Modal.Title>Music analysis completed!</Modal.Title>
+            <Modal.Title>음악시각화 준비 완료</Modal.Title>
           </Modal.Header>
-          <Modal.Body>Start writing music.</Modal.Body>
+          <Modal.Body>음악시각화를 감상하세요.</Modal.Body>
           <Modal.Footer>
             <Button variant="secondary" onClick={() => { this.setState({ show: false }) }}>
-              Close
+              닫기
             </Button>
           </Modal.Footer>
         </Modal>
-      </div>
+      </div >
     );
   }
 }
