@@ -21,9 +21,7 @@ load_dotenv()
 api_key = os.getenv("OPENAI_API_KEY")
 
 app = Flask(__name__)
-# CORS(app, origins=["https://mta-static.onrender.com"])
 CORS(app)
-app.secret_key = "scilab"  # 세션 사용을 위해 필요
 
 
 llm = ChatOpenAI(
@@ -173,7 +171,7 @@ def generate_question():
         context["chat_history"] = context.get("chat_history", "") + f"\n[{timestamp}] bot: {suno_gen_lyrics}"
         print("==========sunolyrics=========")
         print(suno_gen_lyrics)
-        return jsonify([{"role": "bot", "content": suno_gen_lyrics + '\n 어떤가요?'}])
+        return jsonify([{"role": "bot", "content": suno_gen_lyrics.replace('\n', '<br>')  + '<br>가사를 이렇게 만들어보면 어떨까요?',"lyrics":1, "suno":suno_gen_lyrics.replace('\n', '<br>')}])
 
     
     if current_state == ChatbotState.MUSIC_CREATION.value and step_name == "lyrics_discussion" and context.get("lyrics_flag",0):
@@ -184,7 +182,7 @@ def generate_question():
         context["chat_history"] = context.get("chat_history", "") + f"\n[{timestamp}] bot: {suno_gen_lyrics}"
         print("==========change=========")
         print(suno_gen_lyrics)
-        return jsonify([{"role": "bot", "content": suno_gen_lyrics + '\n 어떤가요?'}])
+        return jsonify([{"role": "bot", "content": suno_gen_lyrics + '/가사를 이렇게 만들어보면 어떨까요?', "lyrics":1, "suno":suno_gen_lyrics}])
     
     timestamp = datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S")
     context["step_chat_history"][step_name] += f"\n[{timestamp}] bot: {question_text.content}"
@@ -231,7 +229,7 @@ def process_response():
             사용자의 답변 "{user_input}"을 분석하세요.
 
             - 만약 사용자가 **생성된 음악에 대해 바꾸고 싶다면**, "1"을 단독 출력하세요.
-            - 예시: "바꾸고 싶어", "마음에 안들어", "이 부분은 수정하고 싶어"
+            - 예시: "바꾸고 싶어", "마음에 안들어", "이 부분은 수정하고 싶어", "더 ~~할 것 같아요", "더 나을 것 같아요", "다시 만들어줘", "고쳐줘", "수정해줘"
 
             - 만약 사용자가 **음악 수정이 필요 없다고 판단하면**, "0"을 단독 출력하세요.
             - 예시: "좋아요", "수정 안 해도 될 것 같아"
@@ -247,13 +245,41 @@ def process_response():
         if match:
             recreation_flag = int(match.group())
             if recreation_flag == 1:
-                # 🔹 사용자가 "음악 수정 원함" → Music_Creation.making_concept 단계로 이동
-                chat_state["current_state"] = ChatbotState.MUSIC_CREATION.value
-                chat_state["current_step"] = STATE_STEPS_ORDER[ChatbotState.MUSIC_CREATION.value].index("making_concept")
-                print("🔄 사용자 요청: 이전 단계로 돌아감 → Music_Creation.making_concept")
-                ##근데 이렇게하면 변수를 다 초기화해야하나?
-                return jsonify([{"role": "bot", "content": "음악을 다시 조정해볼게요. 어떤 방향으로 수정할까요?"}])
-            
+                prompt = PromptTemplate(
+                input_variables=["user_input"],
+                template="""
+                사용자의 답변 "{user_input}"을 분석하세요.
+
+                - 만약 사용자가 **생성된 가사에 대해 바꾸고 싶다면**, "1"을 단독 출력하세요.
+                - 예시: "가사를 바꾸고싶어", "가사의 ~~부분을 수정하고 싶어", 
+
+                - 만약 사용자가 **생성된 음악에 대해 바꾸고 싶다면**, "0"을 단독 출력하세요.
+                - 예시: "더 빠르게", "장르를 바꾸고싶어", "노래가 마음에 안들어"
+
+                - 출력은 반드시 **"0" 또는 "1"만 단독으로 출력**해야 합니다.
+                """
+                )
+
+                chain = prompt | llm
+                output = chain.invoke({"user_input": user_input})
+                match = re.search(r'\b[01]\b', output.content)
+                state_flag = int(match.group())
+
+                if state_flag==1:
+                    # 🔹 사용자가 "음악 수정 원함" → Music_Creation.making_lyrics 단계로 이동
+                    chat_state["current_state"] = ChatbotState.MUSIC_CREATION.value
+                    chat_state["current_step"] = STATE_STEPS_ORDER[ChatbotState.MUSIC_CREATION.value].index("making_lyrics")
+                    print("🔄 사용자 요청: 이전 단계로 돌아감 → Music_Creation.making_lyrics")
+                    ##근데 이렇게하면 변수를 다 초기화해야하나?
+                    return jsonify([{"role": "bot", "content": "음악을 다시 조정해볼게요. 어떤 방향으로 수정할까요?"}])
+                else: 
+                    # 🔹 사용자가 "음악 수정 원함" → Music_Creation.making_concept 단계로 이동
+                    chat_state["current_state"] = ChatbotState.MUSIC_CREATION.value
+                    chat_state["current_step"] = STATE_STEPS_ORDER[ChatbotState.MUSIC_CREATION.value].index("making_concept")
+                    print("🔄 사용자 요청: 이전 단계로 돌아감 → Music_Creation.making_concept")
+                    ##근데 이렇게하면 변수를 다 초기화해야하나?
+                    return jsonify([{"role": "bot", "content": "음악을 다시 조정해볼게요. 어떤 방향으로 수정할까요?"}])
+                
     # 🔹 사용자 입력을 바탕으로 변수 추출
     extract_reply_for_step(llm, current_state, step_name, context, context["step_chat_history"][step_name])
 
@@ -376,17 +402,6 @@ def save_chat():
     print('---save---')
     return jsonify([{"user_name":user_name,"history":chat_history}])
 
-@app.route('/view_lyrics', methods=['POST'])
-def view_lyrics():
-    data = request.get_json()
-    print(data)
-    user_id=data["currentUser"]
-    
-    chat_state = chatbot_states[user_id] 
-    lyrics = chat_state["context"]["lyrics"]
-
-    print('---view---')
-    return jsonify([{"lyrics":lyrics}])
         
 if __name__ == '__main__':
     dotenv.load_dotenv()
