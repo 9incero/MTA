@@ -176,7 +176,7 @@ const Chatbot = (user) => {
 
     return (
         <div className="chatbot-container">
-            <h2 style={{ textAlign: "center" }}>Music Chatbot</h2>
+            <h2 style={{ textAlign: "center" }}>S-note</h2>
             <div className="messages-container">
                 {messages.map((msg, idx) => (
                     <div key={idx} className={`message ${msg.role === "user" ? "user-message" : "bot-message"}`}>
