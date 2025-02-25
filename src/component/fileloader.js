@@ -246,11 +246,6 @@ class Fileloader extends Component {
           </Modal.Footer>
         </Modal>
 
-        <Button variant="primary" onClick={() => {
-          this.setState({ post: false, show: true });
-        }}>
-          준비 완료 모달 띄우기
-        </Button>
       </div >
     );
   }
