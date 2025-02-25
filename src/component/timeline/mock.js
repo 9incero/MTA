@@ -143,7 +143,7 @@ class Mockcomponent extends Component {
             actions: actions
         }));
 
-        console.log(tmpData)
+        // console.log(tmpData)
 
         this.props.setMockdata([...tmpData]);
     }

@@ -78,7 +78,7 @@ class Userfile extends Component {
             } else {
                 this.stopTimer();
                 // 여기에서 final json file 만들면됨
-                console.log("Final Time:", this.state.time);
+                // console.log("Final Time:", this.state.time);
 
                 // const endJson = {
                 //     User: this.props.user,
@@ -112,9 +112,8 @@ class Userfile extends Component {
     }
     handleChange = (event, name) => {
         const newValue = event.target.value;
-        console.log(newValue)
+        // console.log(newValue)
         this.setState({ [name]: newValue }, () => {
-            console.log(this.state.participant); // 상태가 업데이트된 후 출력
             this.props.setUser(newValue); // 상태가 업데이트된 값을 사용
         });
     };

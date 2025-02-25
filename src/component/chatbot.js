@@ -32,7 +32,7 @@ const Chatbot = ({ user, setUserlyrics, userlyrics }) => {
             const data = await response.json();
 
             if (response.ok) {
-                console.log(data)
+                // console.log(data)
                 setUserName(data["userName"]);
                 setMessages((prevMessages) => [...prevMessages, { role: "bot", content: data["userName"] }]);
                 setIsSettingName(false);
@@ -57,7 +57,7 @@ const Chatbot = ({ user, setUserlyrics, userlyrics }) => {
                 if (!response.ok) throw new Error(`HTTP error! Status: ${response.status}`);
 
                 const data = await response.json();
-                console.log("First question response:", data);
+                // console.log("First question response:", data);
 
                 setMessages((prevMessages) => [...prevMessages, { role: "bot", content: data[0].content }]);
                 inputRef.current.focus(); // ✅ 엔터 후 포커스 복원
@@ -133,8 +133,6 @@ const Chatbot = ({ user, setUserlyrics, userlyrics }) => {
 
                 //가사 인식
                 if ((data[0] !== undefined && data[0] !== null) && (data[0]['lyrics'] == 1)) {
-                    console.log("----가사-----");
-                    console.log(data);
                     // setUserlyrics(data[0]['suno']);
                     const replacedLyrics = data[0]['suno']
                         .split('\n')

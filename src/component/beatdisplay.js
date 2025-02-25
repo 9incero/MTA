@@ -24,7 +24,7 @@ const MidiBeatMaker = ({ setMidibeat, playtime, midibeat }) => {
     }, []);
 
     useEffect(() => {
-        console.log('updata midibeat', midibeat)
+        // console.log('updata midibeat', midibeat)
     }, [midibeat]);
 
 
