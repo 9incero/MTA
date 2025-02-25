@@ -30,7 +30,7 @@ class Fileloader extends Component {
     const audio = new Audio(audioUrl);
     audio.onloadedmetadata = () => {
       this.props.setDuration(audio.duration);
-      console.log(audio.duration)
+      // console.log(audio.duration)
 
     };
   };
@@ -54,7 +54,7 @@ class Fileloader extends Component {
     else {
 
       const fname = this.fileInput.current.files[0].name
-      console.log('fname ', fname)
+      // console.log('fname ', fname)
       //다른 노트북으로 실험시 여기 url 고치기
       const data = {
         url: this.state.filepath,
@@ -71,7 +71,7 @@ class Fileloader extends Component {
         }
       })
         .then((response) => {
-          console.log(response.data);
+          // console.log(response.data);
           this.props.setTotaldata({
             BPM: '',
             Beat_amplitude: [],
@@ -85,7 +85,7 @@ class Fileloader extends Component {
 
           this.props.setCnum(this.props.cnum + 1)
           this.props.setTotaldata({ ...response.data })
-          console.log(this.props.totaldata)
+          // console.log(this.props.totaldata)
           this.setState({ show: true })
 
 
@@ -121,25 +121,25 @@ class Fileloader extends Component {
   }
   componentDidUpdate(prevProps) {
     if (prevProps.totaldata !== this.props.totaldata) {
-      console.log('>>', this.props.totaldata); // 상태가 업데이트된 후에 로그 출력
+      // console.log('>>', this.props.totaldata); // 상태가 업데이트된 후에 로그 출력
     }
 
     if (prevProps.emotionlist != this.props.emotionlist) {
-      console.log('emotion', this.props.emotionlist)
+      // console.log('emotion', this.props.emotionlist)
     }
 
     if (prevProps.pitchlist != this.props.pitchlist) {
-      console.log('pitch', this.props.pitchlist)
+      // console.log('pitch', this.props.pitchlist)
     }
   }
 
   handleButtonClick = () => {
     // console.log(test)
-    console.log('lyrics', test.Lyrics)
+    // console.log('lyrics', test.Lyrics)
     this.props.setCnum(this.props.cnum + 1)
     this.props.setEditnum(this.props.editnum + 2)
     this.props.setTotaldata({ ...test });
-    console.log(this.props.editnum)
+    // console.log(this.props.editnum)
     this.props.setEmotionlist([])
     this.props.setPitchlist([])
     this.props.setPrompt('')
@@ -245,6 +245,12 @@ class Fileloader extends Component {
             </Button>
           </Modal.Footer>
         </Modal>
+
+        <Button variant="primary" onClick={() => {
+          this.setState({ post: false, show: true });
+        }}>
+          준비 완료 모달 띄우기
+        </Button>
       </div >
     );
   }
