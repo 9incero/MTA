@@ -283,8 +283,8 @@ def process_response():
                 else: 
                     # 🔹 사용자가 "음악 수정 원함" → Music_Creation.making_concept 단계로 이동
                     chat_state["current_state"] = ChatbotState.MUSIC_CREATION.value
-                    chat_state["current_step"] = STATE_STEPS_ORDER[ChatbotState.MUSIC_CREATION.value].index("making_concept")
-                    print("🔄 사용자 요청: 이전 단계로 돌아감 → Music_Creation.making_concept")
+                    chat_state["current_step"] = STATE_STEPS_ORDER[ChatbotState.MUSIC_CREATION.value].index("making_music")
+                    print("🔄 사용자 요청: 이전 단계로 돌아감 → Music_Creation.making_music")
                     ##근데 이렇게하면 변수를 다 초기화해야하나?
                     return jsonify([{"role": "bot", "content": "음악을 다시 조정해볼게요. 어떤 방향으로 수정할까요?"}])
     if current_state == ChatbotState.MUSIC_CREATION.value and step_name == "lyrics_discussion":
