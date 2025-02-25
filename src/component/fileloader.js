@@ -64,7 +64,12 @@ class Fileloader extends Component {
       this.setState({ post: true })
 
 
-      axios.post(process.env.REACT_APP_ENDPOINT + '/analysis', data)
+
+      axios.post(process.env.REACT_APP_ENDPOINT + '/analysis', data, {
+        headers: {
+          "Cache-Control": "no-cache, no-store, must-revalidate", "Content-Type": "application/json"
+        }
+      })
         .then((response) => {
           console.log(response.data);
           this.props.setTotaldata({
@@ -95,6 +100,7 @@ class Fileloader extends Component {
 
 
     // this.props.setTotaldata({ ...test });
+    this.fileInput.current.value = null;
 
 
 
@@ -106,10 +112,12 @@ class Fileloader extends Component {
   };
   handleTextChange = (event) => {
     this.setState({ textvalue: event.target.value });
+
   };
 
   handlePathChange = (event) => {
     this.setState({ filepath: event.target.value });
+
   }
   componentDidUpdate(prevProps) {
     if (prevProps.totaldata !== this.props.totaldata) {
@@ -214,7 +222,7 @@ class Fileloader extends Component {
         {/* <button onClick={this.handleButtonClick}>test</button>
         <button onClick={this.redoButtonClick}>불러오기</button> */}
 
-        <Modal show={this.state.post}>
+        <Modal show={this.state.post && (!this.state.show)}>
           <Modal.Header closeButton>
             <Modal.Title>음악시각화 로딩중</Modal.Title>
           </Modal.Header>

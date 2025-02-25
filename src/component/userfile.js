@@ -3,16 +3,17 @@ import Dropdown from 'react-bootstrap/Dropdown';
 import DropdownButton from 'react-bootstrap/DropdownButton';
 import Button from 'react-bootstrap/Button';
 import buttonbackground from '../img/Start@3x.png'
+import './modulestyle/namedrop.css'
 
 
 class Userfile extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            buttonText: 'Start',
+            buttonText: '시작',
             time: 0,
             isActive: false,
-            participant: 'Participant',
+            participant: '이름',
 
         };
         this.interval = null;
@@ -20,10 +21,10 @@ class Userfile extends Component {
 
     handleButtonClick = () => {
         this.setState(prevState => {
-            if (prevState.buttonText === 'Start') {
-                return { buttonText: 'End', isActive: true };
+            if (prevState.buttonText === '시작') {
+                return { buttonText: '끝', isActive: true };
             } else {
-                return { buttonText: 'Start', isActive: false };
+                return { buttonText: '시작', isActive: false };
             }
         });
     };
@@ -111,7 +112,7 @@ class Userfile extends Component {
     }
     handleChange = (event, name) => {
         const newValue = event.target.value;
-
+        console.log(newValue)
         this.setState({ [name]: newValue }, () => {
             console.log(this.state.participant); // 상태가 업데이트된 후 출력
             this.props.setUser(newValue); // 상태가 업데이트된 값을 사용
@@ -121,13 +122,13 @@ class Userfile extends Component {
     render() {
         const { buttonText, time } = this.state;
         const names = [
-            'P1', 'P2', 'P3', 'P4', 'P5', 'P6', 'P7', 'P8', 'P9', 'P10',
-            'P11', 'P12', 'P13', 'P14', 'P15', 'P16', 'P17', 'P18', 'P19', 'P20',
-            'P21', 'P22', 'T1', 'T2', 'T3', 'T4', 'T5'
+            '박민정', '김현정', '김문일', '김승신', '이선화', '이동은', '유득희', '안수연', '송채현', '한동훈',
+            '양은희', '이의남', '공병윤', '김보경', '차명신', '김선미', '나경아', '류나현', '이애경', '공다영',
+            '이현승', 'T1', 'T2', 'T3', 'T4', 'T5'
         ];
 
         return (
-            <div style={{ display: 'flex' }}>
+            <div style={{ display: 'flex', paddingTop: '10px' }}>
                 <DropdownButton id="dropdown-basic-button" title={this.state.participant} style={{ backgroundColor: 'white' }}>
                     {names.map((name, index) => (
                         <Dropdown.Item

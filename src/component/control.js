@@ -252,18 +252,18 @@ class Control extends Component {
             <div >
 
                 <Card style={{ width: '90%', padding: '10px', marginLeft: 10, }}>
-
+                    {/* 
                     <Tabs
                         defaultActiveKey="음악정보입력"
                         id="uncontrolled-tab-example"
                         className="mb-3"
                     >
-                        <Tab eventKey="음악정보입력" title="Music Information">
-                            <Fileloader user={this.props.user} playtime={this.props.playtime} setPlaytime={this.props.setPlaytime} setPrompt={this.props.setPrompt} cnum={this.props.cnum} setCnum={this.props.setCnum} editnum={this.props.editnum} setEditnum={this.props.setEditnum} emotionlist={this.props.emotionlist} pitchlist={this.props.pitchlist} setEmotionlist={this.props.setEmotionlist} setPitchlist={this.props.setPitchlist} setDuration={this.props.setDuration} totaldata={this.props.totaldata} setTotaldata={this.props.setTotaldata} setTimedata={this.props.setTimedata} setAudiourl={this.props.setAudiourl} ></Fileloader>
-                        </Tab>
+                        <Tab eventKey="음악정보입력" title="음악정보입력"> */}
+                    <Fileloader user={this.props.user} playtime={this.props.playtime} setPlaytime={this.props.setPlaytime} setPrompt={this.props.setPrompt} cnum={this.props.cnum} setCnum={this.props.setCnum} editnum={this.props.editnum} setEditnum={this.props.setEditnum} emotionlist={this.props.emotionlist} pitchlist={this.props.pitchlist} setEmotionlist={this.props.setEmotionlist} setPitchlist={this.props.setPitchlist} setDuration={this.props.setDuration} totaldata={this.props.totaldata} setTotaldata={this.props.setTotaldata} setTimedata={this.props.setTimedata} setAudiourl={this.props.setAudiourl} ></Fileloader>
+                    {/* </Tab> */}
 
-                        {/* test */}
-                        <Tab eventKey="음악편집" title="Music Edit">
+                    {/* test */}
+                    {/* <Tab eventKey="음악편집" title="Music Edit">
                             <div style={{ alignItems: 'center', marginBottom: '1rem' }}>
                                 <InstrumentPicker instrumenticon={this.props.instrumenticon} setInstrumenticon={this.props.setInstrumenticon}></InstrumentPicker>
 
@@ -342,7 +342,7 @@ class Control extends Component {
                             </div>
 
 
-                            {/* <div>
+                            <div>
                                 <Card.Title>볼륨</Card.Title>
                                 <div style={{
                                     display: 'flex',
@@ -361,7 +361,7 @@ class Control extends Component {
                                     />
                                     <span>크게</span>
                                 </div>
-                            </div> */}
+                            </div>
 
 
 
@@ -371,9 +371,9 @@ class Control extends Component {
                                 backgroundRepeat: 'no-repeat'
                             }}>Regenerative</Button>{' '}
 
-                        </Tab>
+                        </Tab> */}
 
-                    </Tabs>
+                    {/* </Tabs> */}
 
 
                 </Card>

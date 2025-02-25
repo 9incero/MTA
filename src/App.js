@@ -123,10 +123,10 @@ function App() {
                 }}>
                   <Col>
                     <div>
-                      <span style={{ fontSize: '20px', marginRight: 150 }}>Selected Pitch: {control.pitch_value}</span>
+                      {/* <span style={{ fontSize: '20px', marginRight: 150 }}>Selected Pitch: {control.pitch_value}</span> */}
 
                       <span style={{ fontSize: '20px' }}>
-                        Selected Instruments:
+                        악기:
                         {instrumenticon.map((iconId) => (
                           <span key={iconId} style={{ margin: '0 5px', fontSize: '20px' }}>
                             {icons.find((icon) => icon.id === iconId).component}
@@ -155,7 +155,7 @@ function App() {
 
               <Col md={4} style={{ margin: 0, padding: 0, }}>
                 {/* 오른쪽 큰 컬럼 */}
-                <Row style={{ height: '30vh' }}>
+                <Row style={{ height: '50vh' }}>
                   <Control currentemotion={currentemotion} setCurrentemotion={setCurrentemotion} setPlaytime={setPlaytime} setPrompt={setPrompt} setInstrumenticon={setInstrumenticon} instrumenticon={instrumenticon} user={user} editnum={editnum} setEditnum={setEditnum} setCnum={setCnum} cnum={cnum} setChangedata={setChangedata} beatlist={beatlist} setPitchlist={setPitchlist} pitchlist={pitchlist} phase={phase} emotionlist={emotionlist} setEmotionlist={setEmotionlist} playtime={playtime} setDuration={setDuration} mockdata={mockdata} setMockdata={setMockdata} totaldata={totaldata} setTotaldata={setTotaldata} setControl={setControl} setTimedata={setTimedata} setAudiourl={setAudiourl} control={control}></Control>
 
                 </Row>
@@ -169,7 +169,7 @@ function App() {
                   }}>
                     <Card style={{ width: '90%', padding: '10px', marginLeft: 10 }}>
                       <Card.Title style={{ padding: '10px' }}>[가사]</Card.Title>
-                      <Card.Body>
+                      <Card.Body style={{ maxHeight: '250px', overflowY: 'auto' }}>
                         <p>
                           {userlyrics}
                         </p>

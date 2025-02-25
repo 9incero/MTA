@@ -127,7 +127,7 @@ const Chatbot = ({ user, setUserlyrics, userlyrics }) => {
 
                 setMessages((prevMessages) => {
                     const updatedMessages = [...prevMessages];
-                    updatedMessages.pop(); // "로딩 중..." 메시지 제거
+                    updatedMessages.pop(); // "로딩 중..." 제거
                     return [...updatedMessages, ...data];
                 });
 
@@ -135,7 +135,18 @@ const Chatbot = ({ user, setUserlyrics, userlyrics }) => {
                 if ((data[0] !== undefined && data[0] !== null) && (data[0]['lyrics'] == 1)) {
                     console.log("----가사-----");
                     console.log(data);
-                    setUserlyrics(data[0]['suno']);
+                    // setUserlyrics(data[0]['suno']);
+                    const replacedLyrics = data[0]['suno']
+                        .split('\n')
+                        .map((line, index) => (
+                            <React.Fragment key={index}>
+                                {line}
+                                <br />
+                            </React.Fragment>
+                        ));
+
+                    setUserlyrics(replacedLyrics);
+
                 }
             } catch (error) {
                 console.error("Error:", error);
@@ -161,24 +172,10 @@ const Chatbot = ({ user, setUserlyrics, userlyrics }) => {
     };
     const handleKeyDown = (e) => {
 
-        // if (e.key === " ") {
-        //     console.log(e.key, e.code)
-        //     // e.preventDefault();
-        //     e.stopPropagation();  // ✅ 스페이스바 입력이 상위 컴포넌트로 전파되는 것 방지
-
-        //     // e.stopImmediatePropagation();  // 모든 리스너에 대한 전파 차
-        // }
-
         if (e.code === "Space") {
-            // console.log(e.key, e.code)
-            // e.preventDefault();
             e.stopPropagation();  // ✅ 스페이스바 입력이 상위 컴포넌트로 전파되는 것 방지
-
-            // e.stopImmediatePropagation();  // 모든 리스너에 대한 전파 차
         }
     };
-
-
 
     // 자동 스크롤
     useEffect(() => {
