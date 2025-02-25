@@ -828,23 +828,40 @@ def call_suno(title: str, lyrics: str, music_component: str) -> str:
     return music_filename
 
 def call_suno_lyrics(prompt):
-    url = suno_end_point+'/api/generate_lyrics'
+    url = suno_end_point + '/api/generate_lyrics'
     print(f'prompt: {prompt}')
 
     post = {'prompt': prompt}
-    response = requests.post(url, json=post)
 
+    retry_delay = 2
+    max_retry = 5
+    retry_num = 0
 
-    if response.status_code == 200:
-        res_data = response.json()
-        print(res_data)
-        lyrics = res_data['text']
-        # title = res_data['title']
-        # result = f'{title}: {lyrics}'
-    else:
-        print(f'error code: {response.status_code}, message: {response.content}')
+    while retry_num <= max_retry:
+        try:
+            # POST 요청
+            response = requests.post(url, json=post, timeout=(5, 60))
 
-    return lyrics
+            if response.status_code == 200:
+                res_data = response.json()
+                print(res_data)
+                lyrics = res_data['text']
+                return lyrics
+            else:
+                print(f'Error code: {response.status_code}, message: {response.content}')
+                print(f"Retrying in {retry_delay} seconds...")
+                time.sleep(retry_delay)
+                retry_num += 1
+
+        except (requests.exceptions.RequestException, requests.exceptions.ChunkedEncodingError) as e:
+            print(f"⚠️ Error occurred: {e}")
+            print(f"Retrying in {retry_delay} seconds...")
+            time.sleep(retry_delay)
+            retry_num += 1
+
+    print("❌ Failed to generate lyrics after maximum retries.")
+    return None
+
 
 def save_chat_history(context, user_name):
     """대화 기록을 'chat_history_YYYY-MM-DD_HH-MM-SS.txt' 형식으로 저장"""
