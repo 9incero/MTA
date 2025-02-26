@@ -12,7 +12,7 @@ import re
 import datetime
 from typing import Dict, Any
 from dotenv import load_dotenv
-from langchain.prompts import PromptTemplate
+from langchain.prompts import PromptTemplate, FewShotPromptTemplate
 from langchain_openai import ChatOpenAI
 
 
@@ -114,7 +114,7 @@ def set_user_name():
     """
     data = request.get_json()
     print(data)
-    # print(call_suno_lyrics("hh"))
+    print(call_suno_lyrics("hh"))
     # music_url=call_suno("가나다","가나다라마바사","천천히")
     user_input=data["userName"]
     user_id=data["currentUser"]
@@ -231,21 +231,53 @@ def process_response():
 
     if current_state == ChatbotState.MUSIC_CREATION.value and step_name == "lyrics_discussion":
             print("가사 재생성")
-            prompt = PromptTemplate(
-                input_variables=["user_input"],
-                template="""
-                사용자의 답변 "{user_input}"을 분석하세요.
+            example_prompt = PromptTemplate.from_template("""
+                사용자의 답변: "{user_input}"
+                출력: {output}
+                """)
 
+            examples = [
+            {
+                "user_input": "가사를 수정하고 싶어",
+                "output": "1"
+            },
+            {
+                "user_input": "좋아요",
+                "output": "0"
+            },
+            {
+                "user_input": "바꾸고 싶지 않아",
+                "output": "0"
+            },
+            {
+                "user_input": "수정 안해도 될 것 같아",
+                "output": "0"
+            },
+            {
+                "user_input": "가사의 ~~부분을 ~~라고 바꾸는게 좋을 것 같아",
+                "output": "1"
+            },
+            {
+                "user_input": "이렇게 하는게 더 나을 것 같아",
+                "output": "1"},
+                {
+                "user_input": "~~을 ~~라고 바꿔줘",
+                "output": "1"}
+        ]
+            prompt = FewShotPromptTemplate(
+            examples=examples,              # 사용할 예제들
+            example_prompt=example_prompt,  # 예제 포맷팅에 사용할 템플릿
+            prefix=""" 
                 - 만약 사용자가 **생성된 가사에 대해 바꾸고 싶다면**, "1"을 단독 출력하세요.
                 - 예시: "바꾸고 싶어", "마음에 안들어", "이 부분은 수정하고 싶어"
 
                 - 만약 사용자가 **음악 수정이 필요 없다고 판단하면**, "0"을 단독 출력하세요.
                 - 예시: "좋아요", "수정 안 해도 될 것 같아"
 
-                - 출력은 반드시 **"0" 또는 "1"만 단독으로 출력**해야 합니다.
-                """
-            )
-
+                - 출력은 반드시 **"0" 또는 "1"만 단독으로 출력**해야 합니다.""",
+            suffix="사용자의 답변: {user_input}",          # 예제 뒤에 추가될 접미사
+            input_variables=["user_input"],      # 입력 변수 지정
+        )
             chain = prompt | llm
             output = chain.invoke({"user_input": user_input})
             match = re.search(r'\b[01]\b', output.content)
@@ -325,10 +357,34 @@ def process_response():
     if current_state == ChatbotState.MUSIC_CREATION.value and step_name == "style_gen":
             music_title = context.get("title", "")
             music_lyrics = context.get("lyrics", "")
-            music_prompt = context.get("style_prompt", "")
+            music_components = context.get("music_component", "")
 
-            if all([music_title, music_lyrics, music_prompt]):
+            if all([music_title, music_lyrics, music_components]):
                 print("음악 생성 시작")
+                prompt = PromptTemplate(
+                input_variables=["music_components"],
+                template="""
+                {music_components} 의 내용과 더불어
+                노래 구성요소(장르, 스타일, 빠르기, 악기, 분위기등등)을 만들어주세요.
+            
+                예시와 같이 키워드만 쉼표로 구분해서 출력합니다. 
+                예시) 피아노, 밝게, 리듬
+
+                아래와 같이는 절대 하지마세요. (단순 단어나열이 아닌 노래주제: < 이런식의 사용)
+                노래주제: 스트레스 해소, 가사: 종이들이 바람에 날려 내 마음 속 무게도 함께 흩날려…, 
+                요구조건: 락, 빠른 템포, 드럼만 사용, 강렬하고 희망적인 분위기, 락, 강렬, 희망적, 빠른 템포, 드럼
+
+                [중요]
+                150자내로 생성해야합니다.
+                되도록 키워드로 간결하게 설명해주세요. 
+                """
+                )
+
+                chain = prompt | llm
+                output = chain.invoke({"music_components": music_components})
+                music_prompt = output.content
+                print('tag', music_prompt)
+                context["style_prompt"]=music_prompt
                 music_url=call_suno(music_title, music_lyrics, music_prompt)
                 steps = STATE_STEPS_ORDER[current_state]
                 # 현재 step_index
