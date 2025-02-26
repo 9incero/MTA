@@ -198,11 +198,12 @@ class Fileloader extends Component {
           }} /> */}
 
         <Form.Control as="textarea" name="content" onChange={this.handlePathChange}
-          value={this.state.filepath} placeholder='구글드라이브에서 복사한 링크를 붙여넣기 해주세요.' rows={3}
+          value={this.state.filepath} placeholder='채팅창 링크 붙여넣기' rows={3}
           style={{
-            backgroundImage: 'url(' + lyricsbackground
-              + ')', backgroundSize: '100% 100%',
-            backgroundRepeat: 'no-repeat', border: 'none', marginTop: '10px'
+            // backgroundImage: 'url(' + lyricsbackground
+            //   + ')', backgroundSize: '100% 100%',
+            // backgroundRepeat: 'no-repeat', border: 'none', marginTop: '10px'
+            backgroundColor: "pink"
           }} />
 
         <input type="file" ref={this.fileInput} onChange={this.handleClick} style={{ display: "none" }} />
