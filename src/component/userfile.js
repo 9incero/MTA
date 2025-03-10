@@ -13,7 +13,7 @@ class Userfile extends Component {
             buttonText: '시작',
             time: 0,
             isActive: false,
-            participant: '이름',
+            participant: '조이름',
 
         };
         this.interval = null;
@@ -121,9 +121,7 @@ class Userfile extends Component {
     render() {
         const { buttonText, time } = this.state;
         const names = [
-            '박민정', '김현정', '김문일', '김승신', '이선화', '이동은', '유득희', '안수연', '송채현', '한동훈',
-            '양은희', '이의남', '공병윤', '김보경', '차명신', '김선미', '나경아', '류나현', '이애경', '공다영',
-            '이현승', 'T1', 'T2', 'T3', 'T4', 'T5'
+            '1조', '2조', '3조', '4조'
         ];
 
         return (

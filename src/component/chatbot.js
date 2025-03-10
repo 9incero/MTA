@@ -105,7 +105,12 @@ const Chatbot = ({ user, setUserlyrics, userlyrics }) => {
                             const updatedMessages = [...prevMessages];
                             updatedMessages.pop(); // "로딩 중..." 제거
                             resolve();
-                            return [...updatedMessages, { role: "bot", content: file[0]['content'] }];
+                            return [...updatedMessages, {
+                                role: "bot", content:
+                                    <a href={file[0]['content']} target="_blank" rel="noopener noreferrer">
+                                        {file[0]['content']}
+                                    </a>
+                            }];
                         });
                     });
 

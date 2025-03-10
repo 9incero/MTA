@@ -185,8 +185,7 @@ class Fileloader extends Component {
         {/* <Card style={{ width: '18rem', padding: '10px' }}> */}
         <Card.Title>[음악정보입력]</Card.Title>
         <Card.Text>
-          1. 입력칸에 음악파일 링크를 붙여넣기 해주세요.<br></br>
-          2. [음악업로드]를 눌러 사용자 컴퓨터에 저장한 음악파일을 업로드해주세요.
+          왼쪽 챗봇이 링크를 보내주면 선생님을 불러주세요!
         </Card.Text>
         {/* <textarea name="content" onChange={this.handleTextChange}
             value={this.state.textvalue} cols="40" rows="8" placeholder='가사를 넣어주세요.' ></textarea> */}
@@ -198,7 +197,7 @@ class Fileloader extends Component {
           }} /> */}
 
         <Form.Control as="textarea" name="content" onChange={this.handlePathChange}
-          value={this.state.filepath} placeholder='채팅창 링크 붙여넣기' rows={3}
+          value={this.state.filepath} placeholder='링크 붙여넣기' rows={3}
           style={{
             // backgroundImage: 'url(' + lyricsbackground
             //   + ')', backgroundSize: '100% 100%',
