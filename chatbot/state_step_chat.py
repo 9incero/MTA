@@ -35,14 +35,14 @@ STEP_VAR_DESCRIPTIONS = {
         "rapport_building": {
             "user_ready": "사용자의 음악만들기에 대한 관심 여부"
         },
-        "goal_and_motivation_building": {
-            "motivation": "사용자가 음악만들기 활동을 통해 달성하고 싶은 목표",
-            "difficulty": "사용자가 현재 겪고 있는 어려움, 어려움으로 야기되는 문제점",
-            "emotion": "사용자가 최근 들어 많이 느끼는 감정"
-        },
-        "music_preference": {
-            "music_info": "사용자가 좋아하거나 관심있거나 싫어하는 음악 정보 (장르, 스타일 등)"
-        },
+        # "goal_and_motivation_building": {
+        #     "motivation": "사용자가 음악만들기 활동을 통해 달성하고 싶은 목표",
+        #     "difficulty": "사용자가 현재 겪고 있는 어려움, 어려움으로 야기되는 문제점",
+        #     "emotion": "사용자가 최근 들어 많이 느끼는 감정"
+        # },
+        # "music_preference": {
+        #     "music_info": "사용자가 좋아하거나 관심있거나 싫어하는 음악 정보 (장르, 스타일 등)"
+        # },
     },
 
     # 2) Music_Creation
@@ -100,65 +100,62 @@ STEP_MAIN_PROMPTS = {
     ChatbotState.THERAPEUTIC_CONNECTION.value: {
         "rapport_building": """
             [라포 형성] 
-            순서대로 진행하세요. 되도록 짧게 질문을 진행하세요. 
-            1. 사용자와 라포를 쌓기 위해서 아이스브레이킹을 진행하세요. (2번정도 상세한 질문을 진행하세요)
-                - 요즘, 어떤 감정이나 생각이 가장 크게 자리잡고 있나요?
-            2. 사용자의 마음을 이해하고 어려움을 음악으로 풀어보자고 이야기하세요.
-                - 그렇군요. 지금 Name님의 머릿속은(마음은) ~~한 감정/생각이 가장 많이 자리잡고 있군요. 이와 관련해서 함께 음악을 만들며 생각을 정리해보는 건 어떠세요?
-                - Name님. 오늘 저와 이야기하신 어려움에 대해 함께 이야기를 나누고, 그 이야기를 음악으로 표현해보면 어떨까요? Name님의 생각과 마음을 담아보는 데 제가 조금이나마 도움을 드릴 수 있으면 좋겠어요.
-                - Name님, 오늘은 저와 함께 직접 가사와 음악을 만들어 볼거예요. 지금 느끼는 감정이나 어려운 점을 음악으로 표현하면서 마음을 조금 더 가볍게 만들어보는 게 어떨까요?
+            사용자와 음악에 대한 간단한 대화를 나누세요.
+            예시)
+            - 오늘 음악만들기 활동이 기대되시나요?
+            - 음악만들기를 통해서 즐거운 시간을 보낼 준비 되셨나요?
             """,
-        "goal_and_motivation_building": """
-            [목표/동기 파악] 
-            사용자의 동기(motivation), 어려움(difficulty), 감정(emotion)을 파악하세요.
-            현재 단계(Goal and Motivation-building)에서는 다음 정보가 필요합니다:
+        # "goal_and_motivation_building": """
+        #     [목표/동기 파악] 
+        #     사용자의 동기(motivation), 어려움(difficulty), 감정(emotion)을 파악하세요.
+        #     현재 단계(Goal and Motivation-building)에서는 다음 정보가 필요합니다:
 
-            1) difficulty (어려움)
-            - 사용자가 생활 속에서 느끼는 가장 큰 어려움, 구체적인 상황(주제) + 그로 인한 문제점
-                예: "직장 내 갈등으로 스트레스를 많이 받음" + "잠을 잘 못 자고 의욕이 떨어짐"
-            - 만약 사용자가 '말하기 어렵다'거나 '잘 모르겠다'라고 하면, 
-                대신 어떤 감정을 요즘 주로 느끼는지(emotion)를 파악하세요.
+        #     1) difficulty (어려움)
+        #     - 사용자가 생활 속에서 느끼는 가장 큰 어려움, 구체적인 상황(주제) + 그로 인한 문제점
+        #         예: "직장 내 갈등으로 스트레스를 많이 받음" + "잠을 잘 못 자고 의욕이 떨어짐"
+        #     - 만약 사용자가 '말하기 어렵다'거나 '잘 모르겠다'라고 하면, 
+        #         대신 어떤 감정을 요즘 주로 느끼는지(emotion)를 파악하세요.
 
-            2) emotion (감정) -> difficulty를 구체적으로 채웠을 경우 생략가능.
-            - difficulty를 상세히 말하기 어려워하는 경우, 
-                "최근 들어 주로 느끼는 감정이 있다면 어떤 것인가요?" 라고 추가 질문하세요.
-            - 둘 다 말할 수 있으면 둘 다 수집해도 좋습니다.
+        #     2) emotion (감정) -> difficulty를 구체적으로 채웠을 경우 생략가능.
+        #     - difficulty를 상세히 말하기 어려워하는 경우, 
+        #         "최근 들어 주로 느끼는 감정이 있다면 어떤 것인가요?" 라고 추가 질문하세요.
+        #     - 둘 다 말할 수 있으면 둘 다 수집해도 좋습니다.
 
-            3) motivation (음악치료를 통해 얻고 싶은 것)
-            - "기존에 듣던 음악에서 위로받은 경험이 있나요?" 라고 물어보고,
-                - 만약 그렇다면 "어떤 경험이었는지" 묻고, 그 내용을 motivation에 반영하세요.
-                - 만약 없다면 "음악치료로 무엇을 기대하는지", "어떤 목표가 있는지" 묻고 그 내용을 motivation에 담으세요.
-            - 예: "음악을 통해 감정을 표현하고 싶다", "내면에 직면하고 싶다", "고립감을 해소하고 싶다" 등등
+        #     3) motivation (음악치료를 통해 얻고 싶은 것)
+        #     - "기존에 듣던 음악에서 위로받은 경험이 있나요?" 라고 물어보고,
+        #         - 만약 그렇다면 "어떤 경험이었는지" 묻고, 그 내용을 motivation에 반영하세요.
+        #         - 만약 없다면 "음악치료로 무엇을 기대하는지", "어떤 목표가 있는지" 묻고 그 내용을 motivation에 담으세요.
+        #     - 예: "음악을 통해 감정을 표현하고 싶다", "내면에 직면하고 싶다", "고립감을 해소하고 싶다" 등등
 
-            [중요] 
-            - 사용자가 답을 잘 못하면, 예시나 선택지를 제시할 수도 있습니다. 
-            (예: “외부 문제(직장/인간관계), 내부 문제(성격/외모) 등이 있을까요?”)
-            - 모든 질문을 한 번에 다 하지 말고, 사용자의 응답을 들은 뒤 추가 질문을 자연스럽게 이어가세요.
-            - 사용자의 대답을 들으면 무조건 공감을 하고 대답을 해주세요.
-            - 예시는 사용자가 대답을 망설일때만 제시하세요. 처음부터 제시하지 마세요. 
-            """,
-        "music_preference": """
-            [음악 선호] 
-            사용자의 음악 선호(music_info)를 파악하세요.
-            아래의 대화흐름으로 사용자에게 질문하고 대화를 진행해주세요: 
+        #     [중요] 
+        #     - 사용자가 답을 잘 못하면, 예시나 선택지를 제시할 수도 있습니다. 
+        #     (예: “외부 문제(직장/인간관계), 내부 문제(성격/외모) 등이 있을까요?”)
+        #     - 모든 질문을 한 번에 다 하지 말고, 사용자의 응답을 들은 뒤 추가 질문을 자연스럽게 이어가세요.
+        #     - 사용자의 대답을 들으면 무조건 공감을 하고 대답을 해주세요.
+        #     - 예시는 사용자가 대답을 망설일때만 제시하세요. 처음부터 제시하지 마세요. 
+        #     """,
+        # "music_preference": """
+        #     [음악 선호] 
+        #     사용자의 음악 선호(music_info)를 파악하세요.
+        #     아래의 대화흐름으로 사용자에게 질문하고 대화를 진행해주세요: 
 
-            1. goal_and_motivation_building단계에서 진행한 대화를 바탕으로 도입 질문을 시작하세요.
-                - 이 difficulty를 해결하기 위해 음악을 사용한적이 있나요?
-                - 노래를 들으며 difficulty를 치유한적이 있나요?
-            2-1. 만약 '그렇다'고 응답하면 아래의 예시와 같은 질문을 진행하세요. (1~2개)
-                - 그렇다면 그럴때 주로 감상하는 음악은 무엇인가요? 
-                - 어떤 음악 활동(음악감상, 악기연주, 노래부르기 등)을 했나요?
-                - 
-            2-2. 만약 '그렇지 않다, 그런적없다'고 응답한다면, 아래와 같은 질문을 진행하세요. (1개)
-                - 음악을 통해서 해결해보는 건 어떨까요? 특별히 원하는 음악이 있나요?
-                - 음악은 좋은 해결수단이 될 수 있어요. 혹시 싫어하는 음악이 있나요?
+        #     1. goal_and_motivation_building단계에서 진행한 대화를 바탕으로 도입 질문을 시작하세요.
+        #         - 이 difficulty를 해결하기 위해 음악을 사용한적이 있나요?
+        #         - 노래를 들으며 difficulty를 치유한적이 있나요?
+        #     2-1. 만약 '그렇다'고 응답하면 아래의 예시와 같은 질문을 진행하세요. (1~2개)
+        #         - 그렇다면 그럴때 주로 감상하는 음악은 무엇인가요? 
+        #         - 어떤 음악 활동(음악감상, 악기연주, 노래부르기 등)을 했나요?
+        #         - 
+        #     2-2. 만약 '그렇지 않다, 그런적없다'고 응답한다면, 아래와 같은 질문을 진행하세요. (1개)
+        #         - 음악을 통해서 해결해보는 건 어떨까요? 특별히 원하는 음악이 있나요?
+        #         - 음악은 좋은 해결수단이 될 수 있어요. 혹시 싫어하는 음악이 있나요?
             
-            [중요] 
-            - 너무 깊게 들어가지 않아도 됩니다. 사용자의 말에 공감이 가장 중요하다는 것 잊지마세요. 
-            - 모든 질문을 한 번에 다 하지 말고, 사용자의 응답을 들은 뒤 추가 질문을 자연스럽게 이어가세요.
-            - 질문을 3턴이상 하지마세요. 마무리는 공감으로 진행하세요.
-            - 변수를 다 채우고 음악에 대한 공감을 진행하세요.
-        """,
+        #     [중요] 
+        #     - 너무 깊게 들어가지 않아도 됩니다. 사용자의 말에 공감이 가장 중요하다는 것 잊지마세요. 
+        #     - 모든 질문을 한 번에 다 하지 말고, 사용자의 응답을 들은 뒤 추가 질문을 자연스럽게 이어가세요.
+        #     - 질문을 3턴이상 하지마세요. 마무리는 공감으로 진행하세요.
+        #     - 변수를 다 채우고 음악에 대한 공감을 진행하세요.
+        # """,
     },
     ChatbotState.MUSIC_CREATION.value: {
         "making_concept": """
@@ -488,8 +485,8 @@ STEP_MAIN_PROMPTS = {
 STATE_STEPS_ORDER = {
     ChatbotState.THERAPEUTIC_CONNECTION.value: [
         "rapport_building",
-        "goal_and_motivation_building",
-        "music_preference",
+        # "goal_and_motivation_building",
+        # "music_preference",
     ],
     ChatbotState.MUSIC_CREATION.value: [
         "making_concept",
@@ -832,35 +829,19 @@ def call_suno_lyrics(prompt):
     print(f'prompt: {prompt}')
 
     post = {'prompt': prompt}
+    response = requests.post(url, json=post)
 
-    retry_delay = 2
-    max_retry = 5
-    retry_num = 0
-
-    while retry_num <= max_retry:
-        try:
-            # POST 요청
-            response = requests.post(url, json=post, timeout=(5, 60))
-
-            if response.status_code == 200:
-                res_data = response.json()
-                print(res_data)
-                lyrics = res_data['text']
-                return lyrics
-            else:
-                print(f'Error code: {response.status_code}, message: {response.content}')
-                print(f"Retrying in {retry_delay} seconds...")
-                time.sleep(retry_delay)
-                retry_num += 1
-
-        except (requests.exceptions.RequestException, requests.exceptions.ChunkedEncodingError) as e:
-            print(f"⚠️ Error occurred: {e}")
-            print(f"Retrying in {retry_delay} seconds...")
-            time.sleep(retry_delay)
-            retry_num += 1
-
-    print("❌ Failed to generate lyrics after maximum retries.")
-    return None
+    if response.status_code == 200:
+            res_data = response.json()
+            print(res_data)
+            lyrics = res_data['text']
+            # title = res_data['title']
+            # result = f'{title}: {lyrics}'
+    else:
+        print(f'error code: {response.status_code}, message: {response.content}')
+    
+    return lyrics
+    
 
 
 def save_chat_history(context, user_name):

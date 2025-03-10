@@ -113,8 +113,8 @@ def set_user_name():
     이후 유저 입력을 받아 이름을 추출하여 반환.
     """
     data = request.get_json()
-    print(data)
-    print(call_suno_lyrics("hh"))
+    # print(data)
+    # print(call_suno_lyrics("hh"))
     # music_url=call_suno("가나다","가나다라마바사","천천히")
     user_input=data["userName"]
     user_id=data["currentUser"]
