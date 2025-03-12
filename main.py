@@ -120,7 +120,7 @@ def set_user_name():
     user_id=data["currentUser"]
     # ✅ (1) 유저 입력이 없으면 챗봇이 먼저 질문
     if not user_input:
-        return jsonify([{"role": "bot", "content": "제가 당신을 어떻게 부르면 될까요?"}])
+        return jsonify([{"role": "bot", "content": "그룹 이름을 알려줄래요?"}])
 
     # ✅ (2) 유저가 입력하면 LLM으로 이름 추출
     user_name = extract_name_with_llm(llm, user_input)
@@ -137,7 +137,7 @@ def set_user_name():
     }
     print(f"저장된 유저 이름: {chatbot_states[user_id]['user_name']}")
 
-    return jsonify({"userName": f"좋아요, 앞으로 {user_name}님이라고 부를게요."})
+    return jsonify({"userName": f"좋아요, {user_name}! 그룹명이 참신한데요? 앞으로 {user_name}님이라고 부를게요."})
 
 
 # ✅ (1) 질문 생성 (POST /chat/question)
