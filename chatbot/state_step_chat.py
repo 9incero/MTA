@@ -15,7 +15,9 @@ from dotenv import load_dotenv
 
 
 load_dotenv()
-suno_end_point = os.getenv("SUNO_END_POINT")
+# suno_end_point = os.getenv("SUNO_END_POINT")
+suno_end_point = 'https://api.mureka.ai'
+mureka_api_key = os.getenv("MUREKA_API_KEY")
 
 ################################################
 # (A) State/Step 구조 & 변수 설명
@@ -762,7 +764,16 @@ def extract_name_with_llm(llm, user_input: str) -> str:
     name = output.content
 
     return name if name else "Unknown"
-    
+
+
+def query_task(id):
+    headers = {
+        "Authorization": f"Bearer {mureka_api_key}",
+    }
+    response = requests.get(suno_end_point+f'/v1/song/query/{id}', headers=headers)
+    # print(response.json())
+    return response.json()
+
 def call_suno(title: str, lyrics: str, music_component: str) -> str:
     print(f'lyrics: {lyrics}')
     print(f'meta codes: {music_component}')
@@ -772,69 +783,97 @@ def call_suno(title: str, lyrics: str, music_component: str) -> str:
         os.makedirs('music')
     music_filename = os.path.join("music", f"{title}.wav")
 
+    headers = {
+        "Authorization": f"Bearer {mureka_api_key}",
+        "Content-Type": "application/json"
+    }
+
     post = {
-        'prompt': lyrics,
-        'tags': music_component,
-        'title': title,
-        'make_instrumental': False,
-        'wait_audio': True,
+        'lyrics': lyrics,
+        'model': 'auto',
+        'prompt': music_component,
     }
     print(f'post message: {post}')
 
-    retry_delay=2
-    max_retry=5
-    retry_num=0
-    while (retry_num<=max_retry):
-        try:
-            # POST 요청
-            response = requests.post(suno_end_point+'/api/custom_generate', json=post, timeout=(5, 60))
+    retry_delay = 2
+    max_retry = 100
+    retry_num = 0
+    wait = True
+    audio_url = None
+    # while (retry_num<=max_retry):
+    #     try:
+    #         # POST 요청
+    response = requests.post(suno_end_point+'/v1/song/generate', headers=headers, json=post, timeout=(5, 60))
 
-            if response.status_code == 200:
-                res_data = response.json()
-                print(res_data)
-                audio_url = res_data[0]['audio_url']
-                # input_lyrics = res_data[0]['lyric']
-                print(f'Download music from {audio_url}')
-                # print(f'가사 {input_lyrics}')
+    if response.status_code == 200:
+        res_data = response.json()
+        print(res_data)
+        id = res_data['id']
 
-                # # 오디오 파일 다운로드
-                # start_time = time.time()
-                # audio_res = requests.get(audio_url, stream=True, timeout=(5, 300))
-                # audio_res.raise_for_status()
-
-                # with open(music_filename, 'wb') as file:
-                #     for chunk in audio_res.iter_content(chunk_size=8192):
-                #         if chunk:
-                #             file.write(chunk)
-
-                print(f'\nProcessed Suno, Input Text: {lyrics}, Meta_codes: {music_component}, Title: {title}, Output Music: {music_filename}.')
-                # print(f'Download done! Elapsed Time: {time.time() - start_time}')
-                # 성공 시 루프 종료
-                return audio_url
-
+        while wait:
+            task_status_response = query_task(id)
+            task_stats = task_status_response['status']
+            if task_stats == 'succeeded':
+                audio_url = task_status_response['choices'][0]['url']
+                wait = False
+            elif task_stats == 'failed':
+                print(f'Task failed: {task_status_response}')
+                return 'Task failed'
             else:
-                print(f'Error code: {response.status_code}, message: {response.content}')
-                print(f"Retrying in {retry_delay} seconds...")
+                print(f'Waiting for task to complete: {task_status_response}')
                 time.sleep(retry_delay)
+                retry_num += 1
+                if retry_num >= max_retry:
+                    return 'Task failed'
 
-        except (RequestException, ChunkedEncodingError) as e:
-            print(f"⚠️ Error occurred: {e}")
-            print(f"Retrying in {retry_delay} seconds...")
-            time.sleep(retry_delay)
+        # input_lyrics = res_data[0]['lyric']
+        print(f'Download music from {audio_url}')
+        # print(f'가사 {input_lyrics}')
+
+        # # 오디오 파일 다운로드
+        # start_time = time.time()
+        # audio_res = requests.get(audio_url, stream=True, timeout=(5, 300))
+        # audio_res.raise_for_status()
+
+        # with open(music_filename, 'wb') as file:
+        #     for chunk in audio_res.iter_content(chunk_size=8192):
+        #         if chunk:
+        #             file.write(chunk)
+
+        print(f'\nProcessed Suno, Input Text: {lyrics}, Meta_codes: {music_component}, Title: {title}, Output Music: {music_filename}.')
+        # print(f'Download done! Elapsed Time: {time.time() - start_time}')
+        # 성공 시 루프 종료
+        return audio_url
+
+    else:
+        print(f'Error code: {response.status_code}, message: {response.content}')
+        print(f"Retrying in {retry_delay} seconds...")
+        time.sleep(retry_delay)
+
+        # except (RequestException, ChunkedEncodingError) as e:
+        #     print(f"⚠️ Error occurred: {e}")
+        #     print(f"Retrying in {retry_delay} seconds...")
+        #     time.sleep(retry_delay)
+        #     retry_num += 1
 
     return music_filename
 
 def call_suno_lyrics(prompt):
-    url = suno_end_point + '/api/generate_lyrics'
+    url = suno_end_point + '/v1/lyrics/generate'
     print(f'prompt: {prompt}')
 
+    headers = {
+        "Authorization": f"Bearer {mureka_api_key}",
+        "Content-Type": "application/json"
+    }
     post = {'prompt': prompt}
-    response = requests.post(url, json=post)
+    response = requests.post(url, headers=headers, json=post)
 
+    lyrics = None
     if response.status_code == 200:
             res_data = response.json()
             print(res_data)
-            lyrics = res_data['text']
+            lyrics = res_data['lyrics']
             # title = res_data['title']
             # result = f'{title}: {lyrics}'
     else:
