@@ -224,7 +224,7 @@ def making_lyrics(user_input, llm,memory, var_dict):
     )
     slot=structured_llm.invoke(slot_prompt.invoke({"history":question}))
 
-    return question, slot, history
+    return question, slot
 
 
 # TruLens 초기화

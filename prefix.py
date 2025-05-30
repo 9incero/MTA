@@ -34,6 +34,10 @@ Evaluate each condition below and answer YES or NO explicitly.
 - Condition 1: Is the [Question] semantically similar or repetitive compared to any in the [Bot Question Set]?  
 - Condition 2: Is the [Question] contextually inappropriate or unrelated based on the [History]?
 
+Example answer format (Step 1):
+Condition 1: NO  
+Condition 2: YES  
+
 ---
 
 Step 2: Question Selection or Revision

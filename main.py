@@ -14,94 +14,135 @@ from state.simulation import user_simulator
 import json
 from datetime import datetime
 
+from typing import TypedDict, Tuple, Union
+from langchain_core.memory import BaseMemory 
+
 load_dotenv()
 
+class TherapeuticConnectionSlot(TypedDict):
+    name: str
+    therapy_difficulty: str
+    difficulty: str
+    difficulty_category: str
+    motivation: str
+
+class ExtractionSourceSlot(TypedDict):
+    concept: str
+    concept_discussion: str
+    lyric_keyword: str
+    lyric_image: str
+    lyrics_content: str
+
+class MakingLyricsSlot(TypedDict):
+    lyrics: str
+
+class MusicMakingSlot(TypedDict):
+    music_information: str
+    genre: str
+    instrument: str
+    mood: str
+    vocal: str
+    tempo: str
+
+class MusicDiscussionSlot(TypedDict):
+    individual_emotion: str
+    change_mind: str
+    change_attitude: str
+    touching_lyrics: str
+    strength: str
+    feeling: str
+
+class CombinedSlot(TypedDict, total=False):
+    #therpeutic_connection
+    name: str
+    therapy_difficulty: str
+    difficulty: str
+    difficulty_category: str
+    motivation: str
+    #extraction_source
+    concept: str
+    concept_discussion: str
+    lyric_keyword: str
+    lyric_image: str
+    lyrics_content: str
+    #making_lyrics
+    lyrics: str
+    #music_making
+    music_information: str
+    genre: str
+    instrument: str
+    mood: str
+    vocal: str
+    tempo: str
+    #music_discussion
+    individual_emotion: str
+    change_mind: str
+    change_attitude: str
+    touching_lyrics: str
+    strength: str
+    feeling: str
 
 
 llm = ChatOpenAI(model="gpt-4.1", temperature=0)
-memory = ConversationSummaryMemory(llm=llm, memory_key="history")
 
-def execute_state(func,turn_num, dialogue_json,var_dict):
-    save_turn={}
-    bot_question=[]
-    if turn_num!=0:
-        var_dict.update(dialogue_json[turn_num-1]["slot"])
-        print(var_dict)
-        question, slot, history  = func(json.dumps(var_dict), llm,memory, var_dict, bot_question)
-        print(question)
-        bot_question.append(question)
-        start=turn_num
+def execute_state(user_input: str, state: str, turn: int, slot: CombinedSlot, memory: BaseMemory)-> Tuple[str, int, Union[TherapeuticConnectionSlot|ExtractionSourceSlot|MakingLyricsSlot|MusicMakingSlot|MusicDiscussionSlot]]:
+    flag=0
+
+    #state지정
+    if state=="therpeutic_connection":
+        func=therapeutic_connection
+    elif state=="extraction_source":
+        func=extraction_source
+    elif state=="making_lyrics":
+        func=making_lyrics
+    elif state=="music_making":
+        func=music_making
+    elif state=="music_discussion":
+        func=music_discussion
+
+    #답변 생성
+    if turn!=0:
+        response, state_slot  = func(user_input, llm,memory)
+        print(response)
+
     else:
-        question, slot, history  = func("안녕", llm, memory, var_dict, bot_question)
-        start=0
-        # print(question, slot, history)
-        print(question)
-        bot_question.append(question)
+        response, state_slot  = func(slot, llm, memory)
+        print(response)
 
+    #slot 다 채웠는지 확인
+    none_fields = {k: v for k, v in state_slot.model_dump().items() if v is None}
 
-    save_turn['state_name']=func.__name__
-    save_turn['user_input']="new state start"
-    save_turn['chatbot_output']=question
-    save_turn['slot']=slot.model_dump()
-    save_turn['history']=history
-    dialogue_json[turn_num]=save_turn
-
-    while True:
-        save_turn={}
-
-        # user_input = user_simulator.predict(input=question)
-        user_input=input("user: ")
-        
-        question, slot, history  = func(user_input, llm,memory, var_dict, bot_question)
-        print(question)
-        bot_question.append(question)
-
-        save_turn['state_name']=func.__name__
-        save_turn['user_input']=user_input
-        save_turn['chatbot_output']=question
-        save_turn['slot']=slot.model_dump()
-        save_turn['history']=history
-        dialogue_json[turn_num]=save_turn
-        turn_num+=1
-        # print(turn_num)
-        none_fields = {k: v for k, v in slot.model_dump().items() if v is None}
-
-        if len(none_fields)==0:
+    #다음 state로 넘어갈지 flag
+    if len(none_fields)==0:
+            #버튼뜨는 타이밍 
             print("all slot filled")
+            flag=1
 
-            if (user_input=="next"):
-                print("next")
-                return turn_num, dialogue_json, var_dict
+            return response, flag, state_slot.model_dump()
             
-        if func.__name__ =="making_lyrics":
-            return turn_num, dialogue_json, var_dict
-        
-        if (turn_num-start)>20:
-            print("over the 20 turn")
-            return turn_num, dialogue_json, var_dict
-        
+    if state =="making_lyrics":
+        flag=1
+        return response, flag, state_slot.model_dump()
+    
+    if turn>20:
+        print("over the 20 turn")
+        flag=1
+        return response, flag, state_slot.model_dump()
+    
+    return response, flag, state_slot.model_dump()
+
+
+
 def main():
-    dialogue_json={}
-    var_dict={}
-
-    turn, dialogue_json,var_dict=execute_state(therapeutic_connection, 0, dialogue_json,var_dict)
-    memory.clear()
-    
-    turn, dialogue_json,var_dict=execute_state(extraction_source, turn, dialogue_json,var_dict)
-    turn, dialogue_json,var_dict=execute_state(making_lyrics, turn, dialogue_json,var_dict)
-    memory.clear()
-
-    turn, dialogue_json,var_dict=execute_state(music_making, turn, dialogue_json,var_dict)
-    memory.clear()
-
-    turn, dialogue_json,var_dict=execute_state(music_discussion, turn, dialogue_json,var_dict)
-    
     now = datetime.now()
     timestamp = now.strftime("%Y%m%d_%H%M%S")
     filename = f"./log/output_{timestamp}.json"
-    with open(filename, "w") as f:
-        json.dump(dialogue_json, f)
+    # with open(filename, "w") as f:
+    #     json.dump(dialogue_json, f)
 
 
 if __name__ == "__main__":
     main()
+
+
+

@@ -155,7 +155,7 @@ def music_discussion(user_input, llm,memory, var_dict, bot_question):
     )
     slot=structured_llm.invoke(slot_prompt.invoke({"history":history}))
 
-    return question, slot, history
+    return question, slot
 
 
 # TruLens 초기화

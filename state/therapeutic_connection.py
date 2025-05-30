@@ -24,6 +24,9 @@ def print_memory_summary(memory):
 
 class OutputFormat(BaseModel):
     """사용자의 응답에서 얻어내야하는 정보"""
+    name: Optional[str] = Field(
+    default=None,
+    description="user name")
 
     therapy_difficulty: Optional[str] = Field(
     default=None,
@@ -146,7 +149,7 @@ def therapeutic_connection(user_input, llm, memory, var_dict, bot_question) -> s
     )
     slot=structured_llm.invoke(slot_prompt.invoke({"history":history}))
     
-    return question, slot, history
+    return question, slot
    
 # therapeutic_connection_langchain = Tool(
 #     name="therapeutic_connection",
